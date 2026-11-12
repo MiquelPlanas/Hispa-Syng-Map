@@ -1,0 +1,394 @@
+{
+  "reference_package_sha256": "2e157f4c90c94f0d897ab653e0e23e0eb55fe7a4b7ccff29a7868063864a7385",
+  "scope": "Scientific functions; display and publication boundary functions are identified separately. Polygon extraction applies only to display copies.",
+  "modules_compared": 52,
+  "modules_byte_identical": 46,
+  "unchanged_functions": 750,
+  "unexpected_function_changes": [],
+  "records": [
+    {
+      "module": "PYTHON_ENGLISH/src/hippodec_maps/__init__.py",
+      "reference_sha256": "0833574fb4654cec62e5b319262816d2ac87af771fe4fe9ba27840b188b0bd9d",
+      "sha256": "0833574fb4654cec62e5b319262816d2ac87af771fe4fe9ba27840b188b0bd9d",
+      "functions_unchanged": 0,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ENGLISH/src/hippodec_maps/analysis_io.py",
+      "reference_sha256": "cc4000f5eb0e1daadc84696e5d781fa1be2e627feda9bdb4dd438b83e6471acf",
+      "sha256": "cc4000f5eb0e1daadc84696e5d781fa1be2e627feda9bdb4dd438b83e6471acf",
+      "functions_unchanged": 17,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ENGLISH/src/hippodec_maps/analysis_pipeline.py",
+      "reference_sha256": "b29b55091fd63336b5eec0a5cc81d841f9ee7a4fc712e77c2bb1fd121b2706e7",
+      "sha256": "b29b55091fd63336b5eec0a5cc81d841f9ee7a4fc712e77c2bb1fd121b2706e7",
+      "functions_unchanged": 7,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ENGLISH/src/hippodec_maps/analysis_status.py",
+      "reference_sha256": "c1cb737adb6b2b9d357aed91bae22103fb650588a38d7f6ee119b59e52bf8a47",
+      "sha256": "c1cb737adb6b2b9d357aed91bae22103fb650588a38d7f6ee119b59e52bf8a47",
+      "functions_unchanged": 2,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ENGLISH/src/hippodec_maps/analysis_utils.py",
+      "reference_sha256": "9f713539ab5f9a586655ad9f5038b22a5a864b090c0bacae64acce5688803e79",
+      "sha256": "9f713539ab5f9a586655ad9f5038b22a5a864b090c0bacae64acce5688803e79",
+      "functions_unchanged": 35,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ENGLISH/src/hippodec_maps/cartography.py",
+      "reference_sha256": "2e80bd0a50c8bc495eab2b104471b46a731ccb9a9407a9badea766f5c99a20f5",
+      "sha256": "2e80bd0a50c8bc495eab2b104471b46a731ccb9a9407a9badea766f5c99a20f5",
+      "functions_unchanged": 6,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ENGLISH/src/hippodec_maps/cli.py",
+      "reference_sha256": "035bc55a13753f6af41e913fb2ddebb90efe89f1d2962cd3da3f483936f80a00",
+      "sha256": "035bc55a13753f6af41e913fb2ddebb90efe89f1d2962cd3da3f483936f80a00",
+      "functions_unchanged": 4,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ENGLISH/src/hippodec_maps/community.py",
+      "reference_sha256": "a1dcf3204225dda3af88cd949116ffbbbd98adf83af0a478874ae4079956c16e",
+      "sha256": "a1dcf3204225dda3af88cd949116ffbbbd98adf83af0a478874ae4079956c16e",
+      "functions_unchanged": 21,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ENGLISH/src/hippodec_maps/config.py",
+      "reference_sha256": "fb426860fbe9a5fecf9496ad6f0ea4b317933a381d0f2f0ef49bc0882ef0ffdb",
+      "sha256": "fb426860fbe9a5fecf9496ad6f0ea4b317933a381d0f2f0ef49bc0882ef0ffdb",
+      "functions_unchanged": 9,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ENGLISH/src/hippodec_maps/conservation.py",
+      "reference_sha256": "512df9610331bad6ff610a64f4f8e447eb30c45c203d430cfa86f3e3e5860c2d",
+      "sha256": "512df9610331bad6ff610a64f4f8e447eb30c45c203d430cfa86f3e3e5860c2d",
+      "functions_unchanged": 38,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ENGLISH/src/hippodec_maps/data.py",
+      "reference_sha256": "cdcd7fe6211113b6ebfba2e41276633425a032fd0f6ad89e9805c7b764cab372",
+      "sha256": "cdcd7fe6211113b6ebfba2e41276633425a032fd0f6ad89e9805c7b764cab372",
+      "functions_unchanged": 11,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ENGLISH/src/hippodec_maps/descriptive.py",
+      "reference_sha256": "bac8abcd69f7bbeea844c59a883019ecd21d58a5a59d6bf23eaafcc9986539c3",
+      "sha256": "bac8abcd69f7bbeea844c59a883019ecd21d58a5a59d6bf23eaafcc9986539c3",
+      "functions_unchanged": 11,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ENGLISH/src/hippodec_maps/grids.py",
+      "reference_sha256": "cb34dadc19b3633a25445efce5032a65455f1e8ac4092ed3b12ef70dd1687c17",
+      "sha256": "cb34dadc19b3633a25445efce5032a65455f1e8ac4092ed3b12ef70dd1687c17",
+      "functions_unchanged": 10,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ENGLISH/src/hippodec_maps/localization.py",
+      "reference_sha256": "f2757d73f80927945a04137fec26b185e17a48d19af56718088120673d8e73a5",
+      "sha256": "f2757d73f80927945a04137fec26b185e17a48d19af56718088120673d8e73a5",
+      "functions_unchanged": 13,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ENGLISH/src/hippodec_maps/maps.py",
+      "reference_sha256": "35582ca3f9af1610b03f1c6f1904e82cb5764dc01e168f737f92b021386e9f90",
+      "sha256": "d087cf164b0e3b1f82415ef5fbb69cf97e3f1322f337e8933742d58635434525",
+      "functions_unchanged": 23,
+      "presentation_functions": [
+        "render_conservation_map",
+        "render_html",
+        "render_map2",
+        "render_map3",
+        "rewrite_language_switch"
+      ]
+    },
+    {
+      "module": "PYTHON_ENGLISH/src/hippodec_maps/metrics.py",
+      "reference_sha256": "4964b76055c8dbf885252edc5f77f7445f089774e59b9abd4d019a38bb8fc3c0",
+      "sha256": "4964b76055c8dbf885252edc5f77f7445f089774e59b9abd4d019a38bb8fc3c0",
+      "functions_unchanged": 2,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ENGLISH/src/hippodec_maps/multiscale.py",
+      "reference_sha256": "3e17700850902967abffb6964b50e8d35b4f263ae11c63a2f00557310b398fa3",
+      "sha256": "3e17700850902967abffb6964b50e8d35b4f263ae11c63a2f00557310b398fa3",
+      "functions_unchanged": 13,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ENGLISH/src/hippodec_maps/optional_analysis.py",
+      "reference_sha256": "a8b77a391a0eb2d40e95cc746b47e72ddfb5322ec6bcc11272f685dccd7ac5f6",
+      "sha256": "a8b77a391a0eb2d40e95cc746b47e72ddfb5322ec6bcc11272f685dccd7ac5f6",
+      "functions_unchanged": 18,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ENGLISH/src/hippodec_maps/pipeline.py",
+      "reference_sha256": "2b17801abff7634ec0e10b0da49921e30756caa5f2f6eb6f3d801fd1d3c7cfc6",
+      "sha256": "d83eb675a175763161d4c8297841ed88434fd6606c62fdc5cdb92651aaeb176e",
+      "functions_unchanged": 11,
+      "presentation_functions": [
+        "run_pipeline"
+      ]
+    },
+    {
+      "module": "PYTHON_ENGLISH/src/hippodec_maps/regions.py",
+      "reference_sha256": "6c8caaeeacab7c95b0135e69089820b8b3ca13a22ef8fc2b46e51efa5e354530",
+      "sha256": "6c8caaeeacab7c95b0135e69089820b8b3ca13a22ef8fc2b46e51efa5e354530",
+      "functions_unchanged": 5,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ENGLISH/src/hippodec_maps/sampling.py",
+      "reference_sha256": "8fab3bea7531edc6cd560ba3fcf4ee85ded41989bf88a47259ea9b88990c7b58",
+      "sha256": "8fab3bea7531edc6cd560ba3fcf4ee85ded41989bf88a47259ea9b88990c7b58",
+      "functions_unchanged": 4,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ENGLISH/src/hippodec_maps/sex_analysis.py",
+      "reference_sha256": "22baebe21b014e726b813c70b2b9bf0e36680e1111f6249908cfe510f98ac859",
+      "sha256": "22baebe21b014e726b813c70b2b9bf0e36680e1111f6249908cfe510f98ac859",
+      "functions_unchanged": 2,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ENGLISH/src/hippodec_maps/spatial.py",
+      "reference_sha256": "f48f5180042dd290abee57bad24c67f08fe9f114f532394d07bfa17836b588e3",
+      "sha256": "f48f5180042dd290abee57bad24c67f08fe9f114f532394d07bfa17836b588e3",
+      "functions_unchanged": 18,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ENGLISH/src/hippodec_maps/technical_report.py",
+      "reference_sha256": "4475311ef4e4eaa8a49e932ce29a1e511ba616da7f3a58686896e913d908f765",
+      "sha256": "4475311ef4e4eaa8a49e932ce29a1e511ba616da7f3a58686896e913d908f765",
+      "functions_unchanged": 47,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ENGLISH/src/hippodec_maps/temporal.py",
+      "reference_sha256": "a65a7aa17643c89a32b8e020aec30fae102fd90f3a9c4bc0a40cbfa0a0481f29",
+      "sha256": "a65a7aa17643c89a32b8e020aec30fae102fd90f3a9c4bc0a40cbfa0a0481f29",
+      "functions_unchanged": 27,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ENGLISH/src/hippodec_maps/web_publication.py",
+      "reference_sha256": "7e40462aaa44f0a8bfa916436d07525967a041d13542f2d870d9a5dad6ed3e8a",
+      "sha256": "010d933cdb9a3193c2cf2f83e8a1077274afe6a797b3d0c80ceb0ccdae10c335",
+      "functions_unchanged": 19,
+      "presentation_functions": [
+        "build_web_publication"
+      ]
+    },
+    {
+      "module": "PYTHON_ESP/src/hippodec_maps/__init__.py",
+      "reference_sha256": "27075e9f6cae99339f39ea90a79d8ef8169fc6fc676bef6d3fe2563c79a6d141",
+      "sha256": "27075e9f6cae99339f39ea90a79d8ef8169fc6fc676bef6d3fe2563c79a6d141",
+      "functions_unchanged": 0,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ESP/src/hippodec_maps/analysis_io.py",
+      "reference_sha256": "ed95a12a2e988465cafbac39e2f9d251ce020344b734ddd202e49fb5ead16360",
+      "sha256": "ed95a12a2e988465cafbac39e2f9d251ce020344b734ddd202e49fb5ead16360",
+      "functions_unchanged": 17,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ESP/src/hippodec_maps/analysis_pipeline.py",
+      "reference_sha256": "4fc2e0be9001dd63eb15c85773bd7fc1014eebc1f255e00021330469bcef4ee8",
+      "sha256": "4fc2e0be9001dd63eb15c85773bd7fc1014eebc1f255e00021330469bcef4ee8",
+      "functions_unchanged": 7,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ESP/src/hippodec_maps/analysis_status.py",
+      "reference_sha256": "f62205415e9998ee4618447dbd1f43dde701ca77748f459bd09bef217e938a20",
+      "sha256": "f62205415e9998ee4618447dbd1f43dde701ca77748f459bd09bef217e938a20",
+      "functions_unchanged": 2,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ESP/src/hippodec_maps/analysis_utils.py",
+      "reference_sha256": "0a104e2f9e8934af23e13052dac71202c45f3365d0f39cf29dcfc0b8a4383c3f",
+      "sha256": "0a104e2f9e8934af23e13052dac71202c45f3365d0f39cf29dcfc0b8a4383c3f",
+      "functions_unchanged": 35,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ESP/src/hippodec_maps/cartography.py",
+      "reference_sha256": "fab031317f154ff41e41d54aabc90b0e401b9933b66176fc6ee8b2d8eb4b41ae",
+      "sha256": "fab031317f154ff41e41d54aabc90b0e401b9933b66176fc6ee8b2d8eb4b41ae",
+      "functions_unchanged": 6,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ESP/src/hippodec_maps/cli.py",
+      "reference_sha256": "29d2279226973b5795e84053e3e517da4bb21f72973aef3dc470c45a39f73854",
+      "sha256": "29d2279226973b5795e84053e3e517da4bb21f72973aef3dc470c45a39f73854",
+      "functions_unchanged": 4,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ESP/src/hippodec_maps/community.py",
+      "reference_sha256": "ab8e051e36561c2940728059959b0b0f20dc4164b70339fc7aa49ecfcaddb869",
+      "sha256": "ab8e051e36561c2940728059959b0b0f20dc4164b70339fc7aa49ecfcaddb869",
+      "functions_unchanged": 21,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ESP/src/hippodec_maps/config.py",
+      "reference_sha256": "d0774f94a5638457266cea1c50d62385c34422b7a619c1a99e27dc03c12e78e5",
+      "sha256": "d0774f94a5638457266cea1c50d62385c34422b7a619c1a99e27dc03c12e78e5",
+      "functions_unchanged": 9,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ESP/src/hippodec_maps/conservation.py",
+      "reference_sha256": "6f300d75be728efb2a9c8c79bdc173ef1dde3d4c83663b9a475a391a770fcaa2",
+      "sha256": "6f300d75be728efb2a9c8c79bdc173ef1dde3d4c83663b9a475a391a770fcaa2",
+      "functions_unchanged": 38,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ESP/src/hippodec_maps/data.py",
+      "reference_sha256": "14f9f5465f6a0839ba396b20f930416cfabbfcf6607c1a4287a7292da979d657",
+      "sha256": "14f9f5465f6a0839ba396b20f930416cfabbfcf6607c1a4287a7292da979d657",
+      "functions_unchanged": 11,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ESP/src/hippodec_maps/descriptive.py",
+      "reference_sha256": "cc5056a57abecd2c1053822579f38db997aa70503f6d94efaad41aa0f9a59d3d",
+      "sha256": "cc5056a57abecd2c1053822579f38db997aa70503f6d94efaad41aa0f9a59d3d",
+      "functions_unchanged": 11,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ESP/src/hippodec_maps/grids.py",
+      "reference_sha256": "40b676dfc98e9d8390cf5325f797a5ae725f1dcf67fe7d986a53e0bf786a5eb9",
+      "sha256": "40b676dfc98e9d8390cf5325f797a5ae725f1dcf67fe7d986a53e0bf786a5eb9",
+      "functions_unchanged": 10,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ESP/src/hippodec_maps/localization.py",
+      "reference_sha256": "4735ed3a783f397f780de82932e1f81395ad5cfbf9382688df6c3aa5fbc90b1d",
+      "sha256": "4735ed3a783f397f780de82932e1f81395ad5cfbf9382688df6c3aa5fbc90b1d",
+      "functions_unchanged": 20,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ESP/src/hippodec_maps/maps.py",
+      "reference_sha256": "2680f79e6d0cdbda3e7e7402779b7f5e3b3d2e9105a3d5dc819c8aeb81b46f04",
+      "sha256": "1ad72b153672015d76b748265f69d387d405754fc24ac0cdd159818c6cdeedf8",
+      "functions_unchanged": 21,
+      "presentation_functions": [
+        "render_conservation_map",
+        "render_html",
+        "render_map2",
+        "render_map3",
+        "rewrite_language_switch"
+      ]
+    },
+    {
+      "module": "PYTHON_ESP/src/hippodec_maps/metrics.py",
+      "reference_sha256": "15ba101c92810290e148728a48ef7a8607ca99a86fbcb97a20a40f786a0b49be",
+      "sha256": "15ba101c92810290e148728a48ef7a8607ca99a86fbcb97a20a40f786a0b49be",
+      "functions_unchanged": 2,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ESP/src/hippodec_maps/multiscale.py",
+      "reference_sha256": "e0ad13d897d3f22143a5b022cfe14ba1d12e4b286c5a1dcea531dc2cbe76a4d8",
+      "sha256": "e0ad13d897d3f22143a5b022cfe14ba1d12e4b286c5a1dcea531dc2cbe76a4d8",
+      "functions_unchanged": 13,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ESP/src/hippodec_maps/optional_analysis.py",
+      "reference_sha256": "f7adbd8f097d57d203b37522eaa4a2e0fef3efe3a706a494ab4f0be25073629f",
+      "sha256": "f7adbd8f097d57d203b37522eaa4a2e0fef3efe3a706a494ab4f0be25073629f",
+      "functions_unchanged": 18,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ESP/src/hippodec_maps/pipeline.py",
+      "reference_sha256": "db5e7136be926dc463c79bcb1d6617c7a9a07aed2fa39e46c42ceb0ea59ea365",
+      "sha256": "826422c6e5e111bdeebef44b40138137097387a58cbaf7853ca2cf61da6fd879",
+      "functions_unchanged": 11,
+      "presentation_functions": [
+        "run_pipeline"
+      ]
+    },
+    {
+      "module": "PYTHON_ESP/src/hippodec_maps/regions.py",
+      "reference_sha256": "3bb2669a383369830b303cb8fedffe0f08af3d1f73ccbc8120c5a89b38c3d8db",
+      "sha256": "3bb2669a383369830b303cb8fedffe0f08af3d1f73ccbc8120c5a89b38c3d8db",
+      "functions_unchanged": 5,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ESP/src/hippodec_maps/sampling.py",
+      "reference_sha256": "c3b2be516ee2f5d22cf201f15d1747429ae78122d2ea7ee2dd1abfc3a3b94a95",
+      "sha256": "c3b2be516ee2f5d22cf201f15d1747429ae78122d2ea7ee2dd1abfc3a3b94a95",
+      "functions_unchanged": 4,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ESP/src/hippodec_maps/sex_analysis.py",
+      "reference_sha256": "2030f7fe19dbf868c994951609331feeb5999dfd1bdba5b42b87bbf3a3cafb5e",
+      "sha256": "2030f7fe19dbf868c994951609331feeb5999dfd1bdba5b42b87bbf3a3cafb5e",
+      "functions_unchanged": 2,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ESP/src/hippodec_maps/spatial.py",
+      "reference_sha256": "4b33604da9d457ea6e0816a0aa0a55d37400595b7f95caed8a37ecfb5ca9052a",
+      "sha256": "4b33604da9d457ea6e0816a0aa0a55d37400595b7f95caed8a37ecfb5ca9052a",
+      "functions_unchanged": 18,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ESP/src/hippodec_maps/technical_report.py",
+      "reference_sha256": "31b9a023aafeb666c9ebd612f5c1a8d61cb009c6434fd484ba85d04357c17df6",
+      "sha256": "31b9a023aafeb666c9ebd612f5c1a8d61cb009c6434fd484ba85d04357c17df6",
+      "functions_unchanged": 46,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ESP/src/hippodec_maps/temporal.py",
+      "reference_sha256": "d2a6fc2662c8a2c8c8c20c641340169dd76f70fd51bdf543e16b7327c6831721",
+      "sha256": "d2a6fc2662c8a2c8c8c20c641340169dd76f70fd51bdf543e16b7327c6831721",
+      "functions_unchanged": 27,
+      "presentation_functions": []
+    },
+    {
+      "module": "PYTHON_ESP/src/hippodec_maps/web_publication.py",
+      "reference_sha256": "cd3227f5ae1cf9f2ef861bda4aa78ed56493f8c585f3ca72fca43fd7f7ede634",
+      "sha256": "af323c7574bb2227a30799485efa477b691e91e9df2b13239ab0b38eaa5a73f3",
+      "functions_unchanged": 19,
+      "presentation_functions": [
+        "build_web_publication"
+      ]
+    }
+  ]
+}

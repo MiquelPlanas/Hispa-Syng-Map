@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hispa-Syng v1.0 (Proyecto Hippo-DEC) — Mapa 3 — Variables</title>
+  {% include "_embed_mode.html" %}
+  <style>{{ leaflet_css | safe }}</style>
+  <style>{% include "_common.css" %}</style>
+</head>
+<body>
+{% include "_institutional_header.html" %}
+{% include "_language_switch.html" %}
+<div id="map"></div>
+{% include "_credits.html" %}
+<script>{{ leaflet_js | safe }}</script>
+<script>{% include "_common.js" %}</script>
+<script>
+const cells={{ cells_json | safe }};
+const dominantColors={{ dominant_colors_json | safe }};
+const sexSpecies={{ sex_species_json | safe }};
+const palettes={
+  richness:['#ffffd9','#edf8b1','#c7e9b4','#7fcdbb','#41b6c4','#1d91c0','#225ea8','#253494','#081d58'],
+  density:['#ffffcc','#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#bd0026','#800026'],
+  abundance:['#ffffe5','#f7fcb9','#d9f0a3','#addd8e','#78c679','#41ab5d','#238443','#006837','#004529']
+};
+const map=L.map('map',{preferCanvas:true});
+// Fondos cartográficos de Hispa-Syng: satélite por defecto, físico y batimétrico opcionales.
+const physical=L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{maxZoom:17,attribution:'Datos: &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, SRTM | Estilo: &copy; <a href="https://opentopomap.org" target="_blank">OpenTopoMap</a> (CC-BY-SA)'});
+const satellite=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Esri, Vantor, Earthstar Geographics y la GIS User Community'}).addTo(map);
+const bathymetry=L.tileLayer('https://tiles.emodnet-bathymetry.eu/2020/baselayer/web_mercator/{z}/{x}/{y}.png',{maxNativeZoom:11,maxZoom:19,attribution:'&copy; <a href="https://emodnet.ec.europa.eu/en/bathymetry" target="_blank">EMODnet Bathymetry</a> (CC BY 4.0)'});
+const fmt0=new Intl.NumberFormat('es-ES',{maximumFractionDigits:0}),fmt2=new Intl.NumberFormat('es-ES',{minimumFractionDigits:0,maximumFractionDigits:2});
+function niceLegendMax(value){const v=Math.max(Number(value)||0,1),power=Math.pow(10,Math.floor(Math.log10(v))),fraction=v/power,steps=[1,1.2,1.5,2,2.5,3,4,5,6,8,10];return (steps.find(step=>fraction<=step+1e-12)||10)*power;}
+function percentile(values,q){const sorted=values.map(Number).filter(v=>Number.isFinite(v)&&v>0).sort((a,b)=>a-b);if(!sorted.length)return 0;const rank=Math.max(1,Math.ceil(Math.max(0,Math.min(1,q))*sorted.length));return sorted[Math.min(rank-1,sorted.length-1)];}
+function densityLegendScale(values){const positive=values.map(Number).filter(v=>Number.isFinite(v)&&v>0);if(!positive.length)return{max:1,rawMax:0,n:0,robust:false,reference:0};const rawMax=Math.max(...positive),robust=positive.length>=20,reference=robust?percentile(positive,0.95):rawMax;return{max:niceLegendMax(Math.max(reference,1)),rawMax,n:positive.length,robust,reference};}
+function legendNumber(value){const a=Math.abs(value),digits=a>=10?0:a>=1?1:2;return new Intl.NumberFormat('es-ES',{maximumFractionDigits:digits}).format(value);}
+let variable='richness',dominantSelected=new Set(Object.keys(dominantColors));
+
+function esc(value){return String(value??'N.D.').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
+function num(value,formatter){const n=Number(value);return Number.isFinite(n)?formatter.format(n):'N.D.';}
+function kv(rows){return '<dl class="popup-kv">'+rows.map(r=>'<dt>'+esc(r[0])+'</dt><dd>'+r[1]+'</dd>').join('')+'</dl>';}
+
+function hexRgb(h){return [parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];}
+function scale(v,max,p){if(v===null||!isFinite(v)||max<=0)return'transparent';const t=Math.max(0,Math.min(1,v/max))*(p.length-1),i=Math.floor(t),j=Math.min(i+1,p.length-1),f=t-i,a=hexRgb(p[i]),b=hexRgb(p[j]);return'rgb('+a.map((x,k)=>Math.round(x+(b[k]-x)*f)).join(',')+')';}
+function colorSex(metric,value){
+  if(value===null||value===undefined||!isFinite(value))return'transparent';
+  if(metric==='ratio'){const t=Math.max(0,Math.min(3,value))/3;return'rgb('+Math.round(235-90*t)+','+Math.round(248-60*t)+','+Math.round(225-125*t)+')';}
+  if(metric==='prop'){const t=Math.max(0,Math.min(1,value));return'rgb('+Math.round(255-70*t)+','+Math.round(245-165*t)+','+Math.round(245-90*t)+')';}
+  const s=Math.max(-1,Math.min(1,value));if(s<0){const t=s+1;return'rgb('+Math.round(33+(247-33)*t)+','+Math.round(102+(247-102)*t)+','+Math.round(172+(247-172)*t)+')';}
+  return'rgb('+Math.round(247+(178-247)*s)+','+Math.round(247+(24-247)*s)+','+Math.round(247+(43-247)*s)+')';
+}
+function sexState(p){
+  const species=document.getElementById('sex-species')?.value||'',metric=document.getElementById('sex-metric')?.value||'bias',minN=Number(document.getElementById('sex-min')?.value||2);
+  const rec=(p.sex_metrics||{})[species];if(!rec||Number(rec.sexed_count)<minN)return{visible:false,rec:rec||null,species,metric,minN};
+  const key=metric==='ratio'?'female_male_ratio':metric==='prop'?'female_proportion':'sex_bias',value=rec[key];
+  return{visible:value!==null&&isFinite(Number(value)),rec,species,metric,value:Number(value),minN};
+}
+function compositionTable(p){
+  const rows=(p.species_metrics||[]).slice().sort((a,b)=>Number(b.abundance)-Number(a.abundance));
+  if(!rows.length)return '<div class="popup-empty">La composición de especies no está disponible.</div>';
+  return '<div class="popup-table-wrap"><table class="popup-table"><thead><tr><th>Especie</th><th>N</th><th>Densidad</th><th>% total</th></tr></thead><tbody>'+rows.map(r=>
+    '<tr><td><i>'+esc(r.Species)+'</i></td><td>'+num(r.abundance,fmt0)+'</td><td>'+num(p.area>0?Number(r.abundance||0)/Number(p.area):null,fmt2)+'</td><td>'+num(r.relative_abundance_pct,fmt2)+'</td></tr>'
+  ).join('')+'</tbody></table></div>';
+}
+function cellInformation(p){return kv([
+  ['Código oficial',esc(p.official_cell_code)],
+  ['Id interno de celda',esc(p.grid_id)],
+  ['Región MITECO',esc(p.region)],
+  ['Área oficial',num(p.area,fmt2)+' km²'],
+  ['Riqueza total',num(p.richness,fmt0)],
+  ['Abundancia total',num(p.abundance,fmt0)],
+  ['Densidad total',num(p.density,fmt2)+' ind/km²'],
+  ['Especie dominante','<i>'+esc(p.dominant)+'</i> ('+num(p.dominant_n,fmt0)+' ind.)'],
+  ['Registros / años',num(p.n_obs,fmt0)+' / '+num(p.n_years,fmt0)],
+  ['Calidad espacial',esc(p.quality)+' (Q = '+num(p.q_total,fmt2)+')']
+]);}
+function popupFor(p){
+  let title='',variableBlock='';
+  if(variable==='richness'){
+    title='Riqueza';variableBlock=kv([['Valor mostrado',num(p.richness,fmt0)+' especies']]);
+  }else if(variable==='density'){
+    title='Densidad total';variableBlock=kv([['Valor mostrado',num(p.density,fmt2)+' ind/km²'],['Abundancia utilizada',num(p.abundance,fmt0)],['Área utilizada',num(p.area,fmt2)+' km²']]);
+  }else if(variable==='abundance'){
+    title='Abundancia total';variableBlock=kv([['Valor mostrado',num(p.abundance,fmt0)+' individuos'],['Número de registros',num(p.n_obs,fmt0)]]);
+  }else if(variable==='dominance'){
+    title='Especie dominante';variableBlock=kv([['Especie mostrada','<i>'+esc(p.dominant)+'</i>'],['Abundancia dominante',num(p.dominant_n,fmt0)],['Porcentaje de la abundancia',num(Number(p.abundance)>0?100*Number(p.dominant_n)/Number(p.abundance):0,fmt2)+' %']]);
+  }else{
+    title='Composición sexual';const s=sexState(p),r=s.rec;
+    if(!r){variableBlock='<div class="popup-empty">No hay información sexual disponible para <i>'+esc(s.species)+'</i> en esta celda.</div>';}
+    else{
+      const ratio=num(r.female_male_ratio,fmt2),prop=Number.isFinite(Number(r.female_proportion))?num(100*Number(r.female_proportion),fmt2)+' %':'N.D.',bias=num(r.sex_bias,fmt2);
+      variableBlock=kv([['Especie seleccionada','<i>'+esc(s.species)+'</i>'],['Hembras',num(r.female_count,fmt0)],['Machos',num(r.male_count,fmt0)],['Indeterminados',num(r.indeterminate_count,fmt0)],['Individuos sexados',num(r.sexed_count,fmt0)],['Proporción hembras:machos',ratio],['Proporción de hembras',prop],['Sesgo sexual',bias],['Umbral aplicado','≥ '+num(s.minN,fmt0)+' individuos sexados']]);
+    }
+  }
+  return '<div class="popup-card"><div class="popup-title">'+title+'</div><div class="popup-subtitle">Celda '+esc(p.official_cell_code)+'</div>'+ 
+    '<div class="popup-section-title">Variable seleccionada</div>'+variableBlock+
+    '<div class="popup-section-title">Información completa de la celda</div>'+cellInformation(p)+
+    '<div class="popup-section-title">Composición de especies</div>'+compositionTable(p)+'</div>';
+}
+const cellLayer=L.geoJSON(cells,{style:{fillOpacity:.85,color:'#555',weight:.45},onEachFeature:(f,l)=>l.bindPopup(popupFor(f.properties),{maxWidth:520,maxHeight:540,autoPanPadding:[24,24]})}).addTo(map);
+L.control.layers({'Satélite':satellite,'Batimetría marina':bathymetry,'Físico':physical},{'Variable por celda':cellLayer},{collapsed:true}).addTo(map);
+if(cellLayer.getLayers().length)map.fitBounds(cellLayer.getBounds().pad(.08));else map.setView([39,-4],5);
+
+const variableControl=L.control({position:'topleft'});variableControl.onAdd=function(){const d=L.DomUtil.create('div','leaflet-control custom-box hippo-panel');d.dataset.panelTitle='Variable cartografiada';d.dataset.panelId='variable-panel';d.innerHTML='<div class="hippo-panel-header"><div class="panel-title">Variable cartografiada</div><button class="hippo-panel-toggle" type="button">−</button></div><div class="hippo-panel-body"><select id="variable"><option value="richness">Riqueza</option><option value="density">Densidad total</option><option value="abundance">Abundancia total</option><option value="dominance">Especie dominante</option><option value="sex">Sexo</option></select></div>';L.DomEvent.disableClickPropagation(d);return d;};variableControl.addTo(map);
+const options=L.control({position:'topright'});options.onAdd=function(){const d=L.DomUtil.create('div','leaflet-control custom-box hippo-panel');d.dataset.panelTitle='Opciones de la variable';d.dataset.panelId='options-panel';d.innerHTML='<div class="hippo-panel-header"><div class="panel-title">Opciones de la variable</div><button class="hippo-panel-toggle" type="button">−</button></div><div class="hippo-panel-body"><div id="dominance-options"><div class="panel-title">Especie dominante</div><div><button id="dom-all" class="button">Todas</button> <button id="dom-none" class="button">Ninguna</button></div><div id="dom-list" style="max-height:40vh;overflow:auto"></div></div><div id="sex-options" style="display:none"><div class="panel-title">Composición sexual</div><label>Especie<select id="sex-species"></select></label><div class="control-row"><label>Métrica<select id="sex-metric"><option value="bias">Sesgo sexual</option><option value="ratio">Proporción hembras:machos</option><option value="prop">Proporción de hembras</option></select></label></div><div class="control-row"><label>Mínimo de individuos sexados<select id="sex-min"><option>1</option><option selected>2</option><option>3</option><option>5</option><option>10</option></select></label></div></div></div>';L.DomEvent.disableClickPropagation(d);L.DomEvent.disableScrollPropagation(d);return d;};options.addTo(map);
+const domList=document.getElementById('dom-list');Object.keys(dominantColors).forEach((name,index)=>{const r=document.createElement('div');r.className='control-row';r.innerHTML='<label><input class="dom" type="checkbox" value="'+index+'" checked><span class="color-chip" style="background:'+dominantColors[name]+'"></span><i>'+name+'</i></label>';domList.appendChild(r);});
+const sexSelect=document.getElementById('sex-species');sexSpecies.forEach(name=>{const o=document.createElement('option');o.value=name;o.textContent=name;sexSelect.appendChild(o);});
+
+const legend=L.control({position:'bottomright'});legend.onAdd=function(){const d=L.DomUtil.create('div','leaflet-control custom-box hippo-panel small');d.dataset.panelTitle='Leyenda';d.dataset.panelId='legend-panel';d.innerHTML='<div class="hippo-panel-header"><div class="panel-title">Leyenda</div><button class="hippo-panel-toggle" type="button">−</button></div><div id="legend-content" class="hippo-panel-body"></div>';return d;};legend.addTo(map);
+function updateLegend(maxValue,scaleState=null){
+  const d=document.getElementById('legend-content');
+  if(variable==='dominance'){d.innerHTML='<b>Especie dominante</b>'+Object.keys(dominantColors).map(n=>'<div class="control-row"><span class="color-chip" style="background:'+dominantColors[n]+'"></span><i>'+n+'</i></div>').join('');return;}
+  if(variable==='sex'){const metric=document.getElementById('sex-metric').value;const text=metric==='ratio'?'Proporción hembras:machos: 0 — 1,5 — ≥3':metric==='prop'?'Proporción de hembras: 0 — 50 — 100 %':'Sesgo sexual: −1 — 0 — +1';const gradient=metric==='bias'?'#2166ac,#f7f7f7,#b2182b':'#ebf8e1,#91bc64';d.innerHTML='<b>Sexo</b><br>'+text+'<div class="legend-bar" style="background:linear-gradient(90deg,'+gradient+')"></div>';return;}
+  const titles={richness:'Riqueza (número de especies)',density:'Densidad (ind/km²)',abundance:'Abundancia (N)'};const saturated=variable==='density'&&scaleState&&scaleState.robust&&scaleState.rawMax>maxValue;const top=(saturated?'≥ ':'')+legendNumber(maxValue);const note=variable==='density'&&scaleState&&scaleState.robust?'<div class="popup-note">Escala visual robusta basada en P95; los valores superiores al límite cromático usan el tono máximo. Los valores exactos se conservan en los popups y exportaciones.</div>':'';d.innerHTML='<b>'+titles[variable]+'</b><div class="legend-bar" style="background:linear-gradient(90deg,'+palettes[variable].join(',')+')"></div><div class="legend-labels"><span>0</span><span>≈ '+legendNumber(maxValue/2)+'</span><span>'+top+'</span></div>'+note;
+}
+function updateMap(){
+  document.getElementById('dominance-options').style.display=variable==='dominance'?'block':'none';
+  document.getElementById('sex-options').style.display=variable==='sex'?'block':'none';
+  const field=variable==='richness'?'richness':variable==='density'?'density':'abundance';
+  let maxValue=1,scaleState=null;
+  if(['richness','density','abundance'].includes(variable)){
+    const values=[];cellLayer.eachLayer(l=>values.push(Number(l.feature.properties[field])||0));
+    if(variable==='density'){scaleState=densityLegendScale(values);maxValue=scaleState.max;}
+    else{maxValue=niceLegendMax(Math.max(...values,1));}
+  }
+  cellLayer.eachLayer(layer=>{const p=layer.feature.properties;let visible=true,color='#d9d9d9';
+    if(['richness','density','abundance'].includes(variable))color=scale(Number(p[field]),maxValue,palettes[variable]);
+    else if(variable==='dominance'){visible=dominantSelected.has(p.dominant);color=dominantColors[p.dominant]||'#d9d9d9';}
+    else{const s=sexState(p);visible=s.visible;color=visible?colorSex(s.metric,s.value):'transparent';}
+    layer.setStyle({fillColor:color,fillOpacity:visible ? 0.85 : 0,color:visible?'#555':'transparent',weight:.45});layer.bindPopup(popupFor(p),{maxWidth:520,maxHeight:540,autoPanPadding:[24,24]});
+  });updateLegend(maxValue,scaleState);
+}
+document.getElementById('variable').onchange=e=>{variable=e.target.value;updateMap();};
+document.querySelectorAll('.dom').forEach(box=>box.onchange=()=>{const name=Object.keys(dominantColors)[Number(box.value)];if(box.checked)dominantSelected.add(name);else dominantSelected.delete(name);updateMap();});
+document.getElementById('dom-all').onclick=()=>{dominantSelected=new Set(Object.keys(dominantColors));document.querySelectorAll('.dom').forEach(x=>x.checked=true);updateMap();};
+document.getElementById('dom-none').onclick=()=>{dominantSelected=new Set();document.querySelectorAll('.dom').forEach(x=>x.checked=false);updateMap();};
+['sex-species','sex-metric','sex-min'].forEach(id=>document.getElementById(id).onchange=updateMap);
+const info=L.control({position:'bottomleft'});info.onAdd=function(){
+  const d=L.DomUtil.create('div','leaflet-control custom-box hippo-panel small');
+  d.dataset.panelTitle='Información del mapa';d.dataset.panelId='map-info';d.dataset.startCollapsed='true';
+  d.innerHTML=`<div class="hippo-panel-header"><div class="panel-title">Mapa 3 — Variables ecológicas</div><button class="hippo-panel-toggle" type="button">−</button></div>
+    <div class="hippo-panel-body info-scroll">
+      <p class="info-lead">Para cada celda marina, este visor muestra las principales variables ecológicas asociadas a los signátidos de la costa española.</p>
+      <div class="info-summary"><b>${cells.features.length.toLocaleString('es-ES')}</b> celdas con datos · resolución <b>{{ grid_km }} × {{ grid_km }} km</b> · periodo <b>{{ year_min }}–{{ year_max }}</b><br><b>Área seleccionada:</b> {{ region_label }}</div>
+      <div class="info-section-title">Variables mostradas</div>
+      <table class="info-table"><thead><tr><th>Variable</th><th>Interpretación</th></tr></thead><tbody>
+        <tr><td><b>Riqueza</b></td><td>Número total de especies registradas por celda.</td></tr>
+        <tr><td><b>Densidad</b></td><td>Abundancia total / superficie marina recortada por GSHHS; unidad: ind./km² marino.</td></tr>
+        <tr><td><b>Abundancia</b></td><td>Número absoluto de individuos registrados en la celda.</td></tr>
+        <tr><td><b>Especie dominante</b></td><td>Taxón con mayor abundancia en la celda; el filtro puede ocultar las especies dominantes.</td></tr>
+        <tr><td><b>Sexo</b></td><td>Las métricas se calculan para una especie seleccionada cada vez; las especies no se combinan.</td></tr>
+      </tbody></table>
+      <div class="info-section-title">Métricas sexuales</div>
+      <table class="info-table"><tbody>
+        <tr><td><b>Proporción hembras:machos</b></td><td>Hembras / machos. Puede ser sensible a recuentos bajos de machos.</td></tr>
+        <tr><td><b>Proporción de hembras</b></td><td>Hembras / (hembras + machos).</td></tr>
+        <tr><td><b>Sesgo sexual</b></td><td>(Hembras − machos) / (hembras + machos), de −1 a +1. Los valores negativos indican sesgo hacia machos; los positivos, sesgo hacia hembras; 0 indica equilibrio.</td></tr>
+        <tr><td><b>Mínimo de individuos sexados</b></td><td>Oculta las celdas por debajo del umbral seleccionado y reduce las interpretaciones inestables.</td></tr>
+      </tbody></table>
+      <div class="info-section-title">Contenido de la ficha de información de la celda</div>
+      <p class="info-lead">La ficha informa de la variable seleccionada, el código y el área oficiales, la región, la riqueza, la abundancia, la densidad, la especie dominante, los registros, los años, la calidad espacial y la composición completa de especies.</p>
+      <div class="info-highlight"><b>Nota metodológica:</b> la visualización sexual utiliza la resolución cartografiada seleccionada. Las tablas y los análisis estadísticos sexuales utilizan la malla MITECO de 10 × 10 km para mejorar la robustez.</div>
+      <div class="popup-note">Las celdas son la capa científica principal y están activadas al abrir el visor. El mapa base aporta el contexto geográfico.</div>
+    </div>`;
+  L.DomEvent.disableClickPropagation(d);return d;
+};info.addTo(map);
+updateMap();
+window.HIPPODEC_LAYER_CONFIG={base:{satellite,physical,bathymetry},overlays:{cells:cellLayer}};
+window.HIPPODEC_CAPTURE_STATE=()=>({
+  variable,
+  dominantSpecies:[...dominantSelected],
+  sexSpecies:document.getElementById('sex-species').value,
+  sexMetric:document.getElementById('sex-metric').value,
+  sexMin:document.getElementById('sex-min').value
+});
+window.HIPPODEC_APPLY_STATE=state=>{
+  if(['richness','density','abundance','dominance','sex'].includes(state.variable)){
+    variable=state.variable;
+    document.getElementById('variable').value=variable;
+  }
+  if(Array.isArray(state.dominantSpecies)){
+    dominantSelected=new Set(Object.keys(dominantColors).filter(name=>state.dominantSpecies.includes(name)));
+    document.querySelectorAll('.dom').forEach((box,index)=>{box.checked=dominantSelected.has(Object.keys(dominantColors)[index]);});
+  }
+  if(state.sexSpecies&&sexSpecies.includes(state.sexSpecies))document.getElementById('sex-species').value=state.sexSpecies;
+  if(['bias','ratio','prop'].includes(state.sexMetric))document.getElementById('sex-metric').value=state.sexMetric;
+  if(['1','2','3','5','10'].includes(String(state.sexMin)))document.getElementById('sex-min').value=String(state.sexMin);
+  updateMap();
+};
+window.HIPPODEC_GET_STATE=()=>hippoCaptureState(map);
+setupHippoPanels(map);
+setupHippoLanguageSwitch(map);
+</script>
+</body>
+</html>

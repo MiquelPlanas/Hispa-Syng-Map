@@ -1,0 +1,56 @@
+# Configuración general de Hispa-Syng v1.0 (mapas + análisis; Proyecto Hippo-DEC).
+# El valor "auto" busca el archivo por nombre dentro de la carpeta del proyecto.
+paths:
+  input_excel: auto
+  sheet: "BD depurada"
+  grids: auto
+  gshhg: auto
+  demarcations: auto
+  logo: auto
+  # Opcional: "auto" reconoce la carpeta areas_protegidas y
+  # Datos_data/traits.xlsx. Las entradas opcionales ausentes se registran sin detenerse.
+  protected_areas: auto
+  traits: auto
+  results: "Resultados"
+
+execution:
+  interactive: true
+  years: all
+  grid_km: 10
+  region: all
+  species: all
+  open_browser: false
+  # true ejecuta solamente los mapas.
+  maps_only: false
+
+spatial:
+  target_crs: 3035
+  nearest_tolerance_factor: 1.0
+  clip_land_with_gshhg: true
+  grid_bbox_buffer_factor: 1.25
+
+maps:
+  initial_basemap: satellite
+  simplify_cells_m: 0
+  simplify_boundaries_m: 100
+  # Simplificación visual de la costa GSHHS; no afecta a los cálculos.
+  simplify_coast_m: 200
+
+analysis:
+  # El script R utiliza pruebas de permutación. 999 es el valor de producción.
+  # Use --permutations 49 para una comprobación rápida.
+  permutations: 999
+  random_seed: 20260501
+  bootstrap_iterations: 1000
+  min_records_cell: 2
+  coastal_threshold_km: 10.0
+  similarity_threshold: 0.55
+  # Los periodos se recortan automáticamente al intervalo de fechas seleccionado.
+  # Si quedan menos de dos periodos válidos, el programa divide reproduciblemente el intervalo.
+  temporal_periods:
+    - label: "2017–2022"
+      start: "2017-01-01"
+      end: "2022-12-31"
+    - label: "2023–2026"
+      start: "2023-01-01"
+      end: "2026-12-31"

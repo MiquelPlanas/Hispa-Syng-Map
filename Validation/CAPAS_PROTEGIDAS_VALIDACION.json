@@ -1,0 +1,357 @@
+{
+  "input_archive_sha256": "0dfecfad91c2e618939ea378eeccf694a6ea523e9e25faece9e83d3e2cec5d7c",
+  "archive_crc_check": "PASS",
+  "source_bytes_match_uploaded_archive": "PASS",
+  "layers": [
+    {
+      "file": "ENP/Enp2024.shp",
+      "records": 1934,
+      "crs": "EPSG:4258",
+      "null_geometry": 0,
+      "empty_geometry": 0,
+      "invalid_non_null_geometry": 18,
+      "fields": [
+        "OBJECTID",
+        "SITECODE",
+        "SITENAME",
+        "FIGURA_LP",
+        "AREA_HA",
+        "YEAR",
+        "CCAA",
+        "ENP_FGRAL",
+        "CCAA_N_ENP",
+        "SHAPE_Leng",
+        "SHAPE_Area"
+      ],
+      "metadata_values": {
+        "CreaDate": [
+          "20250425"
+        ]
+      },
+      "components": {
+        "Enp2024.cpg": {
+          "size_bytes": 5,
+          "sha256": "3ad3031f5503a4404af825262ee8232cc04d4ea6683d42c5dd0a2f2a27ac9824"
+        },
+        "Enp2024.dbf": {
+          "size_bytes": 1373526,
+          "sha256": "57041f8e3ad3715d49be6ccd7769a9ec93ff5f53962ae7e0a06d61d14af0e2e4"
+        },
+        "Enp2024.prj": {
+          "size_bytes": 147,
+          "sha256": "1d73d2a118be0020575764d43a69c16a11d0cecfae4a5a6499179943a5343486"
+        },
+        "Enp2024.sbn": {
+          "size_bytes": 18236,
+          "sha256": "eefa101080685ead0da8324e27c60e5179de351ce9838c54048c076c801557cd"
+        },
+        "Enp2024.sbx": {
+          "size_bytes": 724,
+          "sha256": "4784afa0460029c17e555be891fd21f7b5598476942dd3faa2e1f3f6a331aeac"
+        },
+        "Enp2024.shp": {
+          "size_bytes": 106483348,
+          "sha256": "defb419ccb0daa7d7a7fb6c326e077c81879193770a0003cb9c152ffe53dcf96"
+        },
+        "Enp2024.shp.xml": {
+          "size_bytes": 3368,
+          "sha256": "0d384a31b7d54bc2d04ab2abd10893c0e6ed5de1292359c8fbe92ad068a1a884"
+        },
+        "Enp2024.shx": {
+          "size_bytes": 15572,
+          "sha256": "da8f30130a228eb1b39738001f5ecb6b8539863f881ac4ffca5417d696bf0229"
+        }
+      }
+    },
+    {
+      "file": "Natura2000/Es_Lic_SCI_Zepa_SPA_Mac_202412.shp",
+      "records": 226,
+      "crs": "EPSG:32628",
+      "null_geometry": 0,
+      "empty_geometry": 0,
+      "invalid_non_null_geometry": 1,
+      "fields": [
+        "OBJECTID_1",
+        "SITE_CODE",
+        "SITE_NAME",
+        "HECTAREAS",
+        "AC",
+        "TIPO",
+        "Shape_Le_1",
+        "Shape_Area"
+      ],
+      "metadata_values": {
+        "CreaDate": [
+          "20241209"
+        ],
+        "SyncDate": [
+          "20241209"
+        ],
+        "ModDate": [
+          "20241209"
+        ],
+        "resTitle": [
+          "Es_Lic_SCI_Zepa_SPA_Mac_20244"
+        ],
+        "mdDateSt": [
+          "20241209"
+        ]
+      },
+      "components": {
+        "Es_Lic_SCI_Zepa_SPA_Mac_202412.cpg": {
+          "size_bytes": 5,
+          "sha256": "3ad3031f5503a4404af825262ee8232cc04d4ea6683d42c5dd0a2f2a27ac9824"
+        },
+        "Es_Lic_SCI_Zepa_SPA_Mac_202412.dbf": {
+          "size_bytes": 75322,
+          "sha256": "a9e7d43a75f746b16d1b9bd2335c6eb8ca04c149bb9183a290b9cdf8b01341d4"
+        },
+        "Es_Lic_SCI_Zepa_SPA_Mac_202412.prj": {
+          "size_bytes": 402,
+          "sha256": "48166aeeb61bfec2615bc098bf687ef052f47be73ae39320235d389c5708c6a7"
+        },
+        "Es_Lic_SCI_Zepa_SPA_Mac_202412.sbn": {
+          "size_bytes": 2220,
+          "sha256": "bbc1befd490effa06c6892b3457215617f31e90e6141dbba13499acfb5eb7e4a"
+        },
+        "Es_Lic_SCI_Zepa_SPA_Mac_202412.sbx": {
+          "size_bytes": 188,
+          "sha256": "0a41b4827b28e7670b71ce8e83285de5b7107a2773c1c7954dd139499cde3d0b"
+        },
+        "Es_Lic_SCI_Zepa_SPA_Mac_202412.shp": {
+          "size_bytes": 24284060,
+          "sha256": "6f666a85c298c41e4e9c7dee78f3258a36988d4cc53f47c60a087ace9b14a2a4"
+        },
+        "Es_Lic_SCI_Zepa_SPA_Mac_202412.shp.xml": {
+          "size_bytes": 25774,
+          "sha256": "743ea28e5c4f0fd9ce3ad74fb8c2c6350852b1577ef9496b4e1d161cfa895707"
+        },
+        "Es_Lic_SCI_Zepa_SPA_Mac_202412.shx": {
+          "size_bytes": 1908,
+          "sha256": "2994e2ecd89202dc1e1c74b32c0a999fa3802a77e6bb3c018ae1a553451e1580"
+        }
+      }
+    },
+    {
+      "file": "Natura2000/Es_Lic_SCI_Zepa_SPA_Medalpatl_202412.shp",
+      "records": 1636,
+      "crs": "EPSG:25830",
+      "null_geometry": 0,
+      "empty_geometry": 0,
+      "invalid_non_null_geometry": 11,
+      "fields": [
+        "OBJECTID",
+        "SITE_CODE",
+        "SITE_NAME",
+        "AC",
+        "TIPO",
+        "HECTAREAS",
+        "Shape_Leng",
+        "Shape_Area"
+      ],
+      "metadata_values": {
+        "CreaDate": [
+          "20241210"
+        ],
+        "SyncDate": [
+          "20241210"
+        ],
+        "ModDate": [
+          "20241210"
+        ],
+        "resTitle": [
+          "Es_Lic_SCI_Zepa_SPA_Medalpat22"
+        ],
+        "mdDateSt": [
+          "20241210"
+        ]
+      },
+      "components": {
+        "Es_Lic_SCI_Zepa_SPA_Medalpatl_202412.cpg": {
+          "size_bytes": 5,
+          "sha256": "3ad3031f5503a4404af825262ee8232cc04d4ea6683d42c5dd0a2f2a27ac9824"
+        },
+        "Es_Lic_SCI_Zepa_SPA_Medalpatl_202412.dbf": {
+          "size_bytes": 635058,
+          "sha256": "5611323eaf5192dc06578d0db22b1c78ae24ccf6b1f687f8710d434fba0de10e"
+        },
+        "Es_Lic_SCI_Zepa_SPA_Medalpatl_202412.prj": {
+          "size_bytes": 404,
+          "sha256": "03329a8b83248ce6963187291d05a46dfd70b28854fccb01c3fcabd2a28fdcce"
+        },
+        "Es_Lic_SCI_Zepa_SPA_Medalpatl_202412.sbn": {
+          "size_bytes": 16180,
+          "sha256": "c724d76450876f92d1125d0137b6863ef0c691c90c14fcae24d3dea2d4ed7b83"
+        },
+        "Es_Lic_SCI_Zepa_SPA_Medalpatl_202412.sbx": {
+          "size_bytes": 1196,
+          "sha256": "c0b9e122842b37ebed7ec0f1e10787000c2122a814072d7a7be2b0a02a904813"
+        },
+        "Es_Lic_SCI_Zepa_SPA_Medalpatl_202412.shp": {
+          "size_bytes": 192700120,
+          "sha256": "5665d690c76b76bc28a0f9928385a41510ccea1734a10011175638956dcf2069"
+        },
+        "Es_Lic_SCI_Zepa_SPA_Medalpatl_202412.shp.xml": {
+          "size_bytes": 22578,
+          "sha256": "b21d134e8ccf7b460ea8fd63e2732cd537451710d41c4ea7e54a069e8920c2cb"
+        },
+        "Es_Lic_SCI_Zepa_SPA_Medalpatl_202412.shx": {
+          "size_bytes": 13188,
+          "sha256": "8b4c3dede3a8453b5106162ef3eb4b751ae5d4c895a87891962900d51ddf7273"
+        }
+      }
+    },
+    {
+      "file": "RAMPE/Rampe_2025.shp",
+      "records": 86,
+      "crs": "EPSG:4258",
+      "null_geometry": 0,
+      "empty_geometry": 0,
+      "invalid_non_null_geometry": 3,
+      "fields": [
+        "OBJECTID",
+        "TIPO",
+        "SITE_NAME",
+        "SITE_CODE",
+        "SupGIS_ha",
+        "Shape_Leng",
+        "Shape_Area"
+      ],
+      "metadata_values": {
+        "CreaDate": [
+          "20250115"
+        ],
+        "SyncDate": [
+          "20220406"
+        ],
+        "ModDate": [
+          "20220406"
+        ],
+        "resTitle": [
+          "Rampe_2021_P"
+        ],
+        "mdDateSt": [
+          "20220406"
+        ]
+      },
+      "components": {
+        "Rampe_2025.cpg": {
+          "size_bytes": 5,
+          "sha256": "3ad3031f5503a4404af825262ee8232cc04d4ea6683d42c5dd0a2f2a27ac9824"
+        },
+        "Rampe_2025.dbf": {
+          "size_bytes": 19866,
+          "sha256": "0feba7f74282391fe55814806721b3543d97fa7a72571f4e2d8b8143f1a8206b"
+        },
+        "Rampe_2025.prj": {
+          "size_bytes": 147,
+          "sha256": "1d73d2a118be0020575764d43a69c16a11d0cecfae4a5a6499179943a5343486"
+        },
+        "Rampe_2025.sbn": {
+          "size_bytes": 972,
+          "sha256": "fd1a41d0ffc9e2d0c6b3c5c5b0f0fdb17f6ac79532a1033a796255981f1ac2bd"
+        },
+        "Rampe_2025.sbx": {
+          "size_bytes": 164,
+          "sha256": "d9787f149b95dedcc18c6b6217b39852a4c2a022b8329df659924c7c12103289"
+        },
+        "Rampe_2025.shp": {
+          "size_bytes": 17241384,
+          "sha256": "f7a434b083e6982fbec89b5e38923a5bdb3b5c69f3b3e03e85cd22e06d2ab19d"
+        },
+        "Rampe_2025.shp.xml": {
+          "size_bytes": 15152,
+          "sha256": "02335cd519e47cf5cdb554b0e670a507855bcdbec4ac2ae019953b6ef8dbb143"
+        },
+        "Rampe_2025.shx": {
+          "size_bytes": 788,
+          "sha256": "133604c13d9e8b5f434cfb4902cc9ef5953b73d294336cd06c5f269094d7be42"
+        }
+      }
+    }
+  ],
+  "empty_folders": [
+    "OSPAR"
+  ],
+  "checks": [
+    {
+      "edition": "PYTHON_ESP",
+      "loader_audit": [
+        {
+          "source": "ENP/Enp2024.shp",
+          "status": "loaded",
+          "detail": "1934 features read and clipped to search extent"
+        },
+        {
+          "source": "Natura2000/Es_Lic_SCI_Zepa_SPA_Mac_202412.shp",
+          "status": "loaded",
+          "detail": "225 features read and clipped to search extent"
+        },
+        {
+          "source": "Natura2000/Es_Lic_SCI_Zepa_SPA_Medalpatl_202412.shp",
+          "status": "loaded",
+          "detail": "1636 features read and clipped to search extent"
+        },
+        {
+          "source": "RAMPE/Rampe_2025.shp",
+          "status": "loaded",
+          "detail": "86 features read and clipped to search extent"
+        }
+      ],
+      "loaded_features": 3881,
+      "valid_non_empty_features_after_existing_geometry_cleanup": 3881,
+      "status": "PASS",
+      "scope": "Real protected-area loader and existing geometry cleanup, EPSG:3035, Spain-wide search extent. No marine-mask intersection or full scientific pipeline tested."
+    },
+    {
+      "edition": "PYTHON_ENGLISH",
+      "loader_audit": [
+        {
+          "source": "ENP/Enp2024.shp",
+          "status": "loaded",
+          "detail": "1934 features read and clipped to search extent"
+        },
+        {
+          "source": "Natura2000/Es_Lic_SCI_Zepa_SPA_Mac_202412.shp",
+          "status": "loaded",
+          "detail": "225 features read and clipped to search extent"
+        },
+        {
+          "source": "Natura2000/Es_Lic_SCI_Zepa_SPA_Medalpatl_202412.shp",
+          "status": "loaded",
+          "detail": "1636 features read and clipped to search extent"
+        },
+        {
+          "source": "RAMPE/Rampe_2025.shp",
+          "status": "loaded",
+          "detail": "86 features read and clipped to search extent"
+        }
+      ],
+      "loaded_features": 3881,
+      "valid_non_empty_features_after_existing_geometry_cleanup": 3881,
+      "status": "PASS",
+      "scope": "Real protected-area loader and existing geometry cleanup, EPSG:3035, Spain-wide search extent. No marine-mask intersection or full scientific pipeline tested."
+    }
+  ],
+  "limitations": [
+    "No independent byte comparison against upstream distributions",
+    "Metadata dates are not necessarily scientific update dates",
+    "Original metadata contains inherited titles, inconsistent dates and unfilled template fields",
+    "No cartographic source files modified",
+    "No complete pipeline, conservation-area equivalence or actual marine clipping test in this analysis"
+  ],
+  "environment": {
+    "os": "Linux-6.18.44-x86_64-with-glibc2.39",
+    "python": "3.12.14",
+    "dependencies": {
+      "geopandas": "1.2.0",
+      "shapely": "2.1.2",
+      "pyogrio": "0.11.1",
+      "pandas": "2.3.3"
+    }
+  },
+  "inspected_code_sha256": {
+    "PYTHON_ESP/src/hippodec_maps/conservation.py": "6f300d75be728efb2a9c8c79bdc173ef1dde3d4c83663b9a475a391a770fcaa2",
+    "PYTHON_ENGLISH/src/hippodec_maps/conservation.py": "512df9610331bad6ff610a64f4f8e447eb30c45c203d430cfa86f3e3e5860c2d"
+  }
+}

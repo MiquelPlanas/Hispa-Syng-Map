@@ -1,0 +1,23 @@
+<button class="credits-trigger" onclick="document.getElementById('credits-modal').style.display='flex'">📍 Credits</button>
+<div id="credits-modal" onclick="this.style.display='none'">
+  <div id="credits-card" onclick="event.stopPropagation()">
+    <h3 style="margin:0 0 6px">{{ brand_label }}</h3>
+    <table>
+      <tr><td><b>Institution:</b></td><td>{{ institution }}</td></tr>
+      <tr><td><b>Product:</b></td><td>{{ product }}</td></tr>
+      <tr><td><b>Project:</b></td><td>{{ project }}</td></tr>
+      <tr><td><b>Author:</b></td><td>{{ author }}</td></tr>
+      <tr><td><b>Period:</b></td><td>{{ year_min }}–{{ year_max }}</td></tr>
+      <tr><td><b>Resolution:</b></td><td>{{ grid_km }} km</td></tr>
+      <tr><td><b>Area:</b></td><td>{{ region_label }}</td></tr>
+      <tr><td><b>Date:</b></td><td>{{ creation_date }}</td></tr>
+    </table>
+    <section aria-label="Cartographic sources" style="margin-top:12px;font-size:12px;line-height:1.45;text-align:left">
+      <h4 style="margin:0 0 5px">Cartographic sources</h4>
+      <p style="margin:5px 0">MITECO grids, marine demarcations and protected-area layers.<br>© Ministerio para la Transición Ecológica y el Reto Demográfico (MITECO)</p>
+      <p style="margin:5px 0">GSHHG shoreline: Wessel and Smith; LGPL terms. <a href="https://www.soest.hawaii.edu/pwessel/gshhg/" target="_blank" rel="noopener noreferrer">GSHHG</a></p>
+      <p style="margin:5px 0"><b>Marine-demarcation notice:</b> This map is for technical use only and must not be regarded as the official delimitation of borders between neighbouring countries.</p>
+    </section>
+    <button class="button" style="margin-top:10px" onclick="document.getElementById('credits-modal').style.display='none'">Close</button>
+  </div>
+</div>

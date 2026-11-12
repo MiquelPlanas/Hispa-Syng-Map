@@ -1,0 +1,85 @@
+# ============================================================
+# Hispa-Syng v1.0
+# Files/directories that must not be version-controlled
+# ============================================================
+
+# Python virtual environments
+.venv/
+venv/
+env/
+
+# Python caches and compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Hispa-Syng runtime/control directories
+.ejecuciones/
+Resultados/
+results/
+ejecucion_*/
+run_*/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+~$*
+
+# R session files
+.Rhistory
+.RData
+.Ruserdata
+
+# Operating-system metadata
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE/editor local settings
+.vscode/
+.idea/
+
+# Large/external cartographic resources
+# Keep them available locally for Hispa-Syng, but do not version them in Git.
+GSHHS/
+
+# Operational observation/input datasets
+# Keep real working data outside the source-code repository.
+Ingesta_provisional*.xlsx
+
+# Common generated archives and full package exports
+*.zip
+*.7z
+*.rar
+
+# Local plaintext passwords: keep outside version control, even in a private repo
+
+# English-language generated results
+Results/
+
+# Temporary/backup virtual environments
+.venv_respaldo_temporal*/
+
+# Build/package caches and artifacts
+.cache/
+build/
+dist/
+*.egg-info/
+
+# Local download credentials and operational secrets
+.env
+.env.*
+
+# Hispa-Syng project security runtime
+.hispa_security/
+*.hsk
+Datos_data/Ingesta_provisional.hse
+
+# Keep cartographic resources outside source control
+/Resources/
+
+!/Validation/REFERENCIAS_JSON_VALIDACION.log

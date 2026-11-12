@@ -1,0 +1,9 @@
+Hispa-Syng v1.0 SIN_RESOURCES
+
+32 comprobaciones de regresión PASS; 33 procesos con una repetición registrada.
+44 escenarios de navegación ES/EN PASS. Menús abiertos ejecutados en ambos idiomas.
+UTC 2026-10-14T12:31:11.627308+00:00
+
+Registros: validation.json, menu_validation.json, *.log, VALIDACION_ES.md, VALIDACION_EN.md y CONTENIDO_SHA256.txt.
+Guías de seguridad ES/EN renderizadas y revisadas. Código del análisis y entradas preservados.
+Windows nativo y ejecución operativa con toda la cartografía: no ejecutados.

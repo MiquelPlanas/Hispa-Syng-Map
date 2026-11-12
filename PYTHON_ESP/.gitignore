@@ -1,0 +1,6 @@
+.venv/
+.cache/
+Resultados/
+__pycache__/
+*.py[cod]
+config.test.yaml

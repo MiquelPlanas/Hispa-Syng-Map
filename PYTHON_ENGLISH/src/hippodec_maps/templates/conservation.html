@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hispa-Syng v1.0 (Hippo-DEC project) — Priority conservation areas</title>
+  {% include "_embed_mode.html" %}
+  <style>
+    {{ leaflet_css | safe }}
+    {% include "_common.css" %}
+    .map-status {position:fixed;left:50%;top:150px;transform:translateX(-50%);z-index:9998;background:rgba(255,255,255,.96);border:1px solid #aeb9c8;border-radius:7px;padding:7px 12px;box-shadow:0 2px 8px rgba(0,0,0,.18);font:600 12px Arial,sans-serif;}
+    .map-status.error {max-width:min(720px,88vw);background:#fff4f2;border-color:#bb4d3b;color:#7b2116;white-space:normal;}
+    .conservation-title {font-size:12px;max-width:310px;}
+    .priority-downloads {min-width:242px;font:12px Arial,sans-serif;}
+    .priority-downloads .download-status {margin:4px 0 7px;font-size:10px;color:#5a2a00;}
+    .priority-downloads .download-row {display:flex;gap:5px;flex-wrap:wrap;}
+    .priority-downloads button,.priority-downloads a {border:1px solid #56718c;border-radius:4px;padding:5px 7px;background:#f7fbff;color:#123a5b;font:600 10px Arial,sans-serif;text-decoration:none;cursor:pointer;}
+    .priority-downloads a[aria-disabled="true"] {opacity:.48;pointer-events:none;}
+    @media(max-width:700px){.map-status{top:112px;max-width:calc(100vw - 24px);text-align:center;}}
+    .priority-zone-label {background:transparent;border:0;}
+    .priority-zone-label span {display:inline-block;transform:translate(-50%,-50%);padding:2px 5px;border:1px solid rgba(44,44,44,.65);border-radius:4px;background:rgba(255,255,255,.88);color:#202020;font:700 10px Arial,sans-serif;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,.18);}
+    .zone-species-table {width:100%;border-collapse:collapse;margin:4px 0 7px;font:11px Arial,sans-serif;}
+    .zone-species-table th,.zone-species-table td {padding:3px 5px;border-bottom:1px solid #d8dee6;text-align:right;vertical-align:top;}
+    .zone-species-table th:first-child,.zone-species-table td:first-child {text-align:left;}
+    .zone-species-table th {font-weight:700;background:#f5f7fa;}
+    /* Informational popups: +15% relative to the common 500 px card. */
+    .popup-card {width:min(575px,82vw);}
+    .popup-title {overflow-wrap:anywhere;word-break:break-word;}
+    @media(max-width:700px){.popup-card{min-width:0;width:76vw;}}
+  
+    .priority-filter {min-width:220px;max-width:270px;font:12px Arial,sans-serif;}
+    .priority-filter .filter-actions {display:flex;gap:6px;margin:5px 0 7px;}
+    .priority-filter button {border:1px solid #7a8b99;border-radius:4px;background:#fff;padding:3px 7px;cursor:pointer;font-size:10px;}
+    .priority-filter label {display:flex;align-items:center;gap:6px;margin:3px 0;white-space:nowrap;}
+    .priority-filter input {margin:0;}
+    .priority-filter .priority-chip,.priority-filter .role-chip {width:12px;height:12px;display:inline-block;border:1px solid rgba(0,0,0,.3);}
+    .priority-filter .filter-note {font-size:9.5px;line-height:1.25;color:#555;margin-top:6px;}
+
+    .priority-layer-control {min-width:230px;max-width:310px;max-height:56vh;overflow:auto;font:11px Arial,sans-serif;}
+    .priority-layer-control-title {color:#173b65;font:700 11px/1.2 Arial,sans-serif;border-bottom:1px solid #d5dee8;margin:0 0 6px;padding:2px 1px 6px;letter-spacing:.02em;}
+    .priority-layer-control .leaflet-control-layers-list {display:block !important;}
+    @media(max-width:700px){.priority-layer-control{min-width:205px;max-width:245px;max-height:48vh;}}
+  </style>
+</head>
+<body>
+{% include "_institutional_header.html" %}
+{% include "_language_switch.html" %}
+<div id="map"></div>
+<div id="map-status" class="map-status">Preparing map layers…</div>
+{% include "_credits.html" %}
+<script>{{ leaflet_js | safe }}</script>
+<script>{% include "_common.js" %}</script>
+<script>
+const cells={{ cells_json | safe }};
+const descriptiveCells={{ descriptive_cells_json | safe }};
+const zones={{ zones_json | safe }};
+const operationalZones={{ operational_zones_json | safe }};
+const protectedAreas={{ protected_json | safe }};
+const mapBounds={{ map_bounds_json | safe }};
+const includedSpecies={{ included_species | default(species_list | default([], true), true) | tojson }};
+const priorityDownloads={{ downloads | tojson }};
+const PROJECT_PROTECTED={{ project_security_protected|default(false)|tojson }};
+const colors={'No evaluable / evidencia ecológica insuficiente':'#bdbdbd','Sin capacidad de discriminación':'#969696','Baja':'#D9EAD3','Media':'#FFF2CC','Alta':'#F4B183','Muy alta':'#C00000'};
+const hasSeparateDescriptiveGrid=descriptiveCells.features.length>0&&Number({{ requested_grid_km }})!==Number({{ planning_grid_km }});
+const selectedCellCount=cells.features.filter(feature=>['Alta','Muy alta'].includes(feature.properties.ecological_priority_class)).length;
+const descriptiveHighCount=descriptiveCells.features.filter(feature=>['Alta','Muy alta'].includes(feature.properties.ecological_priority_class)).length;
+const supportingExtensionCount=cells.features.filter(feature=>feature.properties.zone_role_code==='supporting_extension').length;
+const validationCandidateCount=cells.features.filter(feature=>feature.properties.zone_role_code==='validation_candidate').length;
+const priorityLegendLabels={'No evaluable / evidencia ecológica insuficiente':'Not evaluable / insufficient ecological evidence','Sin capacidad de discriminación':'No discriminatory capacity','Baja':'Low','Media':'Medium','Alta':'High','Muy alta':'Very high'};
+const publicTextMap={
+  'No evaluable / datos insuficientes':'Not evaluable / insufficient data',
+  'Sin capacidad de discriminación':'No discriminatory capacity',
+  'Muy baja':'Very low','Baja':'Low','Media':'Medium','Alta':'High','Muy alta':'Very high',
+  'No aplicable':'Not applicable',
+  'Estable en 3 escenarios ecológicos':'Stable under 3 ecological scenarios',
+  'Estable en 2 escenarios ecológicos':'Stable under 2 ecological scenarios',
+  'Sensible a ponderación ecológica':'Sensitive to ecological weighting',
+  'No alta en escenarios ecológicos':'Not high under ecological scenarios',
+  'Alta prioridad ya ampliamente protegida':'High-priority area already extensively protected',
+  'Alta prioridad mayoritariamente protegida':'High-priority area mostly protected',
+  'Alta prioridad parcialmente protegida':'High-priority area partially protected',
+  'Alta prioridad próxima a protección existente':'High-priority area close to existing protection',
+  'Alta prioridad no protegida':'Unprotected high-priority area',
+  'No evaluado':'Not evaluated','not_evaluated':'Not evaluated'
+};
+const publicText=value=>publicTextMap[text(value)]||text(value);
+const text=value=>value===null||value===undefined||value===''?'N.D.':String(value);
+const escapeHtml=value=>text(value).replace(/[&<>'"]/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
+const number=(value,digits=1)=>value===null||value===undefined||!Number.isFinite(Number(value))?'N.D.':Number(value).toLocaleString('en-GB',{minimumFractionDigits:digits,maximumFractionDigits:digits});
+const integer=value=>value===null||value===undefined||!Number.isFinite(Number(value))?'N.D.':Number(value).toLocaleString('en-GB',{maximumFractionDigits:0});
+const densityNumber=value=>value===null||value===undefined||!Number.isFinite(Number(value))?'N.D.':Number(value).toLocaleString('en-GB',{minimumFractionDigits:0,maximumFractionDigits:2});
+const yesNo=value=>value===true||value===1||String(value).toLowerCase()==='true'?'Yes':value===false||value===0||String(value).toLowerCase()==='false'?'No':'N.D.';
+const kv=rows=>'<dl class="popup-kv">'+rows.map(row=>'<dt>'+escapeHtml(row[0])+'</dt><dd>'+row[1]+'</dd>').join('')+'</dl>';
+function zoneSpeciesTable(value){
+  let rows=[];
+  try{rows=JSON.parse(value||'[]');}catch(error){rows=[];}
+  if(!Array.isArray(rows)||!rows.length)return '<div class="popup-prose">N.A.</div>';
+  return '<table class="zone-species-table"><thead><tr><th>Species</th><th>Abundance</th><th>Density<br><span style="font-weight:400">ind./km²</span></th></tr></thead><tbody>'+
+    rows.map(row=>'<tr><td><i>'+escapeHtml(row[0])+'</i></td><td>'+integer(row[1])+'</td><td>'+densityNumber(row[2])+'</td></tr>').join('')+'</tbody></table>';
+}
+const mapStatus=document.getElementById('map-status');
+
+function setPriorityDownloadsState(){
+  const status=document.getElementById('priority-download-status');
+  document.querySelectorAll('[data-priority-download]').forEach(link=>{
+    const url=priorityDownloads[link.dataset.priorityDownload];
+    const enabled=Boolean(!PROJECT_PROTECTED&&url);
+    link.setAttribute('aria-disabled',enabled?'false':'true');
+    if(enabled) link.href=url; else link.removeAttribute('href');
+  });
+  if(status) status.textContent=PROJECT_PROTECTED?'Protected project: open .hse files from Hispa-Syng.bat > Security and access.':'Downloads available.';
+}
+
+function showMapError(error){
+  const detail=error&&error.message?error.message:String(error||'Unknown error');
+  mapStatus.classList.add('error');
+  mapStatus.textContent='Viewer initialisation failed: '+detail;
+}
+window.addEventListener('error',event=>showMapError(event.error||event.message));
+
+function cellPopup(p){
+  const priority=kv([
+    ['Ecological priority',escapeHtml(publicText(p.ecological_priority_class))],
+    ['Spatial conservation role',escapeHtml(p.zone_role)],
+    ['Associated priority area',escapeHtml(p.zone_id)],
+    ['Relative ecological index',number(p.ecological_priority_score,1)+' / 100'],
+    ['Monitoring priority',escapeHtml(publicText(p.monitoring_priority_class))+' · '+number(p.monitoring_priority_score,1)+' / 100'],
+    ['Data adequacy (independent)',escapeHtml(publicText(p.data_adequacy_class))+' · '+number(p.data_adequacy_score,1)+' / 100'],
+    ['Primary causal pathway',escapeHtml(p.ecological_priority_pathway)],
+    ['Priority type',escapeHtml(p.conservation_priority_type)],
+    ['Persistent occurrence core',yesNo(p.population_core_pathway)+' · '+escapeHtml(p.population_core_species)],
+    ['Diversity core',yesNo(p.diversity_core_pathway)+(p.exceptional_diversity_core_pathway?' · exceptional concentration':'')],
+    ['Evaluable adequacy components',integer(p.data_adequacy_n_components)+' of 7'],
+    ['Proxy events / years',integer(p.n_sampling_events)+' / '+integer(p.n_years_observed)],
+    ['Strong / active evidence families',integer(p.n_independent_ecological_families_strong)+' / '+integer(p.n_independent_ecological_families_active)],
+    ['Ecological stability',escapeHtml(publicText(p.sensitivity_class))+' ('+integer(p.n_scenarios_high_priority)+' of 3)']
+  ]);
+  const ecology=kv([
+    ['Richness · family',integer(p.richness)+' species · '+number(p.ecological_richness_family_score,0)+'/100'],
+    ['Persistence · family',integer(p.n_years_observed)+' years · '+number(p.ecological_persistence_family_score,0)+'/100'],
+    ['Repeated use · family',integer(p.n_sampling_events)+' events · '+number(p.ecological_repeated_use_family_score,0)+'/100'],
+    ['Repeated low-occupancy species',integer(p.n_low_occupancy_species_repeated)+' · '+escapeHtml(p.low_occupancy_species_repeated)],
+    ['Low-occupancy representation · family',number(p.ecological_low_occupancy_representation_family_score,0)+'/100'],
+    ['LCBD (context; not a selector)',number(p.LCBD,4)+' · context '+number(p.ecological_lcbd_context_score,0)+'/100'],
+    ['Fine-scale LCBD p-value',number(p.LCBD_p_value_finest,4)],
+    ['Significant LCBD',yesNo(p.LCBD_significant)],
+    ['Abundance',number(p.abundance,1)+' individuals'],
+    ['Records',integer(p.n_records)],
+    ['Hotspot type (context)',escapeHtml(p.hotspot_type)],
+    ['Hotspot at any scale',yesNo(p.is_hotspot_any_scale)],
+    ['Multiscale hotspot',yesNo(p.is_hotspot_multiscale)]
+  ]);
+  const environment=kv([
+    ['Dominant habitat',escapeHtml(p.habitat_dominante_grid)],
+    ['Median depth',number(p.depth_mediana_grid,2)+' m'],
+    ['Depth records',integer(p.n_depth_valid)],
+    ['Temporal signal',number(p.temporal_signal_raw,3)],
+    ['Temporal records',integer(p.n_temporal_records)]
+  ]);
+  const scenarios=kv([
+    ['Balanced evidence (25% each family)',escapeHtml(publicText(p.ecological_priority_class_balanced))+' · '+number(p.ecological_priority_score_balanced,1)],
+    ['Biodiversity focus (35% richness + 35% low occupancy)',escapeHtml(publicText(p.ecological_priority_class_biodiversity_focus))+' · '+number(p.ecological_priority_score_biodiversity_focus,1)],
+    ['Persistence focus (35% persistence + 30% repeated use)',escapeHtml(publicText(p.ecological_priority_class_persistence_focus))+' · '+number(p.ecological_priority_score_persistence_focus,1)],
+    ['Independent temporal monitoring',escapeHtml(publicText(p.monitoring_priority_class))+' · '+number(p.monitoring_priority_score,1)]
+  ]);
+  const descriptive=p.grid_purpose==='descriptive';
+  const title=descriptive?'Descriptive cell ':'Planning unit ';
+  const subtitle=descriptive
+    ?'Descriptive resolution: '+number(p.planning_grid_km||p.scale_km,0)+' km · not used to delineate areas'
+    :'Conservation planning unit: '+number(p.planning_grid_km||p.scale_km,0)+' km';
+  return '<div class="popup-card"><div class="popup-title">'+title+escapeHtml(p.master_id)+'</div>'+ 
+    '<div class="popup-subtitle">'+subtitle+'</div>'+ 
+    '<div class="popup-priority"><b>Prioritisation result</b>'+priority+'</div>'+ 
+    '<div class="popup-section-title">Biological evidence and singularity context</div>'+ecology+
+    '<div class="popup-section-title">Species present in the unit</div>'+zoneSpeciesTable(p.species_cell_summary)+
+    '<div class="popup-section-title">Environmental and temporal context</div>'+environment+
+    '<div class="popup-section-title">Weighting sensitivity</div>'+scenarios+
+    '<div class="popup-section-title">Scientific justification</div><div class="popup-prose">'+escapeHtml(p.cell_justification)+'</div>'+ 
+    '<div class="popup-note">A single isolated observation can never generate High/Very high priority. LCBD and hotspots are singularity context, not selection triggers. Data adequacy and temporal monitoring are reported separately.</div></div>';
+}
+
+function zonePopup(p){
+  const priority=kv([
+    ['Area-dominant class',escapeHtml(publicText(p.ecological_priority_class_zone))],
+    ['Maximum cell class',escapeHtml(publicText(p.ecological_priority_class_zone_max))],
+    ['Mean / median ecological index',number(p.ecological_priority_score_mean,1)+' / '+number(p.ecological_priority_score_median,1)],
+    ['Maximum index',number(p.ecological_priority_score_max,1)+' / 100'],
+    ['Very-high / High area',number(p.pct_area_very_high,1)+' % / '+number(p.pct_area_high,1)+' %'],
+    ['Total planning units in area',integer(p.n_cells)],
+    ['Priority cores / extensions',integer(p.n_core_cells)+' / '+integer(p.n_extension_cells)],
+    ['Very-high / high core units',integer(p.n_cells_very_high)+' / '+integer(p.n_cells_high)],
+    ['Core / extension area',number(p.area_core_km2,2)+' / '+number(p.area_extension_km2,2)+' km²'],
+    ['Supporting-extension share',number(p.pct_zone_area_extension,1)+' %'],
+    ['Estimated area',number(p.area_zone_km2,2)+' km²'],
+    ['Dominant MITECO subdivision',escapeHtml(p.Region_MITECO_dominante)],
+    ['MITECO subdivisions',escapeHtml(p.Region_MITECO_lista)],
+    ['Dominant causal pathway',escapeHtml(p.main_priority_pathway)],
+    ['Pathway distribution',escapeHtml(p.priority_pathway_counts)],
+    ['Priority type',escapeHtml(p.main_priority_type)]
+  ]);
+  const ecology=kv([
+    ['Mean / maximum richness',number(p.richness_mean,1)+' / '+integer(p.richness_max)],
+    ['Total abundance',number(p.abundance_sum,1)],
+    ['Cells with persistent occurrence core',integer(p.n_cells_population_core)],
+    ['Cells with diversity core',integer(p.n_cells_diversity_core)],
+    ['Exceptional diversity concentrations',integer(p.n_cells_exceptional_diversity_core)],
+    ['Mean / maximum LCBD',number(p.LCBD_mean,4)+' / '+number(p.LCBD_max,4)],
+    ['Hotspots at any scale',integer(p.hotspot_cells_any_scale)],
+    ['Multiscale hotspots',integer(p.hotspot_cells_multiscale)],
+    ['Persistent across all scales',integer(p.hotspot_cells_persistent_all_scales)],
+    ['Dominant habitat',escapeHtml(p.habitat_dominant_zone)],
+    ['Median depth',number(p.depth_median_zone,2)+' m'],
+    ['Depth records',integer(p.n_depth_valid_zone)]
+  ]);
+  const support=kv([
+    ['Mean data adequacy',number(p.data_adequacy_score_mean,1)+' / 100'],
+    ['Area data-adequacy class',escapeHtml(publicText(p.data_adequacy_class_zone))],
+    ['Cells stable under 3 scenarios',integer(p.n_cells_stable_3_scenarios)],
+    ['Cells stable under ≥2 scenarios',integer(p.n_cells_stable_2plus_scenarios)],
+    ['Sensitivity',escapeHtml(publicText(p.sensitivity_class_zone))],
+    ['Validation priority',escapeHtml(publicText(p.zone_validation_priority))]
+  ]);
+  const gap=kv([
+    ['Gap status',escapeHtml(publicText(p.conservation_gap_status))],
+    ['Protected surface area',number(p.protected_area_km2,2)+' km²'],
+    ['Area protected',number(p.pct_zone_protected,1)+' %'],
+    ['Distance to protection',number(p.distance_to_protected_m,0)+' m'],
+    ['Overlapping protected areas',integer(p.n_protected_areas_overlap)],
+    ['Protection designations',escapeHtml(p.protected_area_types)],
+    ['Protection levels',escapeHtml(p.protected_area_levels)],
+    ['Sources',escapeHtml(p.protected_area_sources)]
+  ]);
+  return '<div class="popup-card"><div class="popup-title">Priority area '+escapeHtml(p.zone_id)+'</div>'+ 
+    '<div class="popup-priority"><b>Priority summary</b>'+priority+'</div>'+ 
+    '<div class="popup-section-title">Ecological indicators</div>'+ecology+
+    '<div class="popup-section-title">Species present in the zone</div>'+zoneSpeciesTable(p.species_zone_summary)+
+    '<div class="popup-section-title">Data adequacy and stability</div>'+support+
+    '<div class="popup-section-title">Conservation gap</div>'+gap+
+    '<div class="popup-section-title">Related protected areas</div><div class="popup-prose">'+escapeHtml(p.protected_area_names)+'</div>'+ 
+    '<div class="popup-section-title">Ecological justification</div><div class="popup-prose">'+escapeHtml(p.zone_justification)+'</div>'+ 
+    '<div class="popup-section-title">Management interpretation</div><div class="popup-prose">'+escapeHtml(p.management_interpretation)+'</div>'+ 
+    '<div class="popup-section-title">Recommended action</div><div class="popup-prose">'+escapeHtml(p.zone_management_action||p.conservation_gap_action)+'</div>'+ 
+    '<div class="popup-section-title">Validation needs</div><div class="popup-prose">'+escapeHtml(p.validation_needs)+'</div>'+ 
+    '<div class="popup-section-title">Included cells</div><div class="popup-prose">'+escapeHtml(p.grid_id_list)+'</div></div>';
+}
+
+function operationalZonePopup(p){
+  const metrics=kv([
+    ['Associated strategic area',escapeHtml(p.parent_zone_id)],
+    ['Evidence grid',integer(p.fine_grid_km)+' km'],
+    ['1-km evidence cells',integer(p.n_evidence_cells_1km)],
+    ['Operational area',number(p.area_operational_km2,2)+' km²'],
+    ['Strategic-area surface',number(p.parent_zone_area_km2,2)+' km²'],
+    ['Operational footprint / strategic area',number(p.pct_parent_zone_evidence_footprint,1)+' %'],
+    ['Records in evidence cells',integer(p.n_records_sum)],
+    ['Cell-level event sum',integer(p.n_sampling_events_cell_sum)],
+    ['Maximum events in one cell',integer(p.n_sampling_events_cell_max)],
+    ['Maximum observed years in one cell',integer(p.n_years_observed_max)],
+    ['Maximum richness in one cell',integer(p.richness_max_1km)],
+    ['Accumulated abundance in footprint',number(p.abundance_sum_1km,1)]
+  ]);
+  return '<div class="popup-card"><div class="popup-title">Operational area '+escapeHtml(p.operational_zone_id)+'</div>'+ 
+    '<div class="popup-subtitle">Action footprint associated with '+escapeHtml(p.parent_zone_id)+'</div>'+metrics+
+    '<div class="popup-section-title">Delineation rule</div><div class="popup-prose">'+escapeHtml(p.operational_geometry_rule)+'</div>'+ 
+    '<div class="popup-section-title">Included evidence cells</div><div class="popup-prose">'+escapeHtml(p.fine_grid_id_list)+'</div>'+ 
+    '<div class="popup-note">This does not alter priority or the strategic area. The operational footprint uses only official 1-km cells with observations and never adds empty cells to connect separate nuclei.</div></div>';
+}
+
+function protectedPopup(p){
+  return '<div class="popup-card"><div class="popup-title">'+escapeHtml(p.protected_name)+'</div>'+ 
+    '<div class="popup-subtitle">Protection designation available for overlap and proximity analysis</div>'+ 
+    kv([['Designation name',escapeHtml(p.protected_name)],['Protection level',escapeHtml(p.protected_level)],['Protection type',escapeHtml(p.protected_type)],['Source file',escapeHtml(p.protected_source)]])+
+    '<div class="popup-note">Presence in this layer does not imply that its management measures specifically address habitats or pressures relevant to syngnathids.</div></div>';
+}
+
+try {
+  const map=L.map('map',{preferCanvas:true,zoomControl:true});
+  // Hispa-Syng basemaps: satellite by default, with physical and marine-bathymetry alternatives.
+  const physical=L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{maxZoom:17,attribution:'Data: &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, SRTM | Style: &copy; <a href="https://opentopomap.org" target="_blank">OpenTopoMap</a> (CC-BY-SA)'});
+  const satellite=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Esri, Vantor, Earthstar Geographics, and the GIS User Community'}).addTo(map);
+  const bathymetry=L.tileLayer('https://tiles.emodnet-bathymetry.eu/2020/baselayer/web_mercator/{z}/{x}/{y}.png',{maxNativeZoom:11,maxZoom:19,attribution:'&copy; <a href="https://emodnet.ec.europa.eu/en/bathymetry" target="_blank">EMODnet Bathymetry</a> (CC BY 4.0)'});
+  const priorityClasses=['No evaluable / evidencia ecológica insuficiente','Sin capacidad de discriminación','Baja','Media','Alta','Muy alta'];
+  const selectedPriorityClasses=new Set(priorityClasses);
+const roleCodes=['priority_core','supporting_extension','validation_candidate','not_in_zone'];
+const roleLabels={'priority_core':'Priority core','supporting_extension':'Supporting extension','validation_candidate':'Validation candidate','not_in_zone':'Outside priority area'};
+const roleStyles={'priority_core':{color:'#333333',fill:null,dashArray:null},'supporting_extension':{color:'#4f8f8f',fill:'#d9e7e7',dashArray:null},'validation_candidate':{color:'#a6611a',fill:'#FFF2CC',dashArray:'5,3'},'not_in_zone':{color:'#ffffff',fill:null,dashArray:null}};
+const selectedSpatialRoles=new Set(roleCodes);
+  const cellLayer=L.featureGroup();
+  const descriptiveLayer=L.featureGroup();
+  const overviewLayer=L.layerGroup();
+  if(hasSeparateDescriptiveGrid) descriptiveLayer.addTo(map); else cellLayer.addTo(map);
+  let activeCellGeoJson=null;
+  let activeDescriptiveGeoJson=null;
+
+  function rebuildPriorityCells(){
+    cellLayer.clearLayers();
+    overviewLayer.clearLayers();
+    const filteredFeatures=cells.features.filter(feature=>selectedPriorityClasses.has(feature.properties.ecological_priority_class)&&selectedSpatialRoles.has(feature.properties.zone_role_code||'not_in_zone'));
+    activeCellGeoJson=L.geoJSON({type:'FeatureCollection',features:filteredFeatures},{
+      style:f=>{const role=f.properties.zone_role_code||'not_in_zone',rs=roleStyles[role]||roleStyles.not_in_zone;return {fillColor:rs.fill||colors[f.properties.ecological_priority_class]||'#cccccc',color:rs.color,weight:role==='priority_core'?1.15:(role==='validation_candidate'?1.35:.45),dashArray:rs.dashArray,opacity:.92,fillOpacity:role==='validation_candidate'?.40:(role==='supporting_extension'?.68:(['Alta','Muy alta'].includes(f.properties.ecological_priority_class)?.82:.58))};},
+      onEachFeature:(feature,layer)=>{
+        const p=feature.properties;
+        layer.bindTooltip('Planning '+number(p.planning_grid_km||p.scale_km,0)+' km · '+escapeHtml(publicText(p.ecological_priority_class))+' · '+escapeHtml(p.zone_role)+' · '+number(p.ecological_priority_score,1));
+        layer.bindPopup(cellPopup(p),{maxWidth:633,maxHeight:570,autoPanPadding:[24,24]});
+        layer.on({mouseover:event=>event.target.setStyle({weight:2,color:'#222',fillOpacity:.9}),mouseout:event=>activeCellGeoJson&&activeCellGeoJson.resetStyle(event.target)});
+        const center=layer.getBounds().getCenter(),radius={'Baja':3,'Media':4,'Alta':5.5,'Muy alta':7}[p.ecological_priority_class]||3;
+        const rs=roleStyles[p.zone_role_code||'not_in_zone']||roleStyles.not_in_zone;
+        L.circleMarker(center,{radius,color:rs.color||'#333',weight:p.zone_role_code==='priority_core'?1.2:.7,dashArray:rs.dashArray,fillColor:rs.fill||colors[p.ecological_priority_class]||'#ccc',fillOpacity:p.zone_role_code==='validation_candidate'?.45:.9})
+          .bindTooltip(escapeHtml(publicText(p.ecological_priority_class))+' · '+escapeHtml(p.zone_role)+' · '+number(p.ecological_priority_score,1)).addTo(overviewLayer);
+      }
+    });
+    activeCellGeoJson.addTo(cellLayer);
+  }
+
+  function rebuildDescriptiveCells(){
+    descriptiveLayer.clearLayers();
+    const filteredFeatures=descriptiveCells.features.filter(feature=>selectedPriorityClasses.has(feature.properties.ecological_priority_class));
+    activeDescriptiveGeoJson=L.geoJSON({type:'FeatureCollection',features:filteredFeatures},{
+      style:f=>({fillColor:colors[f.properties.ecological_priority_class]||'#cccccc',color:'#3f4a54',weight:.45,opacity:.9,fillOpacity:['Alta','Muy alta'].includes(f.properties.ecological_priority_class)?.78:.55}),
+      onEachFeature:(feature,layer)=>{
+        const p=feature.properties;
+        layer.bindTooltip('Descriptive '+number(p.planning_grid_km||p.scale_km,0)+' km · '+escapeHtml(publicText(p.ecological_priority_class))+' · '+number(p.ecological_priority_score,1));
+        layer.bindPopup(cellPopup(p),{maxWidth:633,maxHeight:570,autoPanPadding:[24,24]});
+        layer.on({mouseover:event=>event.target.setStyle({weight:1.8,color:'#222',fillOpacity:.9}),mouseout:event=>activeDescriptiveGeoJson&&activeDescriptiveGeoJson.resetStyle(event.target)});
+      }
+    });
+    activeDescriptiveGeoJson.addTo(descriptiveLayer);
+  }
+  rebuildPriorityCells();
+  rebuildDescriptiveCells();
+
+  const zoneLabelLayer=L.layerGroup();
+  const zoneLayer=L.geoJSON(zones,{
+    style:f=>({fillColor:colors[f.properties.ecological_priority_class_zone]||'#cccccc',color:colors[f.properties.ecological_priority_class_zone]||'#777777',weight:2.2,fillOpacity:.38,opacity:.96}),
+    onEachFeature:(feature,layer)=>{
+      const p=feature.properties;
+      layer.bindTooltip('Area '+escapeHtml(p.zone_id)+' · '+escapeHtml(publicText(p.ecological_priority_class_zone))+' · '+number(p.ecological_priority_score_mean,1));
+      layer.bindPopup(zonePopup(p),{maxWidth:644,maxHeight:580,autoPanPadding:[24,24]});
+      layer.on({mouseover:event=>event.target.setStyle({weight:4,fillOpacity:.56}),mouseout:event=>zoneLayer.resetStyle(event.target)});
+      const labelPosition=Number.isFinite(Number(p.label_lat))&&Number.isFinite(Number(p.label_lon))?[Number(p.label_lat),Number(p.label_lon)]:layer.getBounds().getCenter();
+      L.marker(labelPosition,{interactive:false,icon:L.divIcon({className:'priority-zone-label',html:'<span>'+escapeHtml(p.zone_id)+'</span>',iconSize:null})}).addTo(zoneLabelLayer);
+    }
+  });
+
+  const operationalZoneLayer=L.geoJSON(operationalZones,{
+    style:{fillColor:'#25a7a1',color:'#006d68',weight:2.4,fillOpacity:.22,opacity:.98},
+    onEachFeature:(feature,layer)=>{
+      const p=feature.properties;
+      layer.bindTooltip('Operational area '+escapeHtml(p.operational_zone_id)+' · '+number(p.area_operational_km2,2)+' km²');
+      layer.bindPopup(operationalZonePopup(p),{maxWidth:644,maxHeight:580,autoPanPadding:[24,24]});
+      layer.on({mouseover:event=>event.target.setStyle({weight:4,fillOpacity:.34}),mouseout:event=>operationalZoneLayer.resetStyle(event.target)});
+    }
+  });
+  if(operationalZones.features.length) operationalZoneLayer.addTo(map);
+
+  const protectedContainer=L.layerGroup();
+  let protectedLoaded=false;
+  function loadProtectedAreas(){
+    if(protectedLoaded||!protectedAreas.features.length)return;
+    protectedLoaded=true;
+    L.geoJSON(protectedAreas,{
+      style:{fillColor:'#2ca25f',color:'#006d2c',weight:1,fillOpacity:.16},
+      onEachFeature:(feature,layer)=>{
+        layer.bindTooltip(escapeHtml(feature.properties.protected_name)+' · '+escapeHtml(feature.properties.protected_type)+' · '+escapeHtml(feature.properties.protected_level));
+        layer.bindPopup(protectedPopup(feature.properties),{maxWidth:598,maxHeight:520,autoPanPadding:[24,24]});
+      }
+    }).addTo(protectedContainer);
+  }
+  protectedContainer.on('add',loadProtectedAreas);
+
+  const overlays={};
+  if(hasSeparateDescriptiveGrid){overlays['Descriptive priority · {{ requested_grid_km }} km']=descriptiveLayer;overlays['Planning units · {{ planning_grid_km }} km']=cellLayer;}
+  else overlays['Priority by unit · {{ planning_grid_km }} km']=cellLayer;
+  overlays['Planning overview symbols · {{ planning_grid_km }} km']=overviewLayer;if(operationalZones.features.length) overlays['Operational conservation areas · 1-km evidence']=operationalZoneLayer;overlays['Strategic priority areas · {{ planning_grid_km }} km']=zoneLayer;overlays['Priority-area labels · {{ planning_grid_km }} km']=zoneLabelLayer;
+  if(protectedAreas.features.length) overlays['Protected areas']=protectedContainer;
+  const layerControl=L.control.layers({'Satellite':satellite,'Marine bathymetry':bathymetry,'Physical':physical},overlays,{collapsed:false,position:'topright'}).addTo(map);
+  const layerControlContainer=layerControl.getContainer();
+  layerControlContainer.classList.add('priority-layer-control');
+  layerControlContainer.setAttribute('aria-label','Layers and base maps');
+  const layerControlTitle=document.createElement('div');
+  layerControlTitle.className='priority-layer-control-title';
+  layerControlTitle.textContent='LAYERS / BASE MAPS';
+  layerControlContainer.prepend(layerControlTitle);
+
+  const priorityFilter=L.control({position:'topleft'});
+  priorityFilter.onAdd=function(){
+    const d=L.DomUtil.create('div','leaflet-control custom-box hippo-panel priority-filter');
+    d.dataset.panelTitle='Filter priority';d.dataset.panelId='priority-filter-panel';
+    const options=priorityClasses.map(label=>'<label><input type="checkbox" data-priority-class="'+escapeHtml(label)+'" checked><span class="priority-chip" style="background:'+colors[label]+'"></span><span>'+priorityLegendLabels[label]+'</span></label>').join('');
+    const roleOptions=roleCodes.map(code=>'<label><input type="checkbox" data-spatial-role="'+code+'" checked><span class="role-chip" style="background:'+(roleStyles[code].fill||'#ffffff')+';border-color:'+roleStyles[code].color+'"></span><span>'+roleLabels[code]+'</span></label>').join('');
+    d.innerHTML='<div class="hippo-panel-header"><div class="panel-title">Filter priority and role</div><button class="hippo-panel-toggle" type="button">−</button></div><div class="hippo-panel-body"><div class="filter-actions"><button type="button" data-filter-action="all">All</button><button type="button" data-filter-action="none">None</button></div><b>Ecological priority</b>'+options+(hasSeparateDescriptiveGrid?'<div class="popup-note"><b>'+descriptiveCells.features.length.toLocaleString('en-GB')+'</b> descriptive cells at {{ requested_grid_km }} km; <b>'+descriptiveHighCount.toLocaleString('en-GB')+'</b> High/Very-high. This layer does not delineate areas.</div>':'')+'<hr><b>Planning spatial role ({{ planning_grid_km }} km)</b>'+roleOptions+'<div class="filter-note">The selection combines both conditions and affects cells and overview symbols. Priority classes filter both scales; spatial role applies only to the planning layer. Priority areas remain an independent layer.</div></div>';
+    L.DomEvent.disableClickPropagation(d);
+    L.DomEvent.disableScrollPropagation(d);
+    return d;
+  };
+  priorityFilter.addTo(map);
+  const filterPanel=priorityFilter.getContainer();
+  function applyPriorityFilter(){
+    selectedPriorityClasses.clear();
+    selectedSpatialRoles.clear();
+    filterPanel.querySelectorAll('input[data-priority-class]:checked').forEach(input=>selectedPriorityClasses.add(input.dataset.priorityClass));
+    filterPanel.querySelectorAll('input[data-spatial-role]:checked').forEach(input=>selectedSpatialRoles.add(input.dataset.spatialRole));
+    rebuildPriorityCells();
+    rebuildDescriptiveCells();
+  }
+  filterPanel.querySelectorAll('input[data-priority-class],input[data-spatial-role]').forEach(input=>input.addEventListener('change',applyPriorityFilter));
+  filterPanel.querySelector('[data-filter-action="all"]').addEventListener('click',()=>{filterPanel.querySelectorAll('input[data-priority-class],input[data-spatial-role]').forEach(input=>input.checked=true);applyPriorityFilter();});
+  filterPanel.querySelector('[data-filter-action="none"]').addEventListener('click',()=>{filterPanel.querySelectorAll('input[data-priority-class],input[data-spatial-role]').forEach(input=>input.checked=false);applyPriorityFilter();});
+
+
+  if(hasSeparateDescriptiveGrid&&descriptiveLayer.getLayers().length) map.fitBounds(descriptiveLayer.getBounds().pad(.08));
+  else if(cellLayer.getLayers().length) map.fitBounds(cellLayer.getBounds().pad(.08));
+  else map.fitBounds([[mapBounds[1],mapBounds[0]],[mapBounds[3],mapBounds[2]]]);
+
+  const title=L.control({position:'topright'});
+  title.onAdd=function(){
+    const d=L.DomUtil.create('div','leaflet-control custom-box hippo-panel conservation-title');
+    d.dataset.panelTitle='Map title';d.dataset.panelId='title-panel';
+    const titleSpecies=includedSpecies.length?'<div style="margin-top:5px;font-size:10px"><b>Included species</b><br>'+includedSpecies.map(name=>'<i>'+escapeHtml(name)+'</i>').join('<br>')+'</div>':'<div style="margin-top:5px;font-size:10px"><i>No selected species available.</i></div>';
+    d.innerHTML='<div class="hippo-panel-header"><div class="panel-title">Hispa-Syng v1.0</div><button class="hippo-panel-toggle" type="button">−</button></div><div class="hippo-panel-body"><b>Priority conservation areas</b><br><span style="font-size:10px">Seahorses and other syngnathids</span>'+titleSpecies+'</div>';
+    return d;
+  };title.addTo(map);
+
+  if((priorityDownloads.word||priorityDownloads.excel||priorityDownloads.data)
+     && !document.documentElement.classList.contains('hippodec-embedded')){
+    const priorityDownloadControl=L.control({position:'topright'});
+    priorityDownloadControl.onAdd=function(){
+      const d=L.DomUtil.create('div','leaflet-control custom-box hippo-panel priority-downloads');
+      d.dataset.panelTitle='Sensitive downloads';d.dataset.panelId='priority-downloads-panel';
+      d.innerHTML='<div class="hippo-panel-header"><div class="panel-title">Sensitive downloads</div><button class="hippo-panel-toggle" type="button">−</button></div><div class="hippo-panel-body"><div id="priority-download-status" class="download-status"></div><div class="download-row"><a data-priority-download="word" aria-disabled="true">Word</a><a data-priority-download="excel" aria-disabled="true">Excel</a><a data-priority-download="data" aria-disabled="true">ZIP</a></div></div>';
+      L.DomEvent.disableClickPropagation(d);
+      return d;
+    };
+    priorityDownloadControl.addTo(map);
+    setPriorityDownloadsState();
+  }
+
+  const legend=L.control({position:'bottomright'});
+  legend.onAdd=function(){
+    const d=L.DomUtil.create('div','leaflet-control custom-box hippo-panel small');
+    d.dataset.panelTitle='Legend';d.dataset.panelId='legend-panel';
+    d.innerHTML='<div class="hippo-panel-header"><div class="panel-title">'+(hasSeparateDescriptiveGrid?'Descriptive priority · {{ requested_grid_km }} km':'Priority by unit · {{ planning_grid_km }} km')+'</div><button class="hippo-panel-toggle" type="button">−</button></div><div class="hippo-panel-body">'+
+      ['No evaluable / evidencia ecológica insuficiente','Sin capacidad de discriminación','Baja','Media','Alta','Muy alta'].map(label=>'<div class="priority-line"><span class="priority-chip" style="background:'+colors[label]+'"></span>'+priorityLegendLabels[label]+'</div>').join('')+
+      '<hr><b>Spatial role</b><div class="priority-line"><span class="priority-chip" style="background:#ffffff;border-color:#333333"></span>Priority core</div><div class="priority-line"><span class="priority-chip" style="background:#d9e7e7;border-color:#4f8f8f"></span>Supporting extension</div><div class="priority-line"><span class="priority-chip" style="background:#FFF2CC;border-color:#a6611a"></span>Validation candidate</div><hr><b>'+cells.features.length.toLocaleString('en-GB')+'</b> cells evaluated<br><b>'+selectedCellCount.toLocaleString('en-GB')+'</b> High/Very-high cores<br><b>'+supportingExtensionCount.toLocaleString('en-GB')+'</b> supporting extensions<br><b>'+validationCandidateCount.toLocaleString('en-GB')+'</b> validation candidates<br><b>'+zones.features.length.toLocaleString('en-GB')+'</b> priority areas'+
+      (protectedAreas.features.length?'<br><b>'+protectedAreas.features.length.toLocaleString('en-GB')+'</b> protection features available':'')+
+      '<div class="popup-note">Only the cell-priority layer is enabled when the map opens.</div></div>';
+    return d;
+  };legend.addTo(map);
+
+  const info=L.control({position:'bottomleft'});
+  info.onAdd=function(){
+    const d=L.DomUtil.create('div','leaflet-control custom-box hippo-panel small');
+    d.dataset.panelTitle='Map information';d.dataset.panelId='map-info';d.dataset.startCollapsed='true';
+    const speciesHtml=includedSpecies.length?'<ul style="margin:4px 0 0 17px;padding:0">'+includedSpecies.map(name=>'<li><i>'+escapeHtml(name)+'</i></li>').join('')+'</ul>':'<i>The taxonomic list is unavailable in this viewer.</i>';
+    d.innerHTML=`<div class="hippo-panel-header"><div class="panel-title">Information — Conservation</div><button class="hippo-panel-toggle" type="button">−</button></div>
+      <div class="hippo-panel-body info-scroll">
+        <p class="info-lead">This map identifies priority cells and areas for the conservation of seahorses and other syngnathids in Spanish waters. Priority is expressed using four ordered classes (Low–Very high) plus two analytic states for cells that are not evaluable or have no discriminatory capacity; the relative index is reported on a 0–100 scale.</p>
+        <div class="info-summary"><b>${selectedCellCount.toLocaleString('en-GB')}</b> High/Very-high cores · <b>${supportingExtensionCount.toLocaleString('en-GB')}</b> supporting extensions · <b>${validationCandidateCount.toLocaleString('en-GB')}</b> validation candidates · <b>${zones.features.length.toLocaleString('en-GB')}</b> priority areas · <b>${cells.features.length.toLocaleString('en-GB')}</b> planning units evaluated in total · requested descriptive grid <b>{{ requested_grid_km }} km</b> · minimum conservation unit <b>{{ planning_grid_km }} km</b> · period <b>{{ year_min }}–{{ year_max }}</b><br><b>Selected area:</b> {{ region_label }}</div>
+        <div class="info-section-title">Included species</div><div style="font-size:10.5px">${speciesHtml}</div>
+        <div class="info-section-title">Meaning of map layers</div>
+        <table class="info-table"><tbody>
+          <tr><td><b>Descriptive priority</b></td><td>When 1 km is requested, this layer shows the ecological classification calculated on 1-km cells. It is descriptive and is not used to delineate priority areas.</td></tr>
+          <tr><td><b>Planning units</b></td><td>Planning units classified through three complementary pathways: convergent biological evidence, a persistent occurrence core, or a diversity core. When 1 km is requested, conservation uses 5 km as the minimum planning unit so isolated records cannot define an area by themselves. Priority areas originate from High/Very-high cores and may incorporate one direct ring of adjacent Medium units with minimum support as supporting extensions. These extensions do not alter ecological class and cannot create an area on their own. Strong but isolated Medium units are shown separately as validation candidates.</td></tr>
+          <tr><td><b>Overview symbols</b></td><td>Circles centred on cells to facilitate a national overview.</td></tr>
+          <tr><td><b>Priority areas</b></td><td>Contiguous groups of cells classified as High or Very high.</td></tr>
+          <tr><td><b>Priority-area labels</b></td><td>Optional identifiers for priority areas (for example, ZP-001).</td></tr>
+          <tr><td><b>Protected areas</b></td><td>Marine designations used to assess overlap, proximity and conservation gaps.</td></tr>
+          <tr><td><b>Basemap context</b></td><td>The institutional basemap provides geographic context; no custom land or coastline layer is embedded in this static publication.</td></tr>
+        </tbody></table>
+        <div class="info-section-title">Main information-card fields</div>
+        <table class="info-table"><thead><tr><th>Field</th><th>Meaning</th></tr></thead><tbody>
+          <tr><td><b>Ecological priority</b></td><td>Relative class within the current run, with a 0–100 ecological index. Cells may also be Not evaluable or have No discriminatory capacity; the workflow does not force a fixed share of High cells.</td></tr>
+          <tr><td><b>LCBD</b></td><td>Local contribution to beta diversity. It is shown as community-singularity context and cannot by itself create a High/Very high conservation priority.</td></tr>
+          <tr><td><b>Hotspot</b></td><td>Cell identified by ecological criteria at one or more scales; persistence indicates the number of scales.</td></tr>
+          <tr><td><b>Evidence pathways</b></td><td>Priority can arise through three pathways: convergence among richness, temporal persistence, repeated use and repeated representation of low-occupancy species; a persistent occurrence core of one species; or a diversity core. An isolated observation is never sufficient.</td></tr>
+          <tr><td><b>Abundance</b></td><td>Used with event count to identify repeated use; one individual can never be sufficient by itself.</td></tr>
+          <tr><td><b>Data adequacy</b></td><td>Real support from proxy events, years, scales, observers when available, and depth, habitat and temporal coverage.</td></tr>
+          <tr><td><b>Stability</b></td><td>Sensitivity to three weightings of the convergence pathway; persistent occurrence cores and diversity cores retain their alternative pathways in every scenario.</td></tr>
+          <tr><td><b>Conservation gap</b></td><td>Overlap, proximity and suggested action relative to available protected areas.</td></tr>
+        </tbody></table>
+        <div class="info-highlight"><b>Method:</b> three complementary pathways are used. The convergence pathway combines richness, temporal persistence, repeated use and repeated representation of low-occupancy species; High additionally requires ≥6 events and ≥6 individuals, and Very high ≥12 events and ≥12 individuals. The persistent-occurrence pathway allows High priority at low-richness sites when the same species occurs in at least 3 years, 8 independent events and 8 accumulated individuals. The diversity-core pathway allows High priority with ≥4 species, ≥2 years and ≥5 events; an exceptional concentration (≥5 species, ≥12 events and ≥2 repeatedly represented low-occupancy species) may qualify with one year but is flagged for priority temporal validation. Very high requires strong convergence. LCBD/hotspots are contextual.</div>
+        <div class="popup-note">This product supports technical assessment; it does not replace field validation, expert knowledge or regulatory procedures.</div>
+      </div>`;
+    return d;
+  };info.addTo(map);
+
+  window.HIPPODEC_LAYER_CONFIG={base:{satellite,physical,bathymetry},overlays:{descriptive:descriptiveLayer,cells:cellLayer,overview:overviewLayer,zones:zoneLayer,operational:operationalZoneLayer,labels:zoneLabelLayer,protected:protectedContainer}};
+  window.HIPPODEC_GET_STATE=()=>hippoCaptureState(map);
+  setupHippoPanels(map);
+  setupHippoLanguageSwitch(map);
+  mapStatus.remove();
+} catch (error) {
+  console.error(error);
+  showMapError(error);
+}
+</script>
+</body>
+</html>

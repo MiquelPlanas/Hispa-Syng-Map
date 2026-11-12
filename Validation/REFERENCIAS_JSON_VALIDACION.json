@@ -1,0 +1,86 @@
+{
+  "scope": "Focused JSON presentation reference integrity; no geospatial computation",
+  "started_at_utc": "2026-10-21T13:40:56.151613+00:00",
+  "finished_at_utc": "2026-10-21T13:40:57.771660+00:00",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "dependencies_used": {
+    "pandas": "2.2.3"
+  },
+  "tested_source_sha256": {
+    "PYTHON_ENGLISH/src/hippodec_maps/localization.py": "b391955f7b87f0498d7fcb23b4892d37162c881c310f13e16af3f032e3db26fc",
+    "PYTHON_ENGLISH/src/hippodec_maps/pipeline.py": "05d5a0ae7cf48946191cf62eedd7c592216062afc1f94f0f3d2f84c6459fc5c0",
+    "PYTHON_ENGLISH/src/hippodec_maps/analysis_pipeline.py": "0fecb3b72120f52f44bb1a5e8d780a8ca6080f7f81776aa2900690d8af123d4d",
+    "tests/_json_reference_integrity.py": "cff50c6e6752c31cd3600a41d157f227d1c3b861975d60155d59757168022419",
+    "tests/run_regression_tests.py": "762f90dc4872dbe503bac6ec569a193a22e1584efdccce2f94907cbb635c2cc6"
+  },
+  "tests": [
+    {
+      "command": [
+        "python",
+        "tests/_json_reference_integrity.py"
+      ],
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "python",
+        "tests/_output_folder_localization.py",
+        "PYTHON_ESP"
+      ],
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "python",
+        "tests/_output_folder_localization.py",
+        "PYTHON_ENGLISH"
+      ],
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "python",
+        "tests/_presentation_and_distribution.py"
+      ],
+      "returncode": 0,
+      "status": "PASS"
+    }
+  ],
+  "focused_unittest_cases": 10,
+  "json_boundaries_exercised": [
+    "pipeline._presentation_json",
+    "analysis_pipeline._presentation_json"
+  ],
+  "boundary_loading": "Normal localization import; source AST compilation of the two actual JSON functions and their localization imports, without importing the GIS/plotting dependency graph",
+  "checks": {
+    "all_python_sources_compile": 94,
+    "no_bytecode_artifacts": true,
+    "nonpresentation_orchestration_ast_unchanged": true,
+    "existing_localization_ast_unchanged": true,
+    "only_five_python_files_added_or_modified": true,
+    "written_json_points_to_existing_original_file": true,
+    "input_immutability_and_numerical_value_identity_in_fixtures": true
+  },
+  "reproduction_on_supplied_source": {
+    "focused_unittest_cases": 10,
+    "failed_subtests": 14,
+    "returncode": 1,
+    "scope": "Same final tests against the original three English modules supplied in Hispa-Syng-Map-main.zip"
+  },
+  "log": {
+    "file": "REFERENCIAS_JSON_VALIDACION.log",
+    "sha256": "0f97289cc1761efb1562b35dcb4acd5c3ed57a9baad605099d8f129d6ac7af04"
+  },
+  "not_executed": [
+    "Full regression suite",
+    "Full GIS pipeline module imports",
+    "Windows operating-system filesystem run",
+    "Full operational-data analysis",
+    "DPAPI, ACL, cross-user isolation or rotation recovery"
+  ],
+  "historical_windows_records": "Not modified, repaired or rerun; current code behavior has separate focused evidence"
+}

@@ -1,0 +1,22 @@
+HISPA-SYNG v1.0 — EDICIÓN ESPAÑOLA
+
+1. Mantenga sin cambios el libro Excel original.
+2. Mantenga el libro de observaciones y `traits.xlsx` dentro de `Datos_data/`.
+3. Coloque las mallas MITECO, las demarcaciones MITECO, GSHHS y, si está
+   disponible, `areas_protegidas` dentro de `Resources/`.
+4. GSHHS es obligatorio y es la vía primaria para recortar tierra en EPSG:3035. Si produce un falso cero costero confirmado por MITECO, la geometría de respaldo es la intersección real entre la celda y la demarcación marina oficial MITECO; `Area_mar_km2` se calcula a partir de esa misma geometría. Las densidades se expresan en ind./km², sin ×1.000, y se muestran/exportan con un máximo de dos decimales.
+5. Haga doble clic en `Hispa-Syng.bat` desde la raíz.
+6. Escriba 1 o 2 para el idioma y pulse Enter; después seleccione periodo,
+   resolución de malla, región, especies y periodos comparativos (0 o 2 o más).
+   La pertenencia regional se fija independientemente de la resolución: primero por
+   intersección con la demarcación MITECO y, si falta, con la malla oficial de
+   referencia de 10 km; la malla 1/5/10 km elegida se usa después para el análisis.
+7. Los resultados se escriben en una carpeta nueva dentro de `Resultados`; el informe integral queda en `Resultados/ejecucion_<id>_ESP/10_informe_tecnico/`.
+8. Tras una ejecución bilingüe completa correcta, publique intacta la carpeta
+   `Resultados/Publicacion_Web_Bilingue_<id>/` y comparta la dirección de su `index.html`.
+9. La consola muestra cada etapa y subpaso con tiempo transcurrido `[HH:MM:SS]`.
+
+El programa reconoce internamente las cabeceras españolas originales del Excel
+y genera en español todas las salidas dirigidas a la persona usuaria.
+
+Licencia de esta guía: Creative Commons Atribución–NoComercial 4.0 Internacional (CC BY-NC 4.0). https://creativecommons.org/licenses/by-nc/4.0/

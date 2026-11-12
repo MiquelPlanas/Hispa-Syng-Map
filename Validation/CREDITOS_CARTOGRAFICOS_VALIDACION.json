@@ -1,0 +1,58 @@
+{
+  "checks": [
+    {
+      "edition": "PYTHON_ESP",
+      "html_templates_checked": [
+        "map1.html",
+        "map2.html",
+        "map3.html",
+        "conservation.html",
+        "assignment_qc.html"
+      ],
+      "javascript_parse_and_attribution_hook": "PASS",
+      "figure_notice_no_duplicate_or_axis_change": "PASS"
+    },
+    {
+      "edition": "PYTHON_ENGLISH",
+      "html_templates_checked": [
+        "map1.html",
+        "map2.html",
+        "map3.html",
+        "conservation.html",
+        "assignment_qc.html"
+      ],
+      "javascript_parse_and_attribution_hook": "PASS",
+      "figure_notice_no_duplicate_or_axis_change": "PASS"
+    }
+  ],
+  "existing_python_files_unchanged": 87,
+  "modified_python_scientific_ast_unchanged_after_removing_presentation_notice": "PASS",
+  "bilingual_mathematical_snapshot": "PASS bilingual mathematical parity 16 snapshot fields",
+  "scope": "Cartographic presentation and existing 16-field mathematical snapshot; full Windows pipeline not rerun.",
+  "figure_preview_visual_check": "PASS: Spanish and English source notes readable below axes, no clipping or overlap.",
+  "changed_file_sha256": {
+    "PYTHON_ESP/src/hippodec_maps/source_notices.py": "b8f4ff066ec5d09f3390cf5df531b9c3740e1b3155072ebd61e1cf7ebe170a8b",
+    "PYTHON_ESP/src/hippodec_maps/cartography.py": "bd8b856cd0906ce3dabdaf0fee990617d01122953c20a927b846f648c7158dde",
+    "PYTHON_ESP/src/hippodec_maps/technical_report.py": "ae0cb664f1f60181285a61039e8ad3042a2b60e221e7aaa76d8b959bda46a4b4",
+    "PYTHON_ESP/src/hippodec_maps/templates/_credits.html": "9486cb63fefa3af80eca822311e6836ce245609fe204f12eb7d01264c4fb9a2f",
+    "PYTHON_ESP/src/hippodec_maps/templates/_common.css": "2085bd15d24326dec3c916a65be4d6239d7a993e87184ff8b9319b63d9c8c91d",
+    "PYTHON_ESP/src/hippodec_maps/templates/_common.js": "27244c0ff3b03111abb1e308aab2a1a24eebf0305400a32bc197ef25e80ecce3",
+    "PYTHON_ESP/src/hippodec_maps/templates/assignment_qc.html": "a45418e6abe1e43963076262af2dc5b3af205ded82fc62b831e964636974b31a",
+    "PYTHON_ENGLISH/src/hippodec_maps/source_notices.py": "09d21814165aa8626274ab04a2e8c05b82352490a3526efdb34d4cfe18033f5b",
+    "PYTHON_ENGLISH/src/hippodec_maps/cartography.py": "8811b970f3335f4d04e28568acd79306989d20b0096d14f2cca468942a54e588",
+    "PYTHON_ENGLISH/src/hippodec_maps/technical_report.py": "994fefe1eaf914bc7bfccca14200e5c53b0b5d49694d288ab13a442f8a88de97",
+    "PYTHON_ENGLISH/src/hippodec_maps/templates/_credits.html": "33e8912ceada978a89ac736b018c109fa1a3d612ab269a059626337606dde0c8",
+    "PYTHON_ENGLISH/src/hippodec_maps/templates/_common.css": "652e46b8d9f2322996501227e2bd34fb6cfa433ac628e09b04559a99a19e383f",
+    "PYTHON_ENGLISH/src/hippodec_maps/templates/_common.js": "96e5d96edda7cf8badd99b28bf172da806236edcc9bb1df364f70026ccae5b52",
+    "PYTHON_ENGLISH/src/hippodec_maps/templates/assignment_qc.html": "a45418e6abe1e43963076262af2dc5b3af205ded82fc62b831e964636974b31a"
+  },
+  "validation_commands": [
+    "PYTHONDONTWRITEBYTECODE=1 python validate.py",
+    "PYTHONDONTWRITEBYTECODE=1 python tests/_bilingual_parity.py"
+  ],
+  "environment": {
+    "python": "3.12.14",
+    "os": "Linux-6.18.44-x86_64-with-glibc2.39",
+    "javascript": "Node syntax and attribution-hook execution"
+  }
+}

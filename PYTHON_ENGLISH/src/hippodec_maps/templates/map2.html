@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hispa-Syng v1.0 (Hippo-DEC project) — Map 2 — Density</title>
+  {% include "_embed_mode.html" %}
+  <style>{{ leaflet_css | safe }}</style>
+  <style>{% include "_common.css" %}</style>
+  <style>
+    /* Density popups: +15 % respecto a la tarjeta común de 500 px. */
+    .popup-card {width:min(575px,82vw);}
+    .popup-title {overflow-wrap:anywhere;word-break:break-word;}
+    @media(max-width:700px){.popup-card{min-width:0;width:76vw;}}
+  </style>
+</head>
+<body>
+{% include "_institutional_header.html" %}
+{% include "_language_switch.html" %}
+<div id="map"></div>
+{% include "_credits.html" %}
+<script>{{ leaflet_js | safe }}</script>
+<script>{% include "_common.js" %}</script>
+<script>
+const cells = {{ cells_json | safe }};
+const speciesNames = {{ species_json | safe }};
+const densityPalette=['#ffffcc','#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#bd0026','#800026'];
+const map=L.map('map',{preferCanvas:true});
+// Hispa-Syng basemaps: satellite by default, with physical and marine-bathymetry alternatives.
+const physical=L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{maxZoom:17,attribution:'Data: &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, SRTM | Style: &copy; <a href="https://opentopomap.org" target="_blank">OpenTopoMap</a> (CC-BY-SA)'});
+const satellite=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Esri, Vantor, Earthstar Geographics, and the GIS User Community'}).addTo(map);
+const bathymetry=L.tileLayer('https://tiles.emodnet-bathymetry.eu/2020/baselayer/web_mercator/{z}/{x}/{y}.png',{maxNativeZoom:11,maxZoom:19,attribution:'&copy; <a href="https://emodnet.ec.europa.eu/en/bathymetry" target="_blank">EMODnet Bathymetry</a> (CC BY 4.0)'});
+function hexRgb(hex){return [parseInt(hex.slice(1,3),16),parseInt(hex.slice(3,5),16),parseInt(hex.slice(5,7),16)];}
+function colorScale(value,maxValue,palette){
+  if(!(value>0)||!(maxValue>0)) return 'transparent';
+  const t=Math.max(0,Math.min(1,value/maxValue))*(palette.length-1);
+  const i=Math.floor(t),j=Math.min(i+1,palette.length-1),f=t-i,a=hexRgb(palette[i]),b=hexRgb(palette[j]);
+  return 'rgb('+a.map((v,k)=>Math.round(v+(b[k]-v)*f)).join(',')+')';
+}
+const fmt0=new Intl.NumberFormat('en-GB',{maximumFractionDigits:0});
+const fmt2=new Intl.NumberFormat('en-GB',{minimumFractionDigits:0,maximumFractionDigits:2});
+function niceLegendMax(value){const v=Math.max(Number(value)||0,1),power=Math.pow(10,Math.floor(Math.log10(v))),fraction=v/power,steps=[1,1.2,1.5,2,2.5,3,4,5,6,8,10];return (steps.find(step=>fraction<=step+1e-12)||10)*power;}
+function percentile(values,q){const sorted=values.map(Number).filter(v=>Number.isFinite(v)&&v>0).sort((a,b)=>a-b);if(!sorted.length)return 0;const rank=Math.max(1,Math.ceil(Math.max(0,Math.min(1,q))*sorted.length));return sorted[Math.min(rank-1,sorted.length-1)];}
+function densityLegendScale(values){const positive=values.map(Number).filter(v=>Number.isFinite(v)&&v>0);if(!positive.length)return{max:1,rawMax:0,n:0,robust:false,reference:0};const rawMax=Math.max(...positive),robust=positive.length>=20,reference=robust?percentile(positive,0.95):rawMax;return{max:niceLegendMax(Math.max(reference,1)),rawMax,n:positive.length,robust,reference};}
+function legendNumber(value){const a=Math.abs(value),digits=a>=10?0:a>=1?1:2;return new Intl.NumberFormat('en-GB',{maximumFractionDigits:digits}).format(value);}
+let selected=new Set(speciesNames);
+
+function esc(value){return String(value??'N.D.').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
+function num(value,formatter){const n=Number(value);return Number.isFinite(n)?formatter.format(n):'N.D.';}
+function kv(rows){return '<dl class="popup-kv">'+rows.map(r=>'<dt>'+esc(r[0])+'</dt><dd>'+r[1]+'</dd>').join('')+'</dl>';}
+
+function selectedMetrics(p){
+  const rows=(p.species_metrics||[]).filter(r=>selected.has(r.Species));
+  const abundance=rows.reduce((sum,r)=>sum+Number(r.abundance||0),0);
+  const density=p.area>0?abundance/p.area:0;
+  return {rows,abundance,density,richness:rows.filter(r=>Number(r.abundance)>0).length};
+}
+function popupFor(p,m){
+  const rows=m.rows.slice().sort((a,b)=>Number(b.abundance)-Number(a.abundance));
+  const details=rows.length?'<div class="popup-table-wrap"><table class="popup-table"><thead><tr><th>Species</th><th>N</th><th>Density</th><th>% of selection</th></tr></thead><tbody>'+rows.map(r=>
+    '<tr><td><i>'+esc(r.Species)+'</i></td><td>'+num(r.abundance,fmt0)+'</td><td>'+num(p.area>0?Number(r.abundance||0)/Number(p.area):null,fmt2)+'</td><td>'+num(m.abundance>0?100*Number(r.abundance)/m.abundance:0,fmt2)+'</td></tr>'
+  ).join('')+'</tbody></table></div>':'<div class="popup-empty">None of the selected species is present in this cell.</div>';
+  const selectedRows=kv([
+    ['Species active in the viewer',num(selected.size,fmt0)],
+    ['Species present in the cell',num(m.richness,fmt0)],
+    ['Selected abundance',num(m.abundance,fmt0)],
+    ['Selected density',num(m.density,fmt2)+' ind/km²']
+  ]);
+  const fullRows=kv([
+    ['Official code',esc(p.official_cell_code)],
+    ['Internal cell ID',esc(p.grid_id)],
+    ['MITECO region',esc(p.region)],
+    ['Official area',num(p.area,fmt2)+' km²'],
+    ['Total richness',num(p.richness,fmt0)],
+    ['Total abundance',num(p.abundance,fmt0)],
+    ['Total density',num(p.density,fmt2)+' ind/km²'],
+    ['Dominant species','<i>'+esc(p.dominant)+'</i> ('+num(p.dominant_n,fmt0)+' ind.)'],
+    ['Records / years',num(p.n_obs,fmt0)+' / '+num(p.n_years,fmt0)],
+    ['Spatial quality',esc(p.quality)+' (Q = '+num(p.q_total,fmt2)+')']
+  ]);
+  return '<div class="popup-card"><div class="popup-title">Cell '+esc(p.official_cell_code)+'</div><div class="popup-subtitle">Density recalculated for the active selection</div>'+ 
+    '<div class="popup-section-title">Current selection</div>'+selectedRows+
+    '<div class="popup-section-title">Complete cell information</div>'+fullRows+
+    '<div class="popup-section-title">Selection composition</div>'+details+
+    '<div class="popup-note">Each density value is recalculated from abundance and the cell\'s actual marine surface after GSHHS land removal; it is expressed as individuals per marine km².</div></div>';
+}
+let currentScale=densityLegendScale(cells.features.map(f=>selectedMetrics(f.properties).density));
+let currentMax=currentScale.max;
+const cellLayer=L.geoJSON(cells,{style:f=>({fillColor:colorScale(f.properties.density,currentMax,densityPalette),fillOpacity:.85,color:'#555',weight:.45}),onEachFeature:(f,l)=>l.bindPopup(popupFor(f.properties,selectedMetrics(f.properties)),{maxWidth:598,maxHeight:540,autoPanPadding:[24,24]})}).addTo(map);
+L.control.layers({'Satellite':satellite,'Marine bathymetry':bathymetry,'Physical':physical},{'Density by cell':cellLayer},{collapsed:true}).addTo(map);
+if(cellLayer.getLayers().length) map.fitBounds(cellLayer.getBounds().pad(.08)); else map.setView([39,-4],5);
+
+const legend=L.control({position:'bottomright'});
+legend.onAdd=function(){const d=L.DomUtil.create('div','leaflet-control custom-box hippo-panel small');d.dataset.panelTitle='Legend';d.dataset.panelId='legend-panel';d.innerHTML='<div class="hippo-panel-header"><div class="panel-title">Legend</div><button class="hippo-panel-toggle" type="button">−</button></div><div id="legend-content" class="hippo-panel-body"></div>';return d;};legend.addTo(map);
+function updateLegend(){const saturated=currentScale.robust&&currentScale.rawMax>currentMax;const top=(saturated?'≥ ':'')+legendNumber(currentMax);const note=currentScale.robust?'<div class="popup-note">Robust visual scale based on P95; values above the colour limit use the darkest tone. Exact values are preserved in popups and exports.</div>':'';document.getElementById('legend-content').innerHTML='<b>Density selected</b><br>ind/km²<div class="legend-bar" style="background:linear-gradient(90deg,'+densityPalette.join(',')+')"></div><div class="legend-labels"><span>0</span><span>≈ '+legendNumber(currentMax/2)+'</span><span>'+top+'</span></div>'+note;}
+
+function updateMap(){
+  const values=[];
+  cellLayer.eachLayer(layer=>values.push(selectedMetrics(layer.feature.properties).density));
+  currentScale=densityLegendScale(values);
+  currentMax=currentScale.max;
+  cellLayer.eachLayer(layer=>{
+    const p=layer.feature.properties,m=selectedMetrics(p);
+    layer.setStyle({fillColor:colorScale(m.density,currentMax,densityPalette),fillOpacity:m.abundance > 0 ? 0.85 : 0,color:m.abundance>0?'#555':'transparent',weight:.45});
+    layer.bindPopup(popupFor(p,m),{maxWidth:598,maxHeight:540,autoPanPadding:[24,24]});
+  });
+  updateLegend();
+}
+
+const selector=L.control({position:'topright'});
+selector.onAdd=function(){
+  const d=L.DomUtil.create('div','leaflet-control custom-box hippo-panel');
+  d.dataset.panelTitle='Filter species';d.dataset.panelId='species-panel';
+  d.innerHTML='<div class="hippo-panel-header"><div class="panel-title">Filter species</div><button class="hippo-panel-toggle" type="button">−</button></div><div class="hippo-panel-body"><div style="text-align:center;margin-bottom:6px"><button id="all" class="button">All</button> <button id="none" class="button">None</button></div><div id="species-list" style="max-height:49vh;overflow:auto"></div></div>';
+  L.DomEvent.disableClickPropagation(d);L.DomEvent.disableScrollPropagation(d);return d;
+};selector.addTo(map);
+const list=document.getElementById('species-list');
+speciesNames.forEach((name,index)=>{const row=document.createElement('div');row.className='control-row';row.innerHTML='<label><input class="sp" type="checkbox" value="'+index+'" checked> <i>'+name+'</i></label>';list.appendChild(row);});
+document.querySelectorAll('.sp').forEach(box=>box.addEventListener('change',()=>{const name=speciesNames[Number(box.value)];if(box.checked)selected.add(name);else selected.delete(name);updateMap();}));
+document.getElementById('all').onclick=()=>{selected=new Set(speciesNames);document.querySelectorAll('.sp').forEach(x=>x.checked=true);updateMap();};
+document.getElementById('none').onclick=()=>{selected=new Set();document.querySelectorAll('.sp').forEach(x=>x.checked=false);updateMap();};
+
+const info=L.control({position:'bottomleft'});info.onAdd=function(){
+  const d=L.DomUtil.create('div','leaflet-control custom-box hippo-panel small');
+  d.dataset.panelTitle='Map information';d.dataset.panelId='map-info';d.dataset.startCollapsed='true';
+  d.innerHTML=`<div class="hippo-panel-header"><div class="panel-title">Map 2 — Density by cell</div><button class="hippo-panel-toggle" type="button">−</button></div>
+    <div class="hippo-panel-body info-scroll">
+      <p class="info-lead">The map displays syngnathid abundance and relative density by <b>{{ grid_km }} × {{ grid_km }} km</b> MITECO marine grid cell.</p>
+      <div class="info-summary"><b>${cells.features.length.toLocaleString('en-GB')}</b> cells with data · <b>${speciesNames.length}</b> species available · period <b>{{ year_min }}–{{ year_max }}</b><br><b>Selected area:</b> {{ region_label }}</div>
+      <div class="info-highlight"><b>Effective marine area.</b> Density is calculated from the actual marine surface of each MITECO grid cell after subtracting the land fraction with GSHHS. The official MITECO area is retained for audit only; it is not used as the denominator when it includes land surface.</div>
+      <div class="info-section-title">Formula and behaviour</div>
+      <table class="info-table"><thead><tr><th>Element</th><th>Meaning</th><th>Calculation</th></tr></thead><tbody>
+        <tr><td><b>Density</b></td><td>Individuals of active species per unit marine area.</td><td>Σ N / marine area (km²)</td></tr>
+        <tr><td><b>Colour</b></td><td>Relative intensity within the current selection.</td><td>The scale is recalculated when the species selection changes</td></tr>
+        <tr><td><b>Transparent cell</b></td><td>None of the selected species is present.</td><td>Selected abundance = 0</td></tr>
+        <tr><td><b>Selector</b></td><td>Allows one, several or all species.</td><td>Recalculates the map, legend and information card</td></tr>
+      </tbody></table>
+      <div class="info-section-title">Cell information-card contents</div>
+      <table class="info-table"><tbody>
+        <tr><td><b>Current selection</b></td><td>Active species, richness, abundance and recalculated density.</td></tr>
+        <tr><td><b>Complete cell</b></td><td>Official code, region, area, richness, abundance, density, dominant species, records, years and spatial quality.</td></tr>
+        <tr><td><b>Composition</b></td><td>Abundance, density and percentage of each active species present.</td></tr>
+      </tbody></table>
+      <div class="popup-note">Click a cell to open its information card. Cells are the main scientific layer and are enabled when the viewer opens.</div>
+    </div>`;
+  L.DomEvent.disableClickPropagation(d);return d;
+};info.addTo(map);
+updateMap();
+window.HIPPODEC_LAYER_CONFIG={base:{satellite,physical,bathymetry},overlays:{cells:cellLayer}};
+window.HIPPODEC_CAPTURE_STATE=()=>({species:[...selected]});
+window.HIPPODEC_APPLY_STATE=state=>{
+  if(Array.isArray(state.species)){
+    selected=new Set(speciesNames.filter(name=>state.species.includes(name)));
+    document.querySelectorAll('.sp').forEach((box,index)=>{box.checked=selected.has(speciesNames[index]);});
+  }
+  updateMap();
+};
+window.HIPPODEC_GET_STATE=()=>hippoCaptureState(map);
+setupHippoPanels(map);
+setupHippoLanguageSwitch(map);
+</script>
+</body>
+</html>

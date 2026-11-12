@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hispa-Syng v1.0 (Hippo-DEC project) — Map 1 — Observations</title>
+  {% include "_embed_mode.html" %}
+  <style>{{ leaflet_css | safe }}</style>
+  <style>{% include "_common.css" %}</style>
+</head>
+<body>
+{% include "_institutional_header.html" %}
+{% include "_language_switch.html" %}
+<div id="map"></div>
+{% include "_credits.html" %}
+
+<script>{{ leaflet_js | safe }}</script>
+<script>{% include "_common.js" %}</script>
+<script>
+const observations = {{ observations_json | safe }};
+const speciesNames = {{ species_json | safe }};
+const speciesColors = {{ colors_json | safe }};
+
+const map = L.map('map', {preferCanvas:false, zoomControl:true});
+// Hispa-Syng basemaps: satellite by default, with physical and marine-bathymetry alternatives.
+const physical=L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{maxZoom:17,attribution:'Data: &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, SRTM | Style: &copy; <a href="https://opentopomap.org" target="_blank">OpenTopoMap</a> (CC-BY-SA)'});
+const satellite=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Esri, Vantor, Earthstar Geographics, and the GIS User Community'}).addTo(map);
+const bathymetry=L.tileLayer('https://tiles.emodnet-bathymetry.eu/2020/baselayer/web_mercator/{z}/{x}/{y}.png',{maxNativeZoom:11,maxZoom:19,attribution:'&copy; <a href="https://emodnet.ec.europa.eu/en/bathymetry" target="_blank">EMODnet Bathymetry</a> (CC BY 4.0)'});
+const groups = {};
+speciesNames.forEach(name => { groups[name] = L.layerGroup().addTo(map); });
+observations.forEach(item => {
+  L.circleMarker([item.lat,item.lon], {
+    radius:item.radius, color:item.color, fillColor:item.color,
+    stroke:false, fillOpacity:.85
+  }).bindPopup(item.popup, {maxWidth:520,maxHeight:540,autoPanPadding:[24,24]}).addTo(groups[item.species]);
+});
+
+L.control.layers(
+  {'Satellite':satellite, 'Marine bathymetry':bathymetry, 'Physical':physical},
+  {},
+  {collapsed:true}
+).addTo(map);
+
+const allCoordinates = observations.map(item => [item.lat,item.lon]);
+if (allCoordinates.length) map.fitBounds(L.latLngBounds(allCoordinates).pad(.06));
+else map.setView([39,-4],5);
+
+const selector = L.control({position:'topright'});
+selector.onAdd = function(){
+  const div = L.DomUtil.create('div','leaflet-control custom-box hippo-panel');
+  div.dataset.panelTitle='Observed species'; div.dataset.panelId='species-panel';
+  div.innerHTML = '<div class="hippo-panel-header"><div class="panel-title">Observed species</div><button class="hippo-panel-toggle" type="button">−</button></div>' +
+    '<div class="hippo-panel-body"><div style="text-align:center;margin-bottom:6px"><button id="all" class="button">All</button> '+
+    '<button id="none" class="button">None</button></div>' +
+    '<div id="species-list" style="max-height:49vh;overflow:auto"></div></div>';
+  L.DomEvent.disableClickPropagation(div); L.DomEvent.disableScrollPropagation(div);
+  return div;
+};
+selector.addTo(map);
+const list = document.getElementById('species-list');
+speciesNames.forEach((name,index) => {
+  const row = document.createElement('div'); row.className='control-row';
+  row.innerHTML = '<label><input class="species-check" type="checkbox" value="'+index+'" checked>'+ 
+    '<span class="color-chip" style="background:'+speciesColors[name]+'"></span><i>'+name+'</i></label>';
+  list.appendChild(row);
+});
+function updateSpecies(){
+  document.querySelectorAll('.species-check').forEach(box => {
+    const name=speciesNames[Number(box.value)];
+    if(box.checked && !map.hasLayer(groups[name])) map.addLayer(groups[name]);
+    if(!box.checked && map.hasLayer(groups[name])) map.removeLayer(groups[name]);
+  });
+}
+document.querySelectorAll('.species-check').forEach(box => box.addEventListener('change',updateSpecies));
+document.getElementById('all').onclick=() => {document.querySelectorAll('.species-check').forEach(x=>x.checked=true);updateSpecies();};
+document.getElementById('none').onclick=() => {document.querySelectorAll('.species-check').forEach(x=>x.checked=false);updateSpecies();};
+
+const info = L.control({position:'bottomleft'});
+info.onAdd=function(){
+  const div=L.DomUtil.create('div','leaflet-control custom-box hippo-panel small');
+  div.dataset.panelTitle='Map information'; div.dataset.panelId='map-info'; div.dataset.startCollapsed='true';
+  div.innerHTML=`<div class="hippo-panel-header"><div class="panel-title">Map 1 — Observations</div><button class="hippo-panel-toggle" type="button">−</button></div>
+    <div class="hippo-panel-body info-scroll">
+      <p class="info-lead">This map displays georeferenced and validated observations of fishes belonging to the family <i>Syngnathidae</i> in Spanish waters.</p>
+      <div class="info-summary"><b>${observations.length.toLocaleString('en-GB')}</b> records · <b>${speciesNames.length}</b> species · period <b>{{ year_min }}–{{ year_max }}</b><br><b>Selected area:</b> {{ region_label }}</div>
+      <div class="info-section-title">How each observation is displayed</div>
+      <table class="info-table"><tbody>
+        <tr><td><b>Circle</b></td><td>One validated record. Click it to open its complete information card.</td></tr>
+        <tr><td><b>Color</b></td><td>Identifies the species; species may be shown or hidden using the selector.</td></tr>
+        <tr><td><b>Size</b></td><td>Combines recorded abundance and the number of coincident observations.</td></tr>
+        <tr><td><b>Position</b></td><td>May be displaced by up to 0.0001° to separate overlapping records. The information card retains the original coordinates.</td></tr>
+      </tbody></table>
+      <div class="info-section-title">Information-card contents</div>
+      <table class="info-table"><thead><tr><th>Group</th><th>Information displayed</th></tr></thead><tbody>
+        <tr><td><b>Record</b></td><td>Date, source Id as metadata, internal identifier, source row, region and coincident observations.</td></tr>
+        <tr><td><b>Abundance and sex</b></td><td>Total count, females, males, indeterminate individuals, and presence/absence.</td></tr>
+        <tr><td><b>Environment</b></td><td>Depth, temperature, habitat and bycatch.</td></tr>
+        <tr><td><b>Provenance</b></td><td>Observer, external link and original comments.</td></tr>
+        <tr><td><b>Coordinates</b></td><td>Original latitude/longitude, X/Y, and source EPSG system.</td></tr>
+      </tbody></table>
+      <div class="info-highlight"><b>Responsible interpretation:</b> the map summarises available records and their distribution; it does not represent homogeneous sampling effort or demonstrated absence outside recorded locations.</div>
+    </div>`;
+  L.DomEvent.disableClickPropagation(div); return div;
+}; info.addTo(map);
+window.HIPPODEC_LAYER_CONFIG={base:{satellite,physical,bathymetry},overlays:{}};
+window.HIPPODEC_CAPTURE_STATE=()=>({
+  species:speciesNames.filter((name,index)=>document.querySelectorAll('.species-check')[index]?.checked)
+});
+window.HIPPODEC_APPLY_STATE=state=>{
+  if(Array.isArray(state.species))document.querySelectorAll('.species-check').forEach((box,index)=>{box.checked=state.species.includes(speciesNames[index]);});
+  updateSpecies();
+};
+window.HIPPODEC_GET_STATE=()=>hippoCaptureState(map);
+setupHippoPanels(map);
+setupHippoLanguageSwitch(map);
+
+</script>
+</body>
+</html>

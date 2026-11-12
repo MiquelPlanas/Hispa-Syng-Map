@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="{{ html_lang }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{ title }}</title>
+<style>{{ leaflet_css | safe }}</style>
+<style>
+html,body,#map{height:100%;margin:0;padding:0}.qc-head{position:absolute;z-index:1000;top:10px;left:52px;background:rgba(255,255,255,.95);padding:9px 12px;border-radius:6px;box-shadow:0 1px 5px rgba(0,0,0,.35);font-family:Arial,sans-serif;max-width:min(620px,calc(100vw - 90px));font-size:13px}.qc-head b{font-size:14px}.qc-head .muted{color:#555;margin-top:4px}.qc-legend{background:rgba(255,255,255,.95);padding:8px 10px;border-radius:5px;box-shadow:0 1px 5px rgba(0,0,0,.3);font:12px/1.35 Arial,sans-serif}.qc-legend div{margin:3px 0}.qc-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}.leaflet-popup-content{max-width:520px;overflow-wrap:anywhere}.qc-popup{font:12px/1.35 Arial,sans-serif;min-width:260px}.qc-popup table{border-collapse:collapse;width:100%}.qc-popup td{padding:2px 5px;border-bottom:1px solid #eee;vertical-align:top}.qc-popup td:first-child{font-weight:600;width:42%}
+</style>
+</head>
+<body>
+<div class="qc-head"><b>{{ title }}</b><div>{{ subtitle }}</div><div class="muted">{{ summary_text }}</div></div>
+<div id="map"></div>
+<script>{{ leaflet_js | safe }}</script>
+<script>
+const POINTS={{ points_json | safe }};
+const CELLS={{ cells_json | safe }};
+const LAND={{ land_json | safe }};
+const LABELS={{ labels_json | safe }};
+const map=L.map('map',{preferCanvas:true,zoomControl:true});
+if(map.attributionControl) map.attributionControl.addAttribution("<span title=\"MITECO\">© Ministerio para la Transición Ecológica y el Reto Demográfico (MITECO)</span>");
+const physical=L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{maxZoom:17,attribution:'OpenStreetMap / OpenTopoMap'});
+const satellite=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Esri'}).addTo(map);
+const landLayer=L.geoJSON(LAND,{style:{color:'#666',weight:1,fillColor:'#bdbdbd',fillOpacity:.23}}).addTo(map);
+const cellLayer=L.geoJSON(CELLS,{style:{color:'#555',weight:1.2,fillColor:'#ffffff',fillOpacity:.02},onEachFeature:(f,l)=>{const p=f.properties||{};l.bindTooltip((p.grid_id||'')+(p.Area_mar_km2!=null?' · '+Number(p.Area_mar_km2).toFixed(4)+' km²':''));}}).addTo(map);
+const directLayer=L.layerGroup().addTo(map), nearestLayer=L.layerGroup().addTo(map), unassignedLayer=L.layerGroup().addTo(map);
+const styles={direct:{color:'#238b45',fillColor:'#238b45',radius:3,weight:1,fillOpacity:.65},nearest:{color:'#d97900',fillColor:'#f39c12',radius:6,weight:1.5,fillOpacity:.9},unassigned:{color:'#b30000',fillColor:'#d73027',radius:7,weight:1.8,fillOpacity:.95}};
+for(const p of POINTS){const st=styles[p.status]||styles.direct;const marker=L.circleMarker([p.lat,p.lng],st).bindPopup(p.popup,{maxWidth:600});if(p.status==='nearest')marker.addTo(nearestLayer);else if(p.status==='unassigned')marker.addTo(unassignedLayer);else marker.addTo(directLayer);}
+L.control.layers({[LABELS.physical]:physical,[LABELS.satellite]:satellite},{[LABELS.direct]:directLayer,[LABELS.nearest]:nearestLayer,[LABELS.unassigned]:unassignedLayer,[LABELS.cells]:cellLayer,[LABELS.land]:landLayer},{collapsed:false}).addTo(map);
+const legend=L.control({position:'bottomright'});legend.onAdd=function(){const d=L.DomUtil.create('div','qc-legend');d.innerHTML=`<b>${LABELS.legend}</b><div><span class="qc-dot" style="background:#238b45"></span>${LABELS.direct}</div><div><span class="qc-dot" style="background:#f39c12"></span>${LABELS.nearest}</div><div><span class="qc-dot" style="background:#d73027"></span>${LABELS.unassigned}</div>`;return d};legend.addTo(map);
+if(POINTS.length){const bounds=L.latLngBounds(POINTS.map(p=>[p.lat,p.lng]));map.fitBounds(bounds.pad(.05));}else map.setView([40.2,-3.5],5);
+</script>
+</body>
+</html>

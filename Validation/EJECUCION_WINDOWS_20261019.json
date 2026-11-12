@@ -1,0 +1,414 @@
+{
+  "review_date": "2026-10-21",
+  "execution_id": "20261019_094827_65e45b50",
+  "evidence_type": "Review of a previously completed user-operated Windows run; no analysis rerun",
+  "source_files": {
+    "manifiesto_ejecucion_bilingue.json": {
+      "sha256": "f3436b1fe0547d9959b4103be6c9a1dd91102f3f6203fb81c96b49299ae3cd91",
+      "bytes": 223323
+    },
+    "resumen_control_calidad.json": {
+      "sha256": "28cca88abce2316bdfb0c1d8195886d36236c3cdc2b378e33327d119c77f0306",
+      "bytes": 17315
+    },
+    "qa_summary.json": {
+      "sha256": "ec12dfaa0a93cbcf4996f35b088fce2a61a06284fadd334c9fa058807802ed43",
+      "bytes": 17212
+    }
+  },
+  "parameters": {
+    "year_min": 1992,
+    "year_max": 2026,
+    "grid_km": 1,
+    "region": "all",
+    "species": [
+      "Entelurus aequoreus",
+      "Hippocampus algiricus",
+      "Hippocampus guttulatus",
+      "Hippocampus hippocampus",
+      "Minyichthys sentus",
+      "Nerophis lumbriciformis",
+      "Nerophis maculatus",
+      "Nerophis ophidion",
+      "Syngnathus abaster",
+      "Syngnathus acus",
+      "Syngnathus rostellatus",
+      "Syngnathus typhle"
+    ],
+    "temporal_periods": [
+      {
+        "label": "01-2006–12-2014",
+        "start": "2006-01-01",
+        "end": "2014-12-31"
+      },
+      {
+        "label": "01-2015–12-2021",
+        "start": "2015-01-01",
+        "end": "2021-12-31"
+      },
+      {
+        "label": "01-2022–12-2026",
+        "start": "2022-01-01",
+        "end": "2026-12-31"
+      }
+    ],
+    "maps_only": false,
+    "permutations": 999,
+    "gshhs_required": true
+  },
+  "created_at": "2026-10-19T09:48:27.301466+02:00",
+  "completed_at": "2026-10-19T10:03:38.660218+02:00",
+  "security_mode": "open",
+  "recorded_status": {
+    "manifest": "completed",
+    "ES": "superado",
+    "EN": "passed",
+    "ES_analysis": "superado",
+    "EN_analysis": "passed"
+  },
+  "versions": {
+    "python": "3.13.15",
+    "pandas": "2.3.3",
+    "geopandas": "1.2.0"
+  },
+  "exact_or_explicitly_normalized_comparison_checks": {
+    "filters": true,
+    "assignment": true,
+    "metrics": true,
+    "versions": true,
+    "land_clip": true,
+    "map_context": true,
+    "input_summary": true,
+    "input_audit_except_localized_field_names": true,
+    "marine_area_after_status_translation": true,
+    "grid_inventory_except_localized_region_names": true,
+    "duplicate_output_counts": true,
+    "html_required_and_forbidden_token_checks": true
+  },
+  "input_summary": {
+    "rows_read": 2492,
+    "columns_read": 22,
+    "available_year_min": 1992,
+    "available_year_max": 2026,
+    "available_species": [
+      "Entelurus aequoreus",
+      "Hippocampus algiricus",
+      "Hippocampus guttulatus",
+      "Hippocampus hippocampus",
+      "Minyichthys sentus",
+      "Nerophis lumbriciformis",
+      "Nerophis maculatus",
+      "Nerophis ophidion",
+      "Syngnathus abaster",
+      "Syngnathus acus",
+      "Syngnathus rostellatus",
+      "Syngnathus typhle"
+    ],
+    "invalid_dates": 0
+  },
+  "input_audit": {
+    "rows": 2492,
+    "required_columns_complete": true,
+    "fields": [
+      {
+        "field": "Fecha de observación",
+        "required": true,
+        "present": true,
+        "non_empty": 2492,
+        "missing": 0,
+        "numeric_valid": null,
+        "non_numeric": null
+      },
+      {
+        "field": "Especie",
+        "required": true,
+        "present": true,
+        "non_empty": 2492,
+        "missing": 0,
+        "numeric_valid": null,
+        "non_numeric": null
+      },
+      {
+        "field": "Latitud",
+        "required": true,
+        "present": true,
+        "non_empty": 2492,
+        "missing": 0,
+        "numeric_valid": 2492,
+        "non_numeric": 0
+      },
+      {
+        "field": "Longitud",
+        "required": true,
+        "present": true,
+        "non_empty": 2492,
+        "missing": 0,
+        "numeric_valid": 2492,
+        "non_numeric": 0
+      },
+      {
+        "field": "X",
+        "required": true,
+        "present": true,
+        "non_empty": 2492,
+        "missing": 0,
+        "numeric_valid": 2492,
+        "non_numeric": 0
+      },
+      {
+        "field": "Y",
+        "required": true,
+        "present": true,
+        "non_empty": 2492,
+        "missing": 0,
+        "numeric_valid": 2492,
+        "non_numeric": 0
+      },
+      {
+        "field": "EPSG",
+        "required": true,
+        "present": true,
+        "non_empty": 2492,
+        "missing": 0,
+        "numeric_valid": 2492,
+        "non_numeric": 0
+      },
+      {
+        "field": "N_total",
+        "required": true,
+        "present": true,
+        "non_empty": 2492,
+        "missing": 0,
+        "numeric_valid": 2492,
+        "non_numeric": 0
+      },
+      {
+        "field": "Observador/a",
+        "required": false,
+        "present": true,
+        "non_empty": 2492,
+        "missing": 0,
+        "numeric_valid": null,
+        "non_numeric": null
+      },
+      {
+        "field": "Hábitat",
+        "required": false,
+        "present": true,
+        "non_empty": 2492,
+        "missing": 0,
+        "numeric_valid": null,
+        "non_numeric": null
+      },
+      {
+        "field": "Captura incidental",
+        "required": false,
+        "present": true,
+        "non_empty": 2480,
+        "missing": 12,
+        "numeric_valid": null,
+        "non_numeric": null
+      },
+      {
+        "field": "Profundidad",
+        "required": false,
+        "present": true,
+        "non_empty": 2333,
+        "missing": 159,
+        "numeric_valid": 2333,
+        "non_numeric": 0
+      },
+      {
+        "field": "Temperatura_gC",
+        "required": false,
+        "present": true,
+        "non_empty": 553,
+        "missing": 1939,
+        "numeric_valid": 553,
+        "non_numeric": 0
+      },
+      {
+        "field": "N hembra",
+        "required": false,
+        "present": true,
+        "non_empty": 2492,
+        "missing": 0,
+        "numeric_valid": 2492,
+        "non_numeric": 0
+      },
+      {
+        "field": "N macho",
+        "required": false,
+        "present": true,
+        "non_empty": 2492,
+        "missing": 0,
+        "numeric_valid": 2492,
+        "non_numeric": 0
+      },
+      {
+        "field": "N_indeterminado",
+        "required": false,
+        "present": true,
+        "non_empty": 2483,
+        "missing": 9,
+        "numeric_valid": 2483,
+        "non_numeric": 0
+      }
+    ],
+    "depth_non_numeric_values": {},
+    "n_total_missing": 0,
+    "sex_total_mismatch_rows": 0,
+    "warnings": []
+  },
+  "filters": {
+    "rows_initial": 2492,
+    "rows_after_species": 2492,
+    "rows_after_years": 2492,
+    "rows_with_basic_geography": 2492,
+    "rows_invalid_coordinates": 0,
+    "rows_after_coordinate_validation": 2492,
+    "rows_before_region": 2492,
+    "rows_direct_region_missing": 312,
+    "rows_region_reference_10km": 312,
+    "rows_region_scope_unresolved": 0,
+    "rows_selected_region_scope": 2492,
+    "rows_after_region": 2461,
+    "sampling_events_after_region": 1867
+  },
+  "assignment": {
+    "grid_cells_total": 18438,
+    "grid_cells_valid_marine": 18382,
+    "grid_cells_excluded_no_marine_surface": 56,
+    "points_total": 2492,
+    "points_direct": 2428,
+    "points_direct_miteco_fallback": 29,
+    "points_nearest": 33,
+    "points_unassigned": 31,
+    "points_region_direct": 2180,
+    "points_region_unresolved": 0,
+    "points_region_cell_disagreement": 0,
+    "points_region_reference_10km": 281
+  },
+  "metrics": {
+    "occupied_cells": 576,
+    "total_abundance_assigned": 2828.0,
+    "total_abundance_cells": 2828.0,
+    "species_cell_rows": 807,
+    "sex_cell_species_rows": 396,
+    "density_denominator": "marine_geometry_km2_gshhs_primary_miteco_fallback",
+    "density_scale_km2": 1,
+    "density_formula_verified": true,
+    "density_land_excluded": true,
+    "occupied_area_source_counts": {
+      "gshhs_clipped_geometry": 2432,
+      "miteco_demarcation_fallback_geometry": 29
+    }
+  },
+  "marine_area": {
+    "status": "superado",
+    "method": "gshhs_clipped_geometry_with_miteco_demarcation_fallback",
+    "density_denominator": "marine_geometry_km2_gshhs_primary_miteco_fallback",
+    "official_geometry_retained_for_assignment": true,
+    "marine_flag_filter_applied": false,
+    "gshhs_required": true,
+    "gshhs_signature": "f9723735718a93146d29",
+    "gshhs_land_polygons_loaded": 0,
+    "cells_total": 18438,
+    "cells_intersecting_gshhs_land": 3648,
+    "cells_fully_covered_by_gshhs_land": 265,
+    "cells_with_valid_official_area": 18438,
+    "cells_using_gshhs_marine_area": 18173,
+    "cells_using_miteco_demarcation_fallback": 209,
+    "cells_without_positive_marine_area": 56,
+    "cells_with_official_gshhs_comparison": 18173,
+    "max_abs_official_vs_gshhs_km2": 1.009212690081242,
+    "marine_area_cache_version": "2",
+    "marine_area_cache_status": "hit",
+    "marine_area_cache_cells_reused": 18438,
+    "marine_area_cache_cells_computed": 0,
+    "area_source_counts": {
+      "gshhs_clipped_geometry": 18173,
+      "miteco_demarcation_fallback_geometry": 209,
+      "unavailable_no_marine_surface": 56
+    }
+  },
+  "land_clip": {
+    "land_polygons_loaded": 618,
+    "cells_clipped": 452,
+    "cells_removed": 6,
+    "cells_using_miteco_demarcation_fallback_geometry": 6,
+    "status": "loaded",
+    "method": "GSHHS_difference_with_MITECO_demarcation_fallback",
+    "density_denominator_matches_displayed_marine_geometry": true,
+    "miteco_fallback_display_geometry_valid": true,
+    "maximum_density_area_difference_km2": 2.6367796834847468e-14
+  },
+  "html_summary": {
+    "ES_files_checked": 5,
+    "EN_files_checked": 5,
+    "all_required_tokens_present": true,
+    "all_reported_forbidden_token_checks_passed": true,
+    "scope": "Recorded structured-token checks, not an independent browser review or a sensitive-data protection audit"
+  },
+  "timing": {
+    "ES_elapsed_seconds": 475.635,
+    "EN_elapsed_seconds": 431.775,
+    "manifest_creation_to_completion_seconds": 911.358752,
+    "coordinator_total_elapsed_seconds": 4439.192,
+    "meaning": "Coordinator timing starts before input selection; the creation-to-completion interval starts later. These values are distinct elapsed-time measures, not CPU benchmarks."
+  },
+  "input_resource_identifiers": {
+    "excel": {
+      "path": "Datos_data/Ingesta_provisional.xlsx",
+      "size_bytes": 406334,
+      "sha256": "ac3ab9f1e124beeba21b70e6f9aaab66ace17d979ff83c876a134bd121d749d7"
+    },
+    "grids": {
+      "path": "Resources/Mallas_marinas_MITECO.zip",
+      "size_bytes": 220498481,
+      "sha256": "f4ee0e11e33d775c6e57ee774a7f43b14781ae6a7ea37c2aabdcb905fa2e636a"
+    },
+    "gshhg": {
+      "path": "Resources/GSHHS/GSHHS_h_L1.shp",
+      "size_bytes": 34129516,
+      "sha256": "d870bdbc90a074f87a8c09a9630abb5f18916314b9a196dba2e6866fd51ef325"
+    },
+    "demarcations": {
+      "path": "Resources/demarcaciones_miteco/Demarcaciones_Marinas_20220909_ModeloDatosINSPIRE.shp",
+      "size_bytes": 7621428,
+      "sha256": "112dcdcfe31f97fa585cd6aa381e6fe9284008e7e8f25735a7b95c1b15f58aa2"
+    },
+    "logo": {
+      "path": "logos.png",
+      "size_bytes": 57408,
+      "sha256": "766486dc3e40af88597388fb8996f8d1b75fad7b3126fcea4b71f716bd735672"
+    },
+    "protected_areas": {
+      "path": "Resources/areas_protegidas",
+      "file_count": 35
+    },
+    "traits": {
+      "path": "Datos_data/traits.xlsx",
+      "size_bytes": 13531,
+      "sha256": "0f9e689099eaa1b07450943d6b407b18d0ce2a8efb7ab9243235e43ca101417e"
+    }
+  },
+  "english_path_discrepancy": {
+    "manifest_run_root": "Resultados/run_20261019_094827_65e45b50_EN",
+    "english_summary_root_component": "Results",
+    "manifest_root_component": "Resultados",
+    "localization_translation_reproduced": true,
+    "cause_in_reviewed_source": "PYTHON_ENGLISH/src/hippodec_maps/pipeline.py applies translate_text to unpreserved JSON strings; localization.py translates Resultados to Results",
+    "source_review_scope": "Cause reproduced in the supplied source archive; the run records do not bind execution to a source commit",
+    "status": "Open traceability item; no source-code change included in this documentation update"
+  },
+  "limits": [
+    "Run records do not identify the executable source-code commit or archive hash",
+    "Exact Windows version and complete dependency environment are not recorded",
+    "Full analysis quality-control JSON and all analytical tables were not inspected in this review",
+    "Matching QA summaries do not establish full per-cell or per-table numerical parity",
+    "Open-mode run does not verify DPAPI, ACL, cross-account isolation, encryption or recovery scenarios",
+    "General regression suite was not rerun"
+  ],
+  "privacy": "Only aggregate checks and project-relative provenance are included; original Windows user-directory paths and the inventory of earlier result folders are omitted from this derived record."
+}

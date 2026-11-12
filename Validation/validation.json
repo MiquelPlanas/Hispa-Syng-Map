@@ -1,0 +1,508 @@
+{
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "dependencies": {
+    "numpy": "2.3.5",
+    "pandas": "2.3.3",
+    "geopandas": "1.2.0",
+    "shapely": "2.1.2",
+    "pyproj": "3.8.0",
+    "pyogrio": "0.11.1",
+    "scipy": "1.17.0",
+    "matplotlib": "3.10.8",
+    "seaborn": "0.13.2",
+    "scikit-learn": "1.8.0",
+    "statsmodels": "0.14.6",
+    "cryptography": "46.0.0",
+    "python-docx": "1.2.0"
+  },
+  "started_at_utc": "2026-10-14T12:22:31.520636+00:00",
+  "finished_at_utc": "2026-10-14T12:31:11.627308+00:00",
+  "tests": [
+    {
+      "name": "_grid_reading_PYTHON_ESP",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_grid_reading.py",
+        "<project>/PYTHON_ESP"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 1.481,
+      "status": "PASS",
+      "log": "_grid_reading_PYTHON_ESP.log"
+    },
+    {
+      "name": "_edition_regressions_PYTHON_ESP",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_edition_regressions.py",
+        "<project>/PYTHON_ESP"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 7.581,
+      "status": "PASS",
+      "log": "_edition_regressions_PYTHON_ESP.log"
+    },
+    {
+      "name": "_conservation_smoke_PYTHON_ESP",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_conservation_smoke.py",
+        "<project>/PYTHON_ESP"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 5.209,
+      "status": "PASS",
+      "log": "_conservation_smoke_PYTHON_ESP.log"
+    },
+    {
+      "name": "_community_integration_smoke_PYTHON_ESP",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_community_integration_smoke.py",
+        "<project>/PYTHON_ESP"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 34.108,
+      "status": "PASS",
+      "log": "_community_integration_smoke_PYTHON_ESP.log"
+    },
+    {
+      "name": "_multiscale_integration_smoke_PYTHON_ESP",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_multiscale_integration_smoke.py",
+        "<project>/PYTHON_ESP"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 32.141,
+      "status": "PASS",
+      "log": "_multiscale_integration_smoke_PYTHON_ESP.log"
+    },
+    {
+      "name": "_conservation_integration_smoke_PYTHON_ESP",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_conservation_integration_smoke.py",
+        "<project>/PYTHON_ESP"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 8.986,
+      "status": "PASS",
+      "log": "_conservation_integration_smoke_PYTHON_ESP.log"
+    },
+    {
+      "name": "_functional_integration_smoke_PYTHON_ESP",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_functional_integration_smoke.py",
+        "<project>/PYTHON_ESP"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 35.517,
+      "status": "PASS",
+      "log": "_functional_integration_smoke_PYTHON_ESP.log"
+    },
+    {
+      "name": "_configuration_matrix_PYTHON_ESP",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_configuration_matrix.py",
+        "<project>/PYTHON_ESP"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 26.044,
+      "status": "PASS",
+      "log": "_configuration_matrix_PYTHON_ESP.log"
+    },
+    {
+      "name": "_output_folder_localization_PYTHON_ESP",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_output_folder_localization.py",
+        "<project>/PYTHON_ESP"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.033,
+      "status": "PASS",
+      "log": "_output_folder_localization_PYTHON_ESP.log"
+    },
+    {
+      "name": "_metadata_exports_PYTHON_ESP",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_metadata_exports.py",
+        "<project>/PYTHON_ESP"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.948,
+      "status": "PASS",
+      "log": "_metadata_exports_PYTHON_ESP.log"
+    },
+    {
+      "name": "_public_output_policy_PYTHON_ESP",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_public_output_policy.py",
+        "<project>/PYTHON_ESP"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 2.436,
+      "status": "PASS",
+      "log": "_public_output_policy_PYTHON_ESP.log"
+    },
+    {
+      "name": "_public_geometry_PYTHON_ESP",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_public_geometry.py",
+        "<project>/PYTHON_ESP"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 7.362,
+      "status": "PASS",
+      "log": "_public_geometry_PYTHON_ESP.log"
+    },
+    {
+      "name": "_grid_reading_PYTHON_ENGLISH",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_grid_reading.py",
+        "<project>/PYTHON_ENGLISH"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 2.376,
+      "status": "PASS",
+      "log": "_grid_reading_PYTHON_ENGLISH.log"
+    },
+    {
+      "name": "_edition_regressions_PYTHON_ENGLISH",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_edition_regressions.py",
+        "<project>/PYTHON_ENGLISH"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 5.916,
+      "status": "PASS",
+      "log": "_edition_regressions_PYTHON_ENGLISH.log"
+    },
+    {
+      "name": "_conservation_smoke_PYTHON_ENGLISH",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_conservation_smoke.py",
+        "<project>/PYTHON_ENGLISH"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 6.636,
+      "status": "PASS",
+      "log": "_conservation_smoke_PYTHON_ENGLISH.log"
+    },
+    {
+      "name": "_community_integration_smoke_PYTHON_ENGLISH",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_community_integration_smoke.py",
+        "<project>/PYTHON_ENGLISH"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 17.985,
+      "status": "PASS",
+      "log": "_community_integration_smoke_PYTHON_ENGLISH.log"
+    },
+    {
+      "name": "_multiscale_integration_smoke_PYTHON_ENGLISH",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_multiscale_integration_smoke.py",
+        "<project>/PYTHON_ENGLISH"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 6.112,
+      "status": "PASS",
+      "log": "_multiscale_integration_smoke_PYTHON_ENGLISH.log"
+    },
+    {
+      "name": "_conservation_integration_smoke_PYTHON_ENGLISH",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_conservation_integration_smoke.py",
+        "<project>/PYTHON_ENGLISH"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 9.175,
+      "status": "PASS",
+      "log": "_conservation_integration_smoke_PYTHON_ENGLISH.log"
+    },
+    {
+      "name": "_functional_integration_smoke_PYTHON_ENGLISH",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_functional_integration_smoke.py",
+        "<project>/PYTHON_ENGLISH"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 17.954,
+      "status": "PASS",
+      "log": "_functional_integration_smoke_PYTHON_ENGLISH.log"
+    },
+    {
+      "name": "_configuration_matrix_PYTHON_ENGLISH",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_configuration_matrix.py",
+        "<project>/PYTHON_ENGLISH"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 7.593,
+      "status": "PASS",
+      "log": "_configuration_matrix_PYTHON_ENGLISH.log"
+    },
+    {
+      "name": "_output_folder_localization_PYTHON_ENGLISH",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_output_folder_localization.py",
+        "<project>/PYTHON_ENGLISH"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.087,
+      "status": "PASS",
+      "log": "_output_folder_localization_PYTHON_ENGLISH.log"
+    },
+    {
+      "name": "_metadata_exports_PYTHON_ENGLISH",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_metadata_exports.py",
+        "<project>/PYTHON_ENGLISH"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.653,
+      "status": "PASS",
+      "log": "_metadata_exports_PYTHON_ENGLISH.log"
+    },
+    {
+      "name": "_public_output_policy_PYTHON_ENGLISH",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_public_output_policy.py",
+        "<project>/PYTHON_ENGLISH"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 2.324,
+      "status": "PASS",
+      "log": "_public_output_policy_PYTHON_ENGLISH.log"
+    },
+    {
+      "name": "_public_geometry_PYTHON_ENGLISH",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_public_geometry.py",
+        "<project>/PYTHON_ENGLISH"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 5.782,
+      "status": "PASS",
+      "log": "_public_geometry_PYTHON_ENGLISH.log"
+    },
+    {
+      "name": "_bilingual_parity",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_bilingual_parity.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 34.436,
+      "status": "PASS",
+      "log": "_bilingual_parity.log"
+    },
+    {
+      "name": "_presentation_and_distribution",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_presentation_and_distribution.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.546,
+      "status": "PASS",
+      "log": "_presentation_and_distribution.log"
+    },
+    {
+      "name": "_security_regressions",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_security_regressions.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 2.311,
+      "status": "PASS",
+      "log": "_security_regressions.log"
+    },
+    {
+      "name": "_security_lifecycle",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_security_lifecycle.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 4.453,
+      "status": "PASS",
+      "log": "_security_lifecycle.log"
+    },
+    {
+      "name": "_coordinator_security",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_coordinator_security.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.633,
+      "status": "PASS",
+      "log": "_coordinator_security.log"
+    },
+    {
+      "name": "_execution_recovery",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_execution_recovery.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 1.453,
+      "status": "PASS",
+      "log": "_execution_recovery.log"
+    },
+    {
+      "name": "_distribution_recovery",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_distribution_recovery.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.849,
+      "status": "PASS",
+      "log": "_distribution_recovery.log"
+    },
+    {
+      "name": "_release_hygiene",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_release_hygiene.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.037,
+      "status": "PASS",
+      "log": "_release_hygiene.log"
+    }
+  ],
+  "processes_executed": 33,
+  "source_sha256": {
+    "PYTHON_ENGLISH/check_environment.py": "d5acc3685cc63253061c2baa9f1366cc32e75065af4a7cdd9f517db43326cc09",
+    "PYTHON_ENGLISH/run_hippodec.py": "69b166e0a8efbe3f3f24364571df02959db57d4387c4375a06005b462a70fcb2",
+    "PYTHON_ENGLISH/run_maps.py": "1d2d8758ff6a99ecb463f9a82621681f94face54f8c59151441bbc4e91545b13",
+    "PYTHON_ENGLISH/src/hippodec_maps/__init__.py": "0833574fb4654cec62e5b319262816d2ac87af771fe4fe9ba27840b188b0bd9d",
+    "PYTHON_ENGLISH/src/hippodec_maps/analysis_io.py": "cc4000f5eb0e1daadc84696e5d781fa1be2e627feda9bdb4dd438b83e6471acf",
+    "PYTHON_ENGLISH/src/hippodec_maps/analysis_pipeline.py": "b29b55091fd63336b5eec0a5cc81d841f9ee7a4fc712e77c2bb1fd121b2706e7",
+    "PYTHON_ENGLISH/src/hippodec_maps/analysis_status.py": "c1cb737adb6b2b9d357aed91bae22103fb650588a38d7f6ee119b59e52bf8a47",
+    "PYTHON_ENGLISH/src/hippodec_maps/analysis_utils.py": "9f713539ab5f9a586655ad9f5038b22a5a864b090c0bacae64acce5688803e79",
+    "PYTHON_ENGLISH/src/hippodec_maps/cartography.py": "2e80bd0a50c8bc495eab2b104471b46a731ccb9a9407a9badea766f5c99a20f5",
+    "PYTHON_ENGLISH/src/hippodec_maps/cli.py": "035bc55a13753f6af41e913fb2ddebb90efe89f1d2962cd3da3f483936f80a00",
+    "PYTHON_ENGLISH/src/hippodec_maps/community.py": "a1dcf3204225dda3af88cd949116ffbbbd98adf83af0a478874ae4079956c16e",
+    "PYTHON_ENGLISH/src/hippodec_maps/config.py": "fb426860fbe9a5fecf9496ad6f0ea4b317933a381d0f2f0ef49bc0882ef0ffdb",
+    "PYTHON_ENGLISH/src/hippodec_maps/conservation.py": "512df9610331bad6ff610a64f4f8e447eb30c45c203d430cfa86f3e3e5860c2d",
+    "PYTHON_ENGLISH/src/hippodec_maps/data.py": "cdcd7fe6211113b6ebfba2e41276633425a032fd0f6ad89e9805c7b764cab372",
+    "PYTHON_ENGLISH/src/hippodec_maps/descriptive.py": "bac8abcd69f7bbeea844c59a883019ecd21d58a5a59d6bf23eaafcc9986539c3",
+    "PYTHON_ENGLISH/src/hippodec_maps/grids.py": "cb34dadc19b3633a25445efce5032a65455f1e8ac4092ed3b12ef70dd1687c17",
+    "PYTHON_ENGLISH/src/hippodec_maps/localization.py": "f2757d73f80927945a04137fec26b185e17a48d19af56718088120673d8e73a5",
+    "PYTHON_ENGLISH/src/hippodec_maps/maps.py": "d087cf164b0e3b1f82415ef5fbb69cf97e3f1322f337e8933742d58635434525",
+    "PYTHON_ENGLISH/src/hippodec_maps/metrics.py": "4964b76055c8dbf885252edc5f77f7445f089774e59b9abd4d019a38bb8fc3c0",
+    "PYTHON_ENGLISH/src/hippodec_maps/multiscale.py": "3e17700850902967abffb6964b50e8d35b4f263ae11c63a2f00557310b398fa3",
+    "PYTHON_ENGLISH/src/hippodec_maps/optional_analysis.py": "a8b77a391a0eb2d40e95cc746b47e72ddfb5322ec6bcc11272f685dccd7ac5f6",
+    "PYTHON_ENGLISH/src/hippodec_maps/output_policy.py": "98365b0dcf2199f5fc123a678cdedf13fdd156012db887038271d99d4ba92799",
+    "PYTHON_ENGLISH/src/hippodec_maps/pipeline.py": "d83eb675a175763161d4c8297841ed88434fd6606c62fdc5cdb92651aaeb176e",
+    "PYTHON_ENGLISH/src/hippodec_maps/regions.py": "6c8caaeeacab7c95b0135e69089820b8b3ca13a22ef8fc2b46e51efa5e354530",
+    "PYTHON_ENGLISH/src/hippodec_maps/sampling.py": "8fab3bea7531edc6cd560ba3fcf4ee85ded41989bf88a47259ea9b88990c7b58",
+    "PYTHON_ENGLISH/src/hippodec_maps/sex_analysis.py": "22baebe21b014e726b813c70b2b9bf0e36680e1111f6249908cfe510f98ac859",
+    "PYTHON_ENGLISH/src/hippodec_maps/spatial.py": "f48f5180042dd290abee57bad24c67f08fe9f114f532394d07bfa17836b588e3",
+    "PYTHON_ENGLISH/src/hippodec_maps/technical_report.py": "4475311ef4e4eaa8a49e932ce29a1e511ba616da7f3a58686896e913d908f765",
+    "PYTHON_ENGLISH/src/hippodec_maps/temporal.py": "a65a7aa17643c89a32b8e020aec30fae102fd90f3a9c4bc0a40cbfa0a0481f29",
+    "PYTHON_ENGLISH/src/hippodec_maps/web_publication.py": "010d933cdb9a3193c2cf2f83e8a1077274afe6a797b3d0c80ceb0ccdae10c335",
+    "PYTHON_ENGLISH/windows_dll_setup.py": "607550f61e211beea1d02f042babcdd981ee4988691cb9db1d06607d6beb140b",
+    "PYTHON_ESP/comprobar_entorno.py": "ec06d01feabe284623904260a851fd0b6f5e8771c69c182adbc1652293441b30",
+    "PYTHON_ESP/configuracion_dll_windows.py": "a34e6796a9eae60fd710d5eeeefaba2ccc7630143c17db599b6ca3a9d645582f",
+    "PYTHON_ESP/ejecutar_hippodec.py": "49904adf0937e0c27cd5b27ffcf35725d417061a9c222cf169dedd390f901086",
+    "PYTHON_ESP/ejecutar_mapas.py": "3c4e3125eb56f893476ab67950d4487deb4bce507c1f515b4fba0c3cd95b4301",
+    "PYTHON_ESP/src/hippodec_maps/__init__.py": "27075e9f6cae99339f39ea90a79d8ef8169fc6fc676bef6d3fe2563c79a6d141",
+    "PYTHON_ESP/src/hippodec_maps/analysis_io.py": "ed95a12a2e988465cafbac39e2f9d251ce020344b734ddd202e49fb5ead16360",
+    "PYTHON_ESP/src/hippodec_maps/analysis_pipeline.py": "4fc2e0be9001dd63eb15c85773bd7fc1014eebc1f255e00021330469bcef4ee8",
+    "PYTHON_ESP/src/hippodec_maps/analysis_status.py": "f62205415e9998ee4618447dbd1f43dde701ca77748f459bd09bef217e938a20",
+    "PYTHON_ESP/src/hippodec_maps/analysis_utils.py": "0a104e2f9e8934af23e13052dac71202c45f3365d0f39cf29dcfc0b8a4383c3f",
+    "PYTHON_ESP/src/hippodec_maps/cartography.py": "fab031317f154ff41e41d54aabc90b0e401b9933b66176fc6ee8b2d8eb4b41ae",
+    "PYTHON_ESP/src/hippodec_maps/cli.py": "29d2279226973b5795e84053e3e517da4bb21f72973aef3dc470c45a39f73854",
+    "PYTHON_ESP/src/hippodec_maps/community.py": "ab8e051e36561c2940728059959b0b0f20dc4164b70339fc7aa49ecfcaddb869",
+    "PYTHON_ESP/src/hippodec_maps/config.py": "d0774f94a5638457266cea1c50d62385c34422b7a619c1a99e27dc03c12e78e5",
+    "PYTHON_ESP/src/hippodec_maps/conservation.py": "6f300d75be728efb2a9c8c79bdc173ef1dde3d4c83663b9a475a391a770fcaa2",
+    "PYTHON_ESP/src/hippodec_maps/data.py": "14f9f5465f6a0839ba396b20f930416cfabbfcf6607c1a4287a7292da979d657",
+    "PYTHON_ESP/src/hippodec_maps/descriptive.py": "cc5056a57abecd2c1053822579f38db997aa70503f6d94efaad41aa0f9a59d3d",
+    "PYTHON_ESP/src/hippodec_maps/grids.py": "40b676dfc98e9d8390cf5325f797a5ae725f1dcf67fe7d986a53e0bf786a5eb9",
+    "PYTHON_ESP/src/hippodec_maps/localization.py": "4735ed3a783f397f780de82932e1f81395ad5cfbf9382688df6c3aa5fbc90b1d",
+    "PYTHON_ESP/src/hippodec_maps/maps.py": "1ad72b153672015d76b748265f69d387d405754fc24ac0cdd159818c6cdeedf8",
+    "PYTHON_ESP/src/hippodec_maps/metrics.py": "15ba101c92810290e148728a48ef7a8607ca99a86fbcb97a20a40f786a0b49be",
+    "PYTHON_ESP/src/hippodec_maps/multiscale.py": "e0ad13d897d3f22143a5b022cfe14ba1d12e4b286c5a1dcea531dc2cbe76a4d8",
+    "PYTHON_ESP/src/hippodec_maps/optional_analysis.py": "f7adbd8f097d57d203b37522eaa4a2e0fef3efe3a706a494ab4f0be25073629f",
+    "PYTHON_ESP/src/hippodec_maps/output_policy.py": "98365b0dcf2199f5fc123a678cdedf13fdd156012db887038271d99d4ba92799",
+    "PYTHON_ESP/src/hippodec_maps/pipeline.py": "826422c6e5e111bdeebef44b40138137097387a58cbaf7853ca2cf61da6fd879",
+    "PYTHON_ESP/src/hippodec_maps/regions.py": "3bb2669a383369830b303cb8fedffe0f08af3d1f73ccbc8120c5a89b38c3d8db",
+    "PYTHON_ESP/src/hippodec_maps/sampling.py": "c3b2be516ee2f5d22cf201f15d1747429ae78122d2ea7ee2dd1abfc3a3b94a95",
+    "PYTHON_ESP/src/hippodec_maps/sex_analysis.py": "2030f7fe19dbf868c994951609331feeb5999dfd1bdba5b42b87bbf3a3cafb5e",
+    "PYTHON_ESP/src/hippodec_maps/spatial.py": "4b33604da9d457ea6e0816a0aa0a55d37400595b7f95caed8a37ecfb5ca9052a",
+    "PYTHON_ESP/src/hippodec_maps/technical_report.py": "31b9a023aafeb666c9ebd612f5c1a8d61cb009c6434fd484ba85d04357c17df6",
+    "PYTHON_ESP/src/hippodec_maps/temporal.py": "d2a6fc2662c8a2c8c8c20c641340169dd76f70fd51bdf543e16b7327c6831721",
+    "PYTHON_ESP/src/hippodec_maps/web_publication.py": "af323c7574bb2227a30799485efa477b691e91e9df2b13239ab0b38eaa5a73f3",
+    "herramientas/ejecutar_bilingue.py": "f35a72d58ac2b6869936b2b6c509fbfdd65f5c93f6f6f6ebf5da9856f98e389b",
+    "herramientas/hispa_security.py": "49653ee75da904dfebcd030b1e77025ba55585498c8da2288aece11426b71e7f",
+    "herramientas/output_policy.py": "98365b0dcf2199f5fc123a678cdedf13fdd156012db887038271d99d4ba92799",
+    "herramientas/secure_execution.py": "4a800c71ebe04551e5b112dcb4059da4922b1e42b28e35d359c810cd5de51c98",
+    "herramientas/seguridad_proyecto.py": "20c48ee165c5153ca46721399b8bdf8ace1f2edc67678e90d212898a35054abb",
+    "tests/_bilingual_parity.py": "7dc5b50f6b8a51e8d9d54c1dda940752723dbe8f40c5ccbc8208af50d5e7d67b",
+    "tests/_community_integration_smoke.py": "3bedab8fc31ed3aa8e90984f78495bcd5eae1c15f217eebd733d347f05af66d5",
+    "tests/_configuration_matrix.py": "fe4a6f909b81008407bfe159abad955293631b4da2ac4aa45ca7068bf6366b2a",
+    "tests/_conservation_integration_smoke.py": "32613ba1048145bee46c7df71928b671a28980b176948d2db5f4fee230279ad5",
+    "tests/_conservation_smoke.py": "a10125702cab972daf195570d988c376c68fa3218f6a37825cf098ec4d46824a",
+    "tests/_coordinator_security.py": "7decd75e17d7ef61c2aa2a016f663dc16c67d030a32944607ac32de4b1a47c13",
+    "tests/_distribution_recovery.py": "88d328b55b0d32803147b961ba5f5718f16eb745c4b893b6596ea51912953a58",
+    "tests/_edition_regressions.py": "bf7a7642ca1311f39caebc3aaaa7b452956984a844323ed41e0dd607eb30db9d",
+    "tests/_execution_recovery.py": "e07e22091e223007d2171e2a73a47093c97991e651aebd27252fa46995009afc",
+    "tests/_functional_integration_smoke.py": "44213a4341e6f6e794b3fd14ecc59ec1cc3ac41e266b739c5f02c1d29a60550f",
+    "tests/_grid_reading.py": "29b91e0c2da3cad1e557af9b35b06399758a02f8f23e1dbcc49ed6e544444e6c",
+    "tests/_metadata_exports.py": "35c3f8ee1993c88c53e4f2927e8db8d4f3a2f0740effadd83553fb89004b0436",
+    "tests/_multiscale_integration_smoke.py": "52c8ee7eab0e21e6b43d52ae3963f8edaf2aa4e772a5f11a31793a9b0a8a8ea1",
+    "tests/_output_folder_localization.py": "90b398fa768d8e93d68eb06ee36f0671cb475a35c56201c42f6fd091f25c04e1",
+    "tests/_parity_snapshot.py": "9de4a67d3956b2e6f36204b5712c6d97a9f777026258f0d6310f483293511039",
+    "tests/_presentation_and_distribution.py": "8abbc9a1a8b7658a49fae4d99f80fa40397e64854ce23c1add1fb221d4d9aac0",
+    "tests/_public_geometry.py": "ddf54e90d21afd07c4d4a872086d15675ff83319edfb1bf47b0817cf2284bb87",
+    "tests/_public_output_policy.py": "89c9df63cdc0ef9d024d2208387e421bf5db76c31cdd51f2c8b0b2c64023d89d",
+    "tests/_release_hygiene.py": "24a101ee856e48b0ed8f6e3d16c04dd8701af89168bdfd09af9ce5182ccd0445",
+    "tests/_security_lifecycle.py": "ababf871a82f4a8ab22b72103c4d0468a99a7a066b1e76c9b30b28654a76c7d6",
+    "tests/_security_menu.py": "e245670bd6b3619846036b41550578c8f533422a8b966fdb5af1d3a8a806a928",
+    "tests/_security_regressions.py": "6c667be319cb24d714011c3fadb98363af4605c3b63f917433824be87bd3cde8",
+    "tests/run_regression_tests.py": "fed5064d53867a0eb4ba6f7b77d9d479b51e292c44a09b6c72259c9aa65db230"
+  },
+  "native_windows_dpapi": "NOT VERIFIED",
+  "cross_windows_user_isolation": "NOT EXECUTED: requires a second Windows account",
+  "parity_criterion": "Exact equality of the serialized synthetic snapshots after their defined rounding; not a full operational-data equivalence certificate.",
+  "retry_attempts": [
+    {
+      "name": "_release_hygiene",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "<project>/tests/_release_hygiene.py"
+      ],
+      "returncode": 1,
+      "elapsed_seconds": 0.074,
+      "status": "FAIL",
+      "log": "_release_hygiene_initial.log"
+    }
+  ]
+}

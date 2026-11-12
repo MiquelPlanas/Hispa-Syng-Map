@@ -1,0 +1,109 @@
+{
+  "record_type": "Review of user-supplied native Windows security console output",
+  "reviewed_at_utc": "2026-10-21T14:03:05.124924+00:00",
+  "execution_date_recorded_in_log": null,
+  "platform_evidence": "Windows console execution shown by the user; native current-user Windows DPAPI PASS line in the supplied log",
+  "command_from_conversation_not_embedded_in_log": ".\\.venv\\Scripts\\python.exe .\\tests\\_security_lifecycle.py 2>&1 | Tee-Object -FilePath ..\\Hispa-Syng_seguridad_Windows.txt",
+  "original_console": {
+    "file": "Hispa-Syng_seguridad_Windows.txt",
+    "sha256": "fef000b4d5b5a671b576974b46cce82f41a8baa81c39d2d517ef4c962e20b78b",
+    "bytes": 1336,
+    "encoding": "UTF-16 LE with BOM",
+    "byte_identical_to_upload": true
+  },
+  "scenario_groups": [
+    {
+      "name": "private generation outside shared results",
+      "description_es": "Generación privada fuera de los resultados compartidos",
+      "status": "PASS",
+      "evidence_line": "PASS private generation outside shared results"
+    },
+    {
+      "name": "direct CLI staging guard and owner-role isolation",
+      "description_es": "Restricción de salida de la ejecución directa y separación de autoridad del propietario",
+      "status": "PASS",
+      "evidence_line": "PASS direct CLI staging guard and owner-role isolation"
+    },
+    {
+      "name": "verification failure blocks publication",
+      "description_es": "Bloqueo de publicación tras un fallo de verificación",
+      "status": "PASS",
+      "evidence_line": "PASS verification failure blocks publication"
+    },
+    {
+      "name": "automatic recovery and idempotent protection",
+      "description_es": "Recuperación automática y protección repetible",
+      "status": "PASS",
+      "evidence_line": "PASS automatic recovery and idempotent protection"
+    },
+    {
+      "name": "verified successful publication",
+      "description_es": "Incorporación de resultados protegidos verificados",
+      "status": "PASS",
+      "evidence_line": "PASS verified successful publication"
+    },
+    {
+      "name": "owner migration requires password authentication",
+      "description_es": "Migración de autoridad del propietario con autenticación por contraseña",
+      "status": "PASS",
+      "evidence_line": "PASS owner migration requires password authentication"
+    },
+    {
+      "name": "full disk and locked-file failures preserve recoverable old state",
+      "description_es": "Conservación del estado recuperable ante fallos simulados de espacio y escritura",
+      "status": "PASS",
+      "evidence_line": "PASS full disk and locked-file failures preserve recoverable old state"
+    },
+    {
+      "name": "abrupt rotation interruption rolls back all files",
+      "description_es": "Restauración tras interrupción abrupta de una rotación en curso",
+      "status": "PASS",
+      "evidence_line": "PASS abrupt rotation interruption rolls back all files"
+    },
+    {
+      "name": "committed rotation survives termination; old copies stay readable",
+      "description_es": "Persistencia de una rotación confirmada y acceso a copias antiguas con sus claves",
+      "status": "PASS",
+      "evidence_line": "PASS committed rotation survives termination; old copies stay readable"
+    }
+  ],
+  "scenario_group_count": 9,
+  "current_user_dpapi_roundtrip": {
+    "status": "PASS",
+    "evidence_line": "PASS native current-user Windows DPAPI roundtrip"
+  },
+  "cross_windows_user_isolation": {
+    "status": "NOT EXECUTED",
+    "evidence_line": "NOT EXECUTED: cross-Windows-user isolation (requires a second Windows account)"
+  },
+  "failure_injection_scope": "Disk-full and locked-destination failures are simulated by replacing _atomic_write in the supplied test; rotation termination uses subprocess os._exit. This is not a physical disk-exhaustion or external exclusive-lock test.",
+  "source_review_reference": {
+    "file": "tests/_security_lifecycle.py",
+    "available_snapshot_sha256": "ababf871a82f4a8ab22b72103c4d0468a99a7a066b1e76c9b30b28654a76c7d6",
+    "meaning": "Available source reviewed to interpret scenarios; this hash is not recorded by the user execution and does not establish the identity of the executed code"
+  },
+  "missing_execution_metadata": [
+    "Windows version/build",
+    "Python version",
+    "dependency versions",
+    "execution timestamps",
+    "process exit code",
+    "commit ID",
+    "executed-source hashes",
+    "full package hash"
+  ],
+  "other_checks_without_supplied_evidence": [
+    "Independent ACL inspection and second-user read denial",
+    "External-process exclusive-file-lock recovery",
+    "Remember/forget access through the interactive menu"
+  ],
+  "json_reference_windows_user_report": {
+    "source": "Console text pasted in this conversation; separate from the uploaded security log",
+    "reported_cases": 10,
+    "reported_elapsed_seconds": 0.058,
+    "reported_result": "OK",
+    "source_hash_or_environment_not_embedded": true
+  },
+  "review_does_not_execute_tests": true,
+  "does_not_replace_historical_windows_analysis_or_linux_suite": true
+}

@@ -1,0 +1,200 @@
+{
+  "scenario": "Official MITECO geometry with up to 40 deterministic synthetic test locations per file; Linux; not the user configuration or a full analysis",
+  "results": [
+    {
+      "source": "Malla1x1km_DM_Can.shp",
+      "scale_km": 1,
+      "source_cells": 488539,
+      "windows": 37,
+      "selected_cells": 1257,
+      "reference_seconds": 3.4937915599998632,
+      "single_read_seconds": 2.1455096239997147,
+      "exact_equivalence": true
+    },
+    {
+      "source": "Malla1x1km_DMarinaEstrechoAlboran.shp",
+      "scale_km": 1,
+      "source_cells": 28239,
+      "windows": 19,
+      "selected_cells": 10297,
+      "reference_seconds": 0.3544724359999236,
+      "single_read_seconds": 0.2242001069998878,
+      "exact_equivalence": true
+    },
+    {
+      "source": "Malla1x1km_DMarinaLevantinoBalear.shp",
+      "scale_km": 1,
+      "source_cells": 234400,
+      "windows": 38,
+      "selected_cells": 1059,
+      "reference_seconds": 2.0634615009998925,
+      "single_read_seconds": 1.069786108000244,
+      "exact_equivalence": true
+    },
+    {
+      "source": "Malla1x1km_DMarinaNoratlantica.shp",
+      "scale_km": 1,
+      "source_cells": 317226,
+      "windows": 38,
+      "selected_cells": 2618,
+      "reference_seconds": 2.6803651329996683,
+      "single_read_seconds": 1.4465520170001582,
+      "exact_equivalence": true
+    },
+    {
+      "source": "Malla1x1km_DMarinaSudatl\u00e1ntica.shp",
+      "scale_km": 1,
+      "source_cells": 14565,
+      "windows": 11,
+      "selected_cells": 8680,
+      "reference_seconds": 0.1924995339995803,
+      "single_read_seconds": 0.143849426000088,
+      "exact_equivalence": true
+    },
+    {
+      "source": "Malla5x5km_DM_Can.shp",
+      "scale_km": 5,
+      "source_cells": 20068,
+      "windows": 39,
+      "selected_cells": 392,
+      "reference_seconds": 0.23620007399995302,
+      "single_read_seconds": 0.09805958500010092,
+      "exact_equivalence": true
+    },
+    {
+      "source": "Malla5x5km_DMarinaEstrechoAlboran.shp",
+      "scale_km": 5,
+      "source_cells": 1251,
+      "windows": 17,
+      "selected_cells": 686,
+      "reference_seconds": 0.0911256150002373,
+      "single_read_seconds": 0.023683620000156225,
+      "exact_equivalence": true
+    },
+    {
+      "source": "Malla5x5km_DMarinaLevantinoBalear.shp",
+      "scale_km": 5,
+      "source_cells": 9773,
+      "windows": 39,
+      "selected_cells": 368,
+      "reference_seconds": 0.4607230309998158,
+      "single_read_seconds": 0.13914537799973914,
+      "exact_equivalence": true
+    },
+    {
+      "source": "Malla5x5km_DMarinaNoratl\u00e1ntica.shp",
+      "scale_km": 5,
+      "source_cells": 13121,
+      "windows": 39,
+      "selected_cells": 392,
+      "reference_seconds": 0.4688734309997926,
+      "single_read_seconds": 0.12101721599992743,
+      "exact_equivalence": true
+    },
+    {
+      "source": "Malla5x5km_DMarinaSudatl\u00e1ntica.shp",
+      "scale_km": 5,
+      "source_cells": 647,
+      "windows": 11,
+      "selected_cells": 560,
+      "reference_seconds": 0.07168442100009997,
+      "single_read_seconds": 0.02113876200019149,
+      "exact_equivalence": true
+    },
+    {
+      "source": "Malla10x10km_DM_Can.shp",
+      "scale_km": 10,
+      "source_cells": 5166,
+      "windows": 37,
+      "selected_cells": 380,
+      "reference_seconds": 0.13059609399988403,
+      "single_read_seconds": 0.050297835000037594,
+      "exact_equivalence": true
+    },
+    {
+      "source": "Malla10x10km_DMarinaEstrechoAlboran.shp",
+      "scale_km": 10,
+      "source_cells": 347,
+      "windows": 22,
+      "selected_cells": 289,
+      "reference_seconds": 0.12776338799994846,
+      "single_read_seconds": 0.019193616000393376,
+      "exact_equivalence": true
+    },
+    {
+      "source": "Malla10x10km_DMarinaLevantinoBalear.shp",
+      "scale_km": 10,
+      "source_cells": 2558,
+      "windows": 39,
+      "selected_cells": 362,
+      "reference_seconds": 0.26257807000001776,
+      "single_read_seconds": 0.034581709999656596,
+      "exact_equivalence": true
+    },
+    {
+      "source": "Malla10x10km_DMarinaNoratlantica.shp",
+      "scale_km": 10,
+      "source_cells": 3401,
+      "windows": 39,
+      "selected_cells": 386,
+      "reference_seconds": 0.30341682799962655,
+      "single_read_seconds": 0.04337457700012237,
+      "exact_equivalence": true
+    },
+    {
+      "source": "Malla10x10km_DMarinaSudatl\u00e1ntica.shp",
+      "scale_km": 10,
+      "source_cells": 177,
+      "windows": 11,
+      "selected_cells": 174,
+      "reference_seconds": 0.06767958099999305,
+      "single_read_seconds": 0.014933587000086845,
+      "exact_equivalence": true
+    }
+  ],
+  "synthetic_benchmark": {
+    "scenario": "100000 synthetic 1km polygons, 40 dispersed observation windows, unindexed shapefile; Linux; not a Windows operational benchmark",
+    "runs": [
+      {
+        "method": "single",
+        "seconds": 0.2414826809999795,
+        "cells": 360,
+        "windows": 40
+      },
+      {
+        "method": "repeated",
+        "seconds": 0.7413836079999783,
+        "cells": 360,
+        "windows": 40
+      },
+      {
+        "method": "single",
+        "seconds": 0.23086018100002548,
+        "cells": 360,
+        "windows": 40
+      },
+      {
+        "method": "repeated",
+        "seconds": 0.7564776120002534,
+        "cells": 360,
+        "windows": 40
+      }
+    ],
+    "versions": {
+      "geopandas": "1.1.1",
+      "pyogrio": "0.11.1"
+    },
+    "exact_equivalence": true
+  },
+  "date_utc": "2026-10-14T08:19:08.533233+00:00",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "verification": {
+    "official_files_compared": 15,
+    "raw_attributes_order_wkb": "exact equality",
+    "synthetic_pipeline": "both editions: exact prepared cells, marine areas, assignments and cache reuse at 1/5/10 km",
+    "native_windows": "not executed",
+    "full_operational_analysis": "not executed",
+    "full_previous_regression_suite": "not rerun; prior dated results retained"
+  }
+}

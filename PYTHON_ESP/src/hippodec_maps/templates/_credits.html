@@ -1,0 +1,23 @@
+<button class="credits-trigger" onclick="document.getElementById('credits-modal').style.display='flex'">📍 Créditos</button>
+<div id="credits-modal" onclick="this.style.display='none'">
+  <div id="credits-card" onclick="event.stopPropagation()">
+    <h3 style="margin:0 0 6px">{{ brand_label }}</h3>
+    <table>
+      <tr><td><b>Institución:</b></td><td>{{ institution }}</td></tr>
+      <tr><td><b>Producto:</b></td><td>{{ product }}</td></tr>
+      <tr><td><b>Proyecto:</b></td><td>{{ project }}</td></tr>
+      <tr><td><b>Autoría:</b></td><td>{{ author }}</td></tr>
+      <tr><td><b>Periodo:</b></td><td>{{ year_min }}–{{ year_max }}</td></tr>
+      <tr><td><b>Resolución:</b></td><td>{{ grid_km }} km</td></tr>
+      <tr><td><b>Área:</b></td><td>{{ region_label }}</td></tr>
+      <tr><td><b>Fecha:</b></td><td>{{ creation_date }}</td></tr>
+    </table>
+    <section aria-label="Fuentes cartográficas" style="margin-top:12px;font-size:12px;line-height:1.45;text-align:left">
+      <h4 style="margin:0 0 5px">Fuentes cartográficas</h4>
+      <p style="margin:5px 0">Mallas, demarcaciones y capas de protección de MITECO.<br>© Ministerio para la Transición Ecológica y el Reto Demográfico (MITECO)</p>
+      <p style="margin:5px 0">Litoral GSHHG: Wessel y Smith; condiciones LGPL. <a href="https://www.soest.hawaii.edu/pwessel/gshhg/" target="_blank" rel="noopener noreferrer">GSHHG</a></p>
+      <p style="margin:5px 0"><b>Aviso sobre demarcaciones:</b> Este mapa es de uso exclusivamente técnico y no debe considerarse como la delimitación oficial de las fronteras entre países vecinos.</p>
+    </section>
+    <button class="button" style="margin-top:10px" onclick="document.getElementById('credits-modal').style.display='none'">Cerrar</button>
+  </div>
+</div>

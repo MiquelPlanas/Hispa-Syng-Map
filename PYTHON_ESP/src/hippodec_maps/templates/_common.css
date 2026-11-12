@@ -1,0 +1,185 @@
+html, body, #map { width:100%; height:100%; margin:0; padding:0; }
+#map { background:#dceff5; }
+body { font-family:Georgia, "Times New Roman", serif; color:#233044; }
+
+/* Franja de logotipos institucionales. La imagen de origen se incrusta en
+   cada HTML generado, de modo que los mapas y la publicación web sean portátiles. */
+.institutional-header {
+  left:10px; max-width:none; pointer-events:none; position:fixed; right:108px;
+  top:5px; transform:none; width:auto; z-index:9997;
+}
+.institutional-header img {
+  display:block; height:auto; margin:0 auto; max-height:64px; max-width:100%;
+  object-fit:contain; width:640px;
+}
+.institutional-project-title {
+  background:rgba(255,255,255,.94); border-radius:5px; color:#173b65;
+  font:700 14px/1.2 Georgia, "Times New Roman", serif; margin:2px auto 0;
+  padding:2px 8px; text-align:center; width:max-content; max-width:calc(100% - 12px);
+}
+.leaflet-top { top:94px; }
+
+/* Paneles de mapa: estilo equivalente al visor de R. */
+.leaflet-control.custom-box {
+  background:linear-gradient(135deg,rgba(255,255,255,.98),rgba(247,249,252,.98));
+  border:1px solid #c4cfdd; border-radius:10px; box-shadow:0 3px 10px rgba(0,0,0,.16);
+  max-width:480px;
+}
+.leaflet-control.custom-box.hippo-panel { padding:0; overflow:hidden; }
+.hippo-panel-header {
+  align-items:center; background:linear-gradient(135deg,#e8f1ff,#bfd5f5); color:#173b65;
+  display:flex; gap:8px; justify-content:space-between; min-height:18px; padding:7px 9px;
+}
+.hippo-panel-header .panel-title { margin:0; }
+.panel-title { color:#203040; font-size:12px; font-weight:700; letter-spacing:.01em; }
+.hippo-panel-toggle {
+  align-items:center; background:rgba(255,255,255,.72); border:1px solid #9bb3cf; border-radius:5px;
+  color:#173b65; cursor:pointer; display:inline-flex; flex:0 0 auto; font:700 14px/1 Arial,sans-serif;
+  height:22px; justify-content:center; padding:0; width:24px;
+}
+.hippo-panel-toggle:hover { background:#fff; }
+.hippo-panel-body { max-height:66vh; overflow:auto; padding:10px 12px; }
+.hippo-panel.collapsed .hippo-panel-body { display:none; }
+.hippo-panel.collapsed .hippo-panel-header { padding:5px 7px; }
+.hippo-panel.collapsed .panel-title { font-size:11px; }
+.hippo-panel-hidden { display:none !important; }
+
+.panel-manager-trigger, .credits-trigger {
+  background:rgba(255,255,255,.97); border:1px solid #aeb9c8; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,.17);
+  color:#233044; cursor:pointer; font:600 12px Georgia,serif; padding:6px 10px; position:fixed; top:74px; z-index:9999;
+}
+.credits-trigger { left:52px; }
+.panel-manager-trigger { left:150px; }
+.panel-manager-trigger:hover, .credits-trigger:hover { background:#eef4fb; }
+.language-switch {
+  align-items:center; background:rgba(255,255,255,.97); border:1px solid #aeb9c8;
+  border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,.17); display:flex;
+  gap:5px; padding:4px; position:fixed; right:10px; top:8px; z-index:9999;
+}
+.language-flag { appearance:none; background:#fff; border:1px solid transparent; border-radius:5px; cursor:pointer; display:grid; height:30px; padding:0; place-items:center; width:38px; }
+.language-flag:hover { background:#eef4fb; border-color:#9bb3cf; }
+.language-flag[aria-pressed="true"] { background:#dff4f5; border-color:#176b87; box-shadow:inset 0 0 0 1px #176b87; }
+.language-flag:focus-visible { outline:3px solid #ffb000; outline-offset:2px; }
+.language-flag-icon { border:1px solid rgba(35,48,68,.42); box-shadow:0 1px 2px rgba(0,0,0,.18); display:block; height:20px; width:30px; }
+.map-download[aria-disabled="true"] { background:#8a9aa1; border-color:#718188; cursor:not-allowed; opacity:.82; }
+.panel-manager-menu {
+  background:linear-gradient(135deg,#fff,#f5f8fc); border:1px solid #b8c5d5; border-radius:9px;
+  box-shadow:0 4px 14px rgba(0,0,0,.22); display:none; left:52px; max-height:66vh; min-width:250px;
+  overflow:auto; padding:10px 11px; position:fixed; top:112px; z-index:9999;
+}
+.panel-manager-menu.open { display:block; }
+.panel-manager-title { border-bottom:1px solid #d7e0ea; font-size:12px; font-weight:700; margin-bottom:7px; padding-bottom:5px; }
+.panel-manager-row { display:block; font-size:11px; margin:6px 0; white-space:nowrap; }
+.panel-manager-actions { border-top:1px solid #d7e0ea; display:flex; gap:5px; margin-top:8px; padding-top:8px; }
+
+.small { font-size:11px; line-height:1.45; }
+.control-row { margin:5px 0; white-space:nowrap; }
+.control-row label { cursor:pointer; }
+.color-chip { display:inline-block; width:13px; height:13px; border:1px solid #555; border-radius:2px; margin:0 6px -2px 3px; }
+.button {
+  padding:4px 8px; border:1px solid #aeb9c8; background:#f5f7fa; border-radius:5px;
+  cursor:pointer; font-family:inherit;
+}
+.button:hover { background:#e8eef7; }
+.legend-bar { height:12px; border:1px solid #777; border-radius:3px; margin:5px 0 2px; }
+.legend-labels { display:flex; justify-content:space-between; font-size:10px; }
+.info-scroll { max-height:57vh; overflow:auto; }
+.info-lead { font-size:12px; line-height:1.48; margin:0 0 8px; }
+.info-highlight {
+  background:linear-gradient(135deg,#fff7e6,#ffe8bd); border:1px solid #efc36f; border-left:5px solid #df8100;
+  border-radius:6px; color:#68400d; margin:9px 0; padding:8px 10px;
+}
+.info-section-title { color:#203f61; font-size:12px; font-weight:700; margin:11px 0 5px; }
+.info-table { border-collapse:collapse; color:#3b4b63; font-size:10.7px; line-height:1.35; width:100%; }
+.info-table th { background:#e9eef6; }
+.info-table th, .info-table td { border:1px solid #ccd5df; padding:4px 6px; text-align:left; vertical-align:top; }
+.info-table tr:nth-child(even) td { background:#fafbfd; }
+.info-summary { background:#f4f7fa; border-left:4px solid #6994bb; border-radius:5px; margin:8px 0; padding:7px 9px; }
+select { font-family:inherit; padding:4px; width:100%; box-sizing:border-box; }
+
+/* Créditos institucionales. */
+#credits-modal {
+  position:fixed; inset:0; z-index:10000; display:none; align-items:center; justify-content:center;
+  background:rgba(0,0,0,.36);
+}
+#credits-card {
+  max-height:86vh; overflow:auto;
+  width:min(430px, 90vw); background:linear-gradient(135deg,#f7f9fc,#edf3fa);
+  border:1px solid #cfd8ea; border-radius:14px; padding:14px; box-shadow:0 7px 22px rgba(0,0,0,.25);
+  text-align:center;
+}
+#credits-card table { width:100%; font-size:11px; color:#3b4b63; border-collapse:collapse; text-align:left; }
+#credits-card td { padding:2px 3px; vertical-align:top; }
+
+/* Tarjetas de información de observaciones y celdas. */
+.leaflet-popup-content { margin:12px 14px; }
+.leaflet-popup-content-wrapper { border:1px solid #c6d2df; border-radius:11px; box-shadow:0 4px 16px rgba(0,0,0,.28); }
+.leaflet-popup-content-wrapper, .leaflet-popup-tip { background:linear-gradient(135deg,#fff,#f8fafc); }
+.popup-card {
+  color:#263547; font-family:Arial, Helvetica, sans-serif; font-size:12.5px; line-height:1.38;
+  min-width:390px; width:min(500px,76vw);
+}
+.popup-title {
+  background:linear-gradient(135deg,#edf4fc,#dbe9f7); border-left:5px solid #3d75a6; border-radius:6px;
+  color:#172f49; font-family:Georgia, "Times New Roman", serif; font-size:17px; font-weight:700;
+  line-height:1.2; padding:7px 9px;
+}
+.popup-subtitle { color:#607087; font-size:11px; margin:4px 4px 8px; overflow-wrap:anywhere; }
+.popup-section-title {
+  background:linear-gradient(90deg,#edf3f8,rgba(237,243,248,0)); border-left:4px solid #6b94b8;
+  color:#234c70; font-size:11px; font-weight:700; letter-spacing:.035em; margin-top:9px;
+  padding:4px 6px; text-transform:uppercase;
+}
+.popup-kv {
+  background:rgba(248,250,252,.78); border:1px solid #d9e1e9; border-radius:6px; display:grid;
+  gap:0; grid-template-columns:minmax(160px,43%) minmax(0,1fr); margin:5px 0 3px; overflow:hidden;
+}
+.popup-kv dt, .popup-kv dd { border-bottom:1px solid #e4e9ef; margin:0; padding:4px 6px; }
+.popup-kv dt { color:#4d5d70; font-weight:600; }
+.popup-kv dd { color:#1f2c3b; overflow-wrap:anywhere; }
+.popup-kv dt:nth-last-of-type(1), .popup-kv dd:nth-last-of-type(1) { border-bottom:0; }
+.popup-link { color:#0b67a5; font-weight:600; text-decoration:none; }
+.popup-link:hover { text-decoration:underline; }
+.popup-table-wrap { max-height:215px; overflow:auto; margin-top:5px; border:1px solid #d5dee8; border-radius:6px; }
+.popup-table { border-collapse:collapse; font-size:10.7px; width:100%; }
+.popup-table th { background:#e7eef6; color:#36475b; font-weight:700; position:sticky; top:0; z-index:1; }
+.popup-table th, .popup-table td { border-bottom:1px solid #e2e8ee; padding:4px 5px; text-align:right; vertical-align:top; }
+.popup-table th:first-child, .popup-table td:first-child { text-align:left; }
+.popup-table tbody tr:nth-child(even) td { background:#f8fafc; }
+.popup-table tbody tr:last-child td { border-bottom:0; }
+.popup-empty { background:#f4f7fa; border-radius:5px; color:#647386; font-style:italic; margin-top:5px; padding:7px; }
+.popup-note { background:#f3f7fa; border-left:4px solid #7ca4c5; color:#536579; font-size:10.7px; margin-top:9px; padding:7px 9px; }
+.popup-priority {
+  background:linear-gradient(135deg,#f9f5ed,#f8eee7); border:1px solid #dfcec0; border-left:5px solid #b8433f;
+  border-radius:6px; margin:7px 0; padding:7px 9px;
+}
+.popup-prose { background:#fafbfd; border:1px solid #dce3ea; border-radius:6px; margin-top:5px; padding:7px 9px; }
+.priority-line { align-items:center; display:flex; gap:6px; margin:4px 0; }
+.priority-chip { border:1px solid #666; display:inline-block; height:12px; width:16px; }
+
+@media (max-width:700px) {
+  .institutional-header { left:8px; max-width:none; right:100px; top:4px; width:auto; }
+  .institutional-header img { max-height:40px; }
+  .institutional-project-title { font-size:11px; margin-top:1px; padding:2px 5px; }
+  .leaflet-top { top:66px; }
+  .leaflet-control.custom-box { max-width:280px; font-size:11px; }
+  .credits-trigger { left:48px; top:48px; }
+  .panel-manager-trigger { left:142px; top:48px; }
+  .language-switch { right:8px; top:6px; }
+  .language-flag { height:28px; width:36px; }
+  .language-flag-icon { height:18px; width:28px; }
+  .panel-manager-menu { left:8px; max-width:82vw; top:86px; }
+  .hippo-panel-body { max-height:50vh; }
+  .popup-card { min-width:0; width:76vw; }
+  .popup-kv { grid-template-columns:1fr; }
+  .popup-kv dt { border-bottom:0; padding-bottom:1px; }
+  .popup-kv dd { padding-top:1px; }
+}
+
+/* El visor integrado conserva la única cabecera y el único selector. */
+html.hippodec-embedded .institutional-header,
+html.hippodec-embedded .language-switch { display:none !important; }
+html.hippodec-embedded .leaflet-top { top:10px; }
+html.hippodec-embedded .credits-trigger,
+html.hippodec-embedded .panel-manager-trigger { top:10px; }
+html.hippodec-embedded .panel-manager-menu { top:48px; }

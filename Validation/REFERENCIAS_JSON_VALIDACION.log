@@ -1,0 +1,25 @@
+$ python tests/_json_reference_integrity.py
+test_generated_filename_translation_remains_available (__main__.JsonReferenceIntegrity.test_generated_filename_translation_remains_available) ... ok
+test_metadata_is_preserved_in_both_boundaries (__main__.JsonReferenceIntegrity.test_metadata_is_preserved_in_both_boundaries) ... ok
+test_nested_numerical_values_and_input_immutability (__main__.JsonReferenceIntegrity.test_nested_numerical_values_and_input_immutability) ... ok
+test_path_fields_preserve_basenames_and_directories (__main__.JsonReferenceIntegrity.test_path_fields_preserve_basenames_and_directories) ... ok
+test_posix_and_relative_references (__main__.JsonReferenceIntegrity.test_posix_and_relative_references) ... ok
+test_translation_of_labels_and_habitats_continues (__main__.JsonReferenceIntegrity.test_translation_of_labels_and_habitats_continues) ... ok
+test_unc_and_windows_forward_slashes (__main__.JsonReferenceIntegrity.test_unc_and_windows_forward_slashes) ... ok
+test_urls_are_references (__main__.JsonReferenceIntegrity.test_urls_are_references) ... ok
+test_windows_paths_under_observed_qa_keys (__main__.JsonReferenceIntegrity.test_windows_paths_under_observed_qa_keys) ... ok
+test_written_json_references_resolve_to_original_files (__main__.JsonReferenceIntegrity.test_written_json_references_resolve_to_original_files) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.068s
+
+OK
+
+$ python tests/_output_folder_localization.py PYTHON_ESP
+PASS output folder localization PYTHON_ESP
+
+$ python tests/_output_folder_localization.py PYTHON_ENGLISH
+PASS output folder localization PYTHON_ENGLISH
+
+$ python tests/_presentation_and_distribution.py
+PASS presentation and distribution

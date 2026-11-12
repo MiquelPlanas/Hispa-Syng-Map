@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hispa-syng-es"
+version = "1.0"
+license = "PolyForm-Noncommercial-1.0.0"
+description = "Hispa-Syng v1.0 — mapas y análisis ecológicos reproducibles de signátidos en aguas marinas españolas (Proyecto Hippo-DEC) — edición española"
+requires-python = ">=3.10,<3.14"
+dependencies = [
+  "tomli>=2,<3; python_version < '3.11'",
+  "numpy>=2.0,<3",
+  "pandas==2.3.3",
+  "openpyxl>=3.1,<4",
+  "geopandas>=1.0,<2",
+  "shapely>=2.0,<3",
+  "pyproj>=3.6,<4",
+  "pyogrio==0.11.1",
+  "PyYAML>=6,<7",
+  "Jinja2>=3.1,<4",
+  "scipy>=1.13,<2",
+  "matplotlib>=3.8,<4",
+  "seaborn>=0.13,<1",
+  "scikit-learn>=1.4,<2",
+  "statsmodels>=0.14,<1",
+  "networkx>=3.2,<4",
+  "python-docx>=1.1,<2",
+  "Pillow>=10,<13",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+hippodec_maps = ["templates/*.html", "templates/*.css", "templates/*.js", "vendor/leaflet/*"]

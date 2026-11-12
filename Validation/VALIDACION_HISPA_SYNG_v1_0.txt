@@ -1,0 +1,37 @@
+Hispa-Syng v1.0 — alcance de validación / validation scope
+Revisión documental / Documentation review: 2026-10-21.
+
+Registro histórico / Historical record: validation.json.
+Finalización / Completion UTC: 2026-10-14T12:31:11.627308+00:00.
+Entorno / Environment: Linux, Python 3.12.14.
+32 comprobaciones finales PASS; 33 procesos con un primer intento fallido y repetición PASS.
+32 final PASS checks; 33 processes including an initial failed attempt and PASS retry.
+
+Código del ZIP aportado frente al registro general: 81/90 hashes iguales, nueve distintos.
+Uploaded ZIP versus the general record: 81/90 hashes match, nine differ.
+Los nueve están identificados en comprobaciones posteriores de especies o créditos.
+All nine are identified in later species-selection or credit checks.
+
+Manifiesto y resúmenes ES/EN de Windows del 19 de octubre revisados: Python 3.13.15, estados superados y controles principales coincidentes.
+Windows manifest and ES/EN summaries from 19 October reviewed: Python 3.13.15, passed status and matching principal QA values.
+Esa confirmación no prueba DPAPI/ACL/aislamiento entre cuentas.
+That confirmation does not establish DPAPI/ACL/cross-account isolation.
+
+No se han repetido regresiones ni análisis completo durante esta revisión documental.
+No regression suite or full analysis was rerun during this documentation review.
+Ver / See: VALIDACION_ES.md, VALIDACION_EN.md, REVISION_EVIDENCIAS_20261021.json.
+CONTENIDO_SHA256.txt es histórico / is historical.
+
+Evidencia / Evidence: EJECUCION_WINDOWS_20261019.md y / and .json.
+Referencias JSON: las rutas registradas se conservan en ambos generadores ingleses; diez pruebas específicas superadas.
+JSON references: recorded paths are preserved in both English writers; ten focused tests passed.
+Ver / See: REFERENCIAS_JSON_VALIDACION.md y / and .json.
+Estas pruebas no repiten el análisis completo de Windows / These tests do not rerun the full Windows analysis.
+
+Seguridad Windows: consola original aportada; nueve grupos de escenarios PASS y ciclo DPAPI del usuario actual PASS.
+Windows security: original console log supplied; nine scenario groups PASS and current-user DPAPI roundtrip PASS.
+Los fallos de espacio y escritura se simulan / Disk-space and write failures are injected.
+Aislamiento entre cuentas: NO EJECUTADO / Cross-account isolation: NOT EXECUTED.
+ACL independiente y bloqueo exclusivo por otro proceso: sin evidencia / Independent ACL and external exclusive-lock checks: no supplied evidence.
+Versiones de entorno, commit y hashes del código ejecutado: no constan en este registro / Environment versions, commit and executed-source hashes: not recorded in this log.
+Ver / See: SEGURIDAD_WINDOWS_20261021.md, SEGURIDAD_WINDOWS_20261021.json, Hispa-Syng_seguridad_Windows.txt.

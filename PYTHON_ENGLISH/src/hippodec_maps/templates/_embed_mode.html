@@ -1,0 +1,11 @@
+<script>
+  (function () {
+    try {
+      if (window.self !== window.top) {
+        document.documentElement.classList.add('hippodec-embedded');
+      }
+    } catch (error) {
+      document.documentElement.classList.add('hippodec-embedded');
+    }
+  }());
+</script>
