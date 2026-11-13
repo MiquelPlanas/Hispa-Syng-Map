@@ -8,6 +8,8 @@ Hispa-Syng ha sido desarrollado gracias a la financiación del proyecto Hippo-DE
 
 La carpeta raíz coordina las ediciones española (`PYTHON_ESP`) e inglesa (`PYTHON_ENGLISH`) mediante un único lanzador y una selección común de parámetros.
 
+**DOI de Zenodo:** [10.5281/zenodo.24157711](https://doi.org/10.5281/zenodo.24157711)
+
 [Read in English](https://github.com/MiquelPlanas/Hispa-Syng-Map/blob/main/README.md) · [Índice de documentación](https://github.com/MiquelPlanas/Hispa-Syng-Map/blob/main/LEEME.md#documentaci%C3%B3n)
 
 ## Inicio rápido en Windows
@@ -175,7 +177,7 @@ Los manuales y guías con aviso CC BY-NC 4.0, incluido este LEEME, se distribuye
 
 Los componentes de terceros, los recursos cartográficos, los servicios y las marcas se rigen por sus propias condiciones. Consulte [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
-La información de citación se encuentra en `CITATION.cff`. El DOI, la URL definitiva del repositorio y la fecha de publicación se incorporarán cuando se formalice la publicación de la versión.
+La información de citación se encuentra en [CITATION.cff](CITATION.cff). Para citar Hispa-Syng Map v1.0, utilice el DOI de Zenodo [10.5281/zenodo.24157711](https://doi.org/10.5281/zenodo.24157711).
 
 ## Identidad del software
 
