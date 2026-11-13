@@ -9,8 +9,11 @@ Hispa-Syng ha sido desarrollado gracias a la financiación del proyecto Hippo-DE
 La carpeta raíz coordina las ediciones española (`PYTHON_ESP`) e inglesa (`PYTHON_ENGLISH`) mediante un único lanzador y una selección común de parámetros.
 
 Version: v1.0
+
 Software licence: PolyForm Noncommercial License 1.0.0
+
 User manuals and guides: CC BY-NC 4.0
+
 Zenodo DOI: 10.5281/zenodo.24157711
 
 [Read in English](https://github.com/MiquelPlanas/Hispa-Syng-Map/blob/main/README.md) · [Índice de documentación](https://github.com/MiquelPlanas/Hispa-Syng-Map/blob/main/LEEME.md#documentaci%C3%B3n)
