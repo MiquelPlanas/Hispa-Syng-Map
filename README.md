@@ -11,7 +11,8 @@ Hispa-Syng was developed with funding for the Hippo-DEC project provided by the 
 
 > Version: **v1.0**  
 > Software licence: **PolyForm Noncommercial License 1.0.0**  
-> User manuals and guides: **CC BY-NC 4.0**
+> User manuals and guides: **CC BY-NC 4.0**  
+> Zenodo DOI: [10.5281/zenodo.24157711](https://doi.org/10.5281/zenodo.24157711)
 
 [Leer en español](https://github.com/MiquelPlanas/Hispa-Syng-Map/blob/main/LEEME.md) · [Documentation index](https://github.com/MiquelPlanas/Hispa-Syng-Map/blob/main/README.md#documentation)
 
@@ -218,7 +219,7 @@ Citation metadata are provided in:
 CITATION.cff
 ```
 
-The DOI and final public-release metadata will be added when the software is formally archived/published.
+Cite Hispa-Syng Map v1.0 using its Zenodo DOI [10.5281/zenodo.24157711](https://doi.org/10.5281/zenodo.24157711).
 
 ## Author
 
